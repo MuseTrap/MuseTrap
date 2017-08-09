@@ -25,11 +25,22 @@ Musetrap is a web app for making beats by arranging and looping sound clips.
 
 ## Requirements
 
-- Node 6.4.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
+- Node >= 6.4.0
+"axios": "^0.16.2",
+"babel-core": "^6.25.0",
+"babel-loader": "^7.1.1",
+"babel-preset-latest": "^6.24.1",
+"babel-preset-react": "^6.24.1",
+"chai": "^4.1.1",
+"express": "^4.15.4",
+"jquery": "^3.2.1",
+"mocha": "^3.5.0",
+"mongoose": "^4.11.6",
+"nodemon": "^1.11.0",
+"react": "^15.6.1",
+"react-dom": "^15.6.1",
+"webpack": "^3.5.2",
+"webpack-dev-middleware": "^1.12.0"
 
 ## Development
 
@@ -38,9 +49,22 @@ Musetrap is a web app for making beats by arranging and looping sound clips.
 From within the root directory:
 
 ```sh
-npm install -g bower
 npm install
-bower install
+```
+
+
+### Running things
+
+From within the root directory:
+
+Start the server
+```sh
+npm start
+```
+
+Run tests
+```sh
+npm test
 ```
 
 ### Roadmap
