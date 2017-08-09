@@ -1,7 +1,7 @@
 {
   "name": "MuseTrap",
-  "version": "1.0",
-  "description": "",
+  "version": "1.0.0",
+  "description": "Musetrap is a web app for making beats by arranging and looping sound clips.",
   "author": "Jae Hyun Lim, Kamie Robinson, Matthew Nicolaou, Steve Kuo",
   "license": "",
   "engines": {
