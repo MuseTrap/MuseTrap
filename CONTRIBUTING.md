@@ -122,7 +122,7 @@ Thanks for contributing!
 1. Uphold the current code standard:
     - Keep your code [DRY][].
     - Apply the [boy scout rule][].
-    - Follow [STYLE-GUIDE.md](_STYLE-GUIDE.md)
+    - Follow [STYLE-GUIDE.md](STYLE-GUIDE.md)
 1. Run the [tests][] before submitting a pull request.
 1. Tests are very, very important. Submit tests if your pull request contains
    new, testable behavior.
@@ -146,7 +146,7 @@ no problem getting your changes merged in.
 
 
 <!-- Links -->
-[style guide]: https://github.com/reactorcore/style-guide
+[style guide]: https://github.com/MuseTrap/MuseTrap/blob/master/STYLE-GUIDE.md
 [n-queens]: https://github.com/reactorcore/n-queens
 [Underbar]: https://github.com/reactorcore/underbar
 [curriculum workflow diagram]: http://i.imgur.com/p0e4tQK.png
