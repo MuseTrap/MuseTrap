@@ -8,7 +8,7 @@ const app = express();
 //const db = require('../database/index.js');
 const compiler = webpack(webpackConfig);
  
-app.use(express.static(__dirname + '/../build'));
+app.use(express.static(__dirname + '/../public'));
  
 app.use(webpackDevMiddleware(compiler, {
   hot: true,

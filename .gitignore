@@ -20,8 +20,7 @@ coverage
 
 # Compiled Dirs (http://nodejs.org/api/addons.html)
 bundle.js
-build/
-dist/
+public/
 
 # Dependency directorys
 # Deployed apps should consider commenting these lines out:
