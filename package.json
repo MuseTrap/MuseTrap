@@ -1,8 +1,8 @@
 {
-  "name": "",
-  "version": "",
+  "name": "MuseTrap",
+  "version": "1.0",
   "description": "",
-  "author": "",
+  "author": "Jae Hyun Lim, Kamie Robinson, Matthew Nicolaou, Steve Kuo",
   "license": "",
   "engines": {
     "node": ">=6.4.0"
