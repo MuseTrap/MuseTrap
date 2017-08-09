@@ -1,6 +1,6 @@
 # MuseTrap
 
-> Pithy project description
+Musetrap is a web app for making beats by arranging and looping sound clips. 
 
 ## Team
 
