@@ -7,13 +7,22 @@
   "engines": {
     "node": ">=6.4.0"
   },
-  "scripts": {},
+  "scripts": {
+    "compile": "webpack",
+    "test": "mocha",
+    "start": "nodemon server/server.js"
+  },
   "dependencies": {
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
     "babel-preset-latest": "^6.24.1",
     "babel-preset-react": "^6.24.1",
-    "webpack": "^3.5.2"
+    "chai": "^4.1.1",
+    "express": "^4.15.4",
+    "mocha": "^3.5.0",
+    "nodemon": "^1.11.0",
+    "webpack": "^3.5.2",
+    "webpack-dev-middleware": "^1.12.0"
   },
   "devDependencies": {
     "babel-cli": "^6.7.5",

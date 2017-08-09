@@ -38,9 +38,22 @@ Musetrap is a web app for making beats by arranging and looping sound clips.
 From within the root directory:
 
 ```sh
-npm install -g bower
 npm install
-bower install
+```
+
+
+### Running things
+
+From within the root directory:
+
+Start the server
+```sh
+npm start
+```
+
+Run tests
+```sh
+npm test
 ```
 
 ### Roadmap
