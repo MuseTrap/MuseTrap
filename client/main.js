@@ -1,6 +1,6 @@
 console.log('Hello World in the console from the Client!');
-import React from 'react';
-import ReactDOM from 'react-dom';
+//import React from 'react';
+//import ReactDOM from 'react-dom';
 
 //document.addEventListener('DOMContentLoaded', function() {
 //  ReactDOM.render(
@@ -8,3 +8,6 @@ import ReactDOM from 'react-dom';
 //    document.getElementById('app')
 //  );
 //});
+
+
+module.exports.helloWorld = "hello world";
