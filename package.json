@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Musetrap is a web app for making beats by arranging and looping sound clips.",
   "author": "Jae Hyun Lim, Kamie Robinson, Matthew Nicolaou, Steve Kuo",
-  "license": "",
+  "license": "MIT",
+  "main": "client/main.jsx",
   "engines": {
     "node": ">=6.4.0"
   },
@@ -25,8 +26,7 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "webpack": "^3.5.2",
-    "webpack-dev-middleware": "^1.12.0",
-    "mongo": "^0.1.0"
+    "webpack-dev-middleware": "^1.12.0"
   },
   "devDependencies": {
     "babel-cli": "^6.7.5",
