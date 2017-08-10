@@ -12,7 +12,7 @@ import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
  * Whether loop is toggled ON or OFF
  * @constructor
  */
-class Controlpanel extends React.Component {
+class ControlPanel extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -112,4 +112,4 @@ class Controlpanel extends React.Component {
   }
 }
 
-export default Controlpanel;
+export default ControlPanel;
