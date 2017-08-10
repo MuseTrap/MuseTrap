@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 // import Library from './components/Library.jsx';
 // import Control from './components/Control.jsx';
-// import SoundBoard from './components/SoundBoard.jsx';
+import SoundBoard from './components/SoundBoard.jsx';
 
 class Main extends React.Component {
 
@@ -10,7 +10,7 @@ class Main extends React.Component {
 		super(props);
 		this.state = {
 			sequence: {
-				beats: [],
+				beats: [undefined, undefined, undefined, undefined],
 				bpm: 120,
 				sequenceRows: 
 				[
@@ -28,12 +28,12 @@ class Main extends React.Component {
 
   render() {
     return (
-      <div>
-      	Hello World from React Main!
-      	
-
+      <div id="container">
+      	Main-SoundBoard
+				<SoundBoard />
+	      	
       </div>
-    );
+    )
   }
 
 }
