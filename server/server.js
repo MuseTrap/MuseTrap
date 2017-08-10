@@ -7,9 +7,9 @@ const app = express();
 //uncomment this when ready to hook up the database
 //const db = require('../database/index.js');
 const compiler = webpack(webpackConfig);
- 
+
 app.use(express.static(__dirname + '/../public'));
- 
+
 app.use(webpackDevMiddleware(compiler, {
   hot: true,
   filename: 'bundle.js',
@@ -19,8 +19,9 @@ app.use(webpackDevMiddleware(compiler, {
   },
   historyApiFallback: true,
 }));
- 
-const server = app.listen(3000, function() {
+
+var port = process.env.PORT || 3000;
+const server = app.listen(port, function() {
   const host = server.address().address;
   const port = server.address().port;
   console.log('Example app listening at http://%s:%s', host, port);

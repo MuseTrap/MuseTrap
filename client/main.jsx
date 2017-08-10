@@ -1,13 +1,41 @@
-console.log('Hello World in the console from the Client!');
 import React from 'react';
 import ReactDOM from 'react-dom';
+// import Library from './components/Library.jsx';
+// import Control from './components/Control.jsx';
+import SoundBoard from './components/SoundBoard.jsx';
 
-// document.addEventListener('DOMContentLoaded', function() {
-//  ReactDOM.render(
-//    React.createElement(????),
-//    document.getElementById('main')
-//  );
-// });
+class Main extends React.Component {
 
+	constructor(props) {
+		super(props);
+		this.state = {
+			sequence: {
+				beats: [undefined, undefined, undefined, undefined],
+				bpm: 120,
+				sequenceRows: 
+				[
+					[0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0],
+					[0,0,0,0,0,0,0,0]
+				]
+			}
+		};
+	}
+	componentDidMount() {
 
-//module.exports.helloWorld = "hello world";
+	}
+
+  render() {
+    return (
+      <div id="container">
+      	Main-SoundBoard
+				<SoundBoard />
+	      	
+      </div>
+    )
+  }
+
+}
+
+ReactDOM.render(<Main />, document.getElementById('main'));
