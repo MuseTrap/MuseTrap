@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 // import Library from './components/Library.jsx';
 // import Control from './components/Control.jsx';
 import SoundBoard from './components/SoundBoard.jsx';
+import ReactHowler from 'react-howler';
 
 class Main extends React.Component {
 
@@ -12,7 +13,7 @@ class Main extends React.Component {
 			sequence: {
 				beats: [undefined, undefined, undefined, undefined],
 				bpm: 120,
-				sequenceRows: 
+				sequenceRows:
 				[
 					[0,0,0,0,0,0,0,0],
 					[0,0,0,0,0,0,0,0],
@@ -31,7 +32,11 @@ class Main extends React.Component {
       <div id="container">
       	Main-SoundBoard
 				<SoundBoard />
-	      	
+				<ReactHowler
+	         src = './audio_files/Kick_Clicky.wav'
+	         playing={true}
+	       />
+
       </div>
     )
   }
