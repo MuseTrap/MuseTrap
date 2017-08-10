@@ -1,5 +1,8 @@
 ### node etc ###
 
+#sounds
+audio_files
+
 # Logs
 logs
 *.log
