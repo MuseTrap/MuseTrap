@@ -4,13 +4,14 @@ import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 
 /** Control panel behavior
-States:
-Whether song is playing or paused or stopped
-Whether play button is the triangle or pause symbol
-//Whether play visualizer is visible or invisible
-//Whether play visualizer is still or moving
-Whether loop is toggled ON or OFF
-*/
+ * States:
+ * Whether song is playing or paused or stopped
+ * Whether play button is the triangle or pause symbol
+ * //Whether play visualizer is visible or invisible
+ * //Whether play visualizer is still or moving
+ * Whether loop is toggled ON or OFF
+ * @constructor
+ */
 class Controlpanel extends React.Component {
   constructor() {
     super();
@@ -80,6 +81,7 @@ class Controlpanel extends React.Component {
     //this.props.share();
   }
 
+  /** render function */
   render() {
     var playStyle = {
       display: (this.state.playstatus === 'paused') || (this.state.playstatus === 'stopped') ? 'inline' : 'none'
