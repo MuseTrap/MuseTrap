@@ -12,7 +12,7 @@ class Main extends React.Component {
 			sequence: {
 				beats: [],
 				bpm: 120,
-				sequence: 
+				sequenceRows: 
 				[
 					[0,0,0,0,0,0,0,0],
 					[0,0,0,0,0,0,0,0],
@@ -30,6 +30,8 @@ class Main extends React.Component {
     return (
       <div>
       	Hello World from React Main!
+      	
+
       </div>
     );
   }
