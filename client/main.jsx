@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Library from './components/Library.jsx';
-import Control from './components/Control.jsx';
-import SoundBoard from './components/SoundBoard.jsx';
+//import Library from './components/Library.jsx';
+//import Control from './components/Control.jsx';
+//import SoundBoard from './components/SoundBoard.jsx';
 
 class Main extends React.Component {
 
@@ -28,9 +28,7 @@ class Main extends React.Component {
 	render() {
 		return (
 			<div>
-				<Library />
-				<Control />
-				<SoundBoard />
+				
 			</div>
 		)
 	}
