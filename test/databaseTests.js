@@ -23,9 +23,33 @@ describe('Persistant Mongo Server', function(){
 
       	  	db.close();
       	  	done();
-      	  })
-      	})
-      })
-    })
+      	  });
+      	});
+      });
+    });
+  });
+
+  it('Should save a sequence to the database', function(done){
+  	var testSequence = 	{
+		beats: [undefined, undefined, undefined, undefined],
+		bpm: 120,
+		sequenceRows:
+
+		[
+			[0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0]
+		]
+	}
+    db.saveSequence()
+  });
+
+  it('should update an already existing sequence', function(done){
+
+  });
+
+  it('should retrieve all the sequences for a particular user', function(done){
+  	
   })
-})
+});
