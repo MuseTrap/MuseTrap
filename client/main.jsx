@@ -36,11 +36,23 @@ class Main extends React.Component {
 					[0,0,0,0,0,0,0,0],
 					[0,0,0,0,0,0,0,0]
 				]
-			}
+			},
+			sounds: [
+				{ sound: './audio_files/Kick_Clicky.wav', playing: false }
+			]
 		};
+		this.updatePlay = this.updatePlay.bind(this);
 	}
 	componentDidMount() {
     console.log('props including react router props are,', this.props);
+	}
+	/** UpdatePlay is passed to the ControlPanel component
+		//Clicking the play or stop button will update the entire sounds state -- something to potentially refactor
+		*/
+	updatePlay(status) {
+		var newStatus = Object.assign({}, this.state.sounds);
+		newStatus[0].playing = status;
+		this.setState({ sounds: newStatus});
 	}
 
   /** Login to the app
@@ -102,10 +114,13 @@ class Main extends React.Component {
           logoutCB={this.logoutCB.bind(this)}
         />
       	Main-SoundBoard
+				<ControlPanel sounds={this.state.sounds} togglePlay={this.updatePlay}/>
 				<SoundBoard />
 				<ReactHowler
-	         src = './audio_files/Kick_Clicky.wav'
-	         playing={true}
+					preload={true}
+	        src={this.state.sounds[0].sound}
+					playing={this.state.sounds[0].playing}
+					loop={true}
 	       />
         <ControlPanel
           loggedIn={this.props.loggedIn}
