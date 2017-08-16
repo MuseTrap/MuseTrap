@@ -1,55 +1,84 @@
 var request = require('request');
-var mongoClient = require('mongodb').mongoClient;
+var mongoose = require('mongoose');
 var expect = require('chai').expect;
 var axios = require('axios');
-var db = '../database/schema.js';
+var database = require ('../database/schema.js');
+var expect = require('chai').expect;
+var db = mongoose.connection;
+
 
 describe('Persistant Mongo Server', function(){
   var dbName = 'musetrap';
-  var dbUrl = 'mongodb://localhost/' + dbName;
+  var dbUrl = 'mongodb://localhost:27017/' + dbName;
 
-  it('Should add a new user to the database', function(done){
-    db.newUser('matt', 'muse');
+  xit('Should add a new user to the database', function(done){
+    
+    after(function(){db.collection('Users').remove({userName: 'test'}), function(err){console.log('deleted user')}});
 
-    waits(1000);
+    database.newUser('test', 'muse');
 
-    runs(function(){
-      mongoClient.connect(dbUrl, function(err, db){
-      	var collectionName = 'userSchema';
-      	db.createCollection(collectionName, function(err, collection){
-      	  collection.find().toArray(function(err, results){
-      	  	expect(results.length).toEqual(1);
-      	  	expect(results[0].userName).toMatch('matt');
+    setTimeout(function(){
+  	  db.collection('Users').find().toArray(function(err, results){
+  	    expect(results.length).toEqual(1);
+  	    expect(results[0].userName).toMatch('test');
+  	  })
+  	  	db.close();
+  	  	done();
+    }, 1000);
 
-      	  	db.close();
-      	  	done();
-      	  });
-      	});
-      });
-    });
   });
 
   it('Should save a sequence to the database', function(done){
-  	var testSequence = 	{
-		beats: [undefined, undefined, undefined, undefined],
-		bpm: 120,
-		sequenceRows:
+    
+    database.Sequences.create({
+          userID: 0,
+          name: 'sequence', 
+          sequence: [[0,0,0,0,0,0,0,0],
+    			[0,0,0,0,0,0,0,0],
+    			[0,0,0,0,0,0,0,0],
+    			[0,0,0,0,0,0,0,0]],
+          bpm: 120,
+          shareable: false
+        }, function(err, result){
+  	        if(err){console.log('Error adding sequence: ', err)}
+  	        console.log('Saved sequence');          
+        });
 
-		[
-			[0,0,0,0,0,0,0,0],
-			[0,0,0,0,0,0,0,0],
-			[0,0,0,0,0,0,0,0],
-			[0,0,0,0,0,0,0,0]
-		]
-	}
-    db.saveSequence()
+    setTimeout(function(){
+  	  db.collection('Sequences').find().toArray(function(err, results){
+  	    expect(results.length).toEqual(1);
+  	    expect(results[0].name).toMatch('sequence');
+  	  })
+  	  	db.close();
+  	  	done();
+    }, 1000);
+
+
   });
+
+  
 
   it('should update an already existing sequence', function(done){
+    database.Sequences.create({
+          userID: 0,
+          name: 'sequence', 
+          sequence: [[0,0,0,0,0,0,0,0],
+    			[0,0,0,0,0,0,0,0],
+    			[0,0,0,0,0,0,0,0],
+    			[0,0,0,0,0,0,0,0]],
+          bpm: 120,
+          shareable: false
+        }, function(err, result){
+  	        if(err){console.log('Error adding sequence: ', err)}
+  	        console.log('Saved sequence');          
+        });
+
 
   });
 
+  /*
+
   it('should retrieve all the sequences for a particular user', function(done){
-  	
-  })
+
+  }) */
 });

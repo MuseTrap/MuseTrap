@@ -29,6 +29,7 @@
     "react-bootstrap": "^0.31.2",
     "react-dom": "^15.6.1",
     "react-howler": "^3.6.3",
+    "request": "^2.81.0",
     "webpack": "^3.5.2",
     "webpack-dev-middleware": "^1.12.0"
   },

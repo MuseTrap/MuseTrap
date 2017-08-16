@@ -5,14 +5,6 @@ db.on('error', console.error);
 
 var Schema = mongoose.Schema;
 
-/** This is the schema for the Users collection in Mongo */
-var userSchema = new Schema({
-  id: Schema.Types.ObjectId,
-  sequences: [sequenceSchema], //according to mongo docs, this is how you define an array of a different schema
-  userName: String,
-  passWord: String
-})
-/** This is the schema for the Sequences collection in Mongo */
 var sequenceSchema = new Schema ({
   id: Schema.Types.ObjectId,
   userID: Number,
@@ -21,6 +13,15 @@ var sequenceSchema = new Schema ({
   bpm: Number,
   shareable: Boolean
 })
+
+/** This is the schema for the Users collection in Mongo */
+var userSchema = new Schema({
+  id: Schema.Types.ObjectId,
+  sequences: [sequenceSchema], //according to mongo docs, this is how you define an array of a different schema
+  userName: String,
+  passWord: String
+})
+/** This is the schema for the Sequences collection in Mongo */
 
 /** This is the schema for the Samples collection in Mongo */
 var sampleSchema = new Schema ({
@@ -58,9 +59,9 @@ let newUser = function(name, password) { //function to create a new user- probab
   })
 }
 
-let saveSequence = function(sequence) {
+let saveSequence = function() {
   Sequences.create({
-    userID: this.state.user.id, 
+    userID: req.session.user,
     name: '', //not sure we have discussed how to name a sequence yet
     sequence: this.state.sequence,
     bpm: 120,
@@ -68,9 +69,14 @@ let saveSequence = function(sequence) {
   })
 }
 
-let Users = mongoose.model('Players', userSchema);
+let Users = mongoose.model('Users', userSchema);
 
 let Sequences = mongoose.model('Sequences', sequenceSchema);
 
 let Samples = mongoose.model('Samples', sampleSchema);
 
+module.exports={
+  newUser: newUser,
+  saveSequence: saveSequence,
+  Sequences: Sequences
+}
