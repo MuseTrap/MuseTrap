@@ -13,8 +13,8 @@ import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
  * @constructor
  */
 class ControlPanel extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       playstatus: 'stopped', //'playing', 'paused', or 'stopped'
       //wavyThingVisible: false,
@@ -23,47 +23,47 @@ class ControlPanel extends React.Component {
     };
   }
 
-  /**When play button triangle logo is clicked
-  * change image from triangle to pause button
-  * change play visualizer to visible+moving if was stopped
-  * TBD: change play visualizer to moving if was paused
-  * Run Main callback to "play"
-  * play sounds starting from time 0 OR last pause (Assume that Main component keeps track of last time)
-  */
+  /** Clicking the play button will toggle between play and pause
+    //change play visualizer to visible+moving if was stopped
+    //  change play visualizer to moving if was paused
+    Run Main callback to "play"
+    play sounds starting from time 0 OR last pause (Assume that Main component keeps track of last time)*/
   playClicked() {
+    this.props.togglePlay(true);
     this.setState({
       playstatus: 'playing'
     });
     //this.props.playCB();
   }
 
-  /**When pause symbol is clicked
-    change image from pause to triangle button
+  /** Clicking the pause button will toggle between play and pause
     //Make the play visualizer still visible but stop moving/animating
     Run Main callback to "pause"
-      pause play at timeX at the Main component level */
+    pause play at timeX at the Main component level */
   pauseClicked() {
+    this.props.togglePlay(false);
     this.setState({
       playstatus: 'paused'
     });
     //this.props.pauseCB();
   }
 
-  /**When the stop button is clicked (or when song ends without loop?????????????????????)
-    change play button image to triangle button
+  /** Clicking the stop button will stops the sound
+    change the play button image to triangle button
     //change play visualizer to invisible and not moving
     Leave loop button alone */
   stopClicked() {
+    this.props.togglePlay(false);
     this.setState({
       playstatus: 'stopped'
     });
     //this.props.stopCB();
   }
 
-  /**When the loop button is clicked
-    toggle loop button to lightup or lightoff
+  /**Clicking the loop button will toggle between on or off (CURRENTLY NOT WORKING)
     Run Main callback to toggle looping*/
   loopClicked() {
+    this.props.toggleLoop(false);
     this.setState({
       loopButton: !this.state.loopButton
     });
