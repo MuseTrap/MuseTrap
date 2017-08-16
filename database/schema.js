@@ -18,7 +18,8 @@ var sequenceSchema = new Schema ({
   userID: Number,
   name: String,
   sequence: Schema.Types.Mixed,  // Mongo does not have an 'object' type, so need to use mixed. has some repercussions to discuss
-  bpm: Number
+  bpm: Number,
+  shareable: Boolean
 })
 
 /** This is the schema for the Samples collection in Mongo */
@@ -62,7 +63,8 @@ let saveSequence = function(sequence) {
     userID: this.state.user.id, 
     name: '', //not sure we have discussed how to name a sequence yet
     sequence: this.state.sequence,
-    bpm: 120
+    bpm: 120,
+    shareable: false
   })
 }
 
