@@ -52,17 +52,48 @@ let newUser = function(name, password) { //function to create a new user- probab
     userName: name,
     passWord: password
   }, function(err, user){
-  	if(err){console.log('Error adding user: ', err)}
-  	console.log('Saved user');
+    if(err){console.log('Error adding user: ', err)}
+    console.log('Saved user');
   })
+}
+
+let updateSequence = function(sequence) {
+  db.Sequences.findOneAndUpdate(
+    { "name" : sequence.name},
+     { $set {"sequence": sequence.sequence}, 
+     upsert: true }, function(err, sequence){
+       if(err){
+          console.log('update err', err);
+         }
+       }
+    );
 }
 
 let saveSequence = function(sequence) {
   Sequences.create({
     userID: this.state.user.id, 
-    name: '', //not sure we have discussed how to name a sequence yet
+    name: '', //not sure we have discussed how to name a sequence yet, possible user prompt to input a name?
     sequence: this.state.sequence,
     bpm: 120
+  }, function(err, sequence){
+    if(err){
+      console.log('save err,' err)
+    }
+  })
+  db.Users.findOneAndUpdate(  //after saving sequence, also need to update the user who created it
+    {"name": this.state.user.id }, {$push: {sequences: sequence}},
+    function(err, sequence){
+      if(err){
+        console.log(err);
+      }
+  })
+}
+
+let findSequences = function(user) {
+  db.Sequences.find({"userId": user.id}, function(err, sequence){
+    if(err){
+      console.log('error finding sequences:', err)
+    }
   })
 }
 
