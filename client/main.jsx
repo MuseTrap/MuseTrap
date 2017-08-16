@@ -8,12 +8,9 @@ import {
     Link
 } from 'react-router-dom';
 
-// import Library from './components/Library.jsx';
-// import Control from './components/Control.jsx';
 import NaviBar from './components/NaviBar.jsx';
-import ReactHowler from 'react-howler';
-import SoundBoard from './components/SoundBoard.jsx';
 import ControlPanel from './components/ControlPanel.jsx';
+import SoundBoard from './components/SoundBoard.jsx';
 
 /** Main component behavior
  * States:
