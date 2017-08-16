@@ -1,6 +1,12 @@
 //var hello = require('../client/main.jsx');
 var expect = require('chai').expect;
 
+describe('main component', function() {
+  it('should have a method called updatePlay', function() {
+    expect(Main.updatePlay).to.be.ok;
+  });
+});
+
 //describe('helloworld from client', function() {
 //  it('should receive helloworld string from client', function() {
 //    expect(hello.helloWorld).to.equal('hello world');
