@@ -2,6 +2,7 @@ import React from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 /** Control panel behavior
  * States:
@@ -104,13 +105,13 @@ class ControlPanel extends React.Component {
         <ButtonToolbar>
           <ButtonGroup>
             <Button style={playStyle} bsStyle={this.state.playstatus === 'paused' ? 'warning' : 'primary'} bsSize="large" active
-              onClick={()=>{this.playClicked()}}>|></Button>
+              onClick={()=>{this.playClicked()}}><Glyphicon glyph="play"/></Button>
             <Button style={pauseStyle} bsStyle="warning" bsSize="large" active
-              onClick={()=>{this.pauseClicked()}}>||</Button>
+              onClick={()=>{this.pauseClicked()}}><Glyphicon glyph="pause"/></Button>
             <Button bsStyle="primary" bsSize="large" active
-              onClick={()=>{this.stopClicked()}}>[]</Button>
+              onClick={()=>{this.stopClicked()}}><Glyphicon glyph="stop"/></Button>
             <Button bsStyle={this.state.loopButton? "success" : "default"} bsSize="large" active
-              onClick={()=>{this.loopClicked()}}>loop</Button>
+              onClick={()=>{this.loopClicked()}}><Glyphicon glyph="repeat"/></Button>
             {saveButton}
             {shareButton}
           </ButtonGroup>
