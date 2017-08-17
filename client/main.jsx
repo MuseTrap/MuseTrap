@@ -7,7 +7,7 @@ import {
     Switch,
     Link
 } from 'react-router-dom';
-
+import ReactHowler from 'react-howler'
 import NaviBar from './components/NaviBar.jsx';
 import ControlPanel from './components/ControlPanel.jsx';
 import SoundBoard from './components/SoundBoard.jsx';
@@ -35,7 +35,7 @@ class Main extends React.Component {
 				]
 			},
 			sounds: [
-				{ sound: './audio_files/Kick_Clicky.wav', playing: false }
+				{ sound: './audio_files/sound-synth.wav', playing: false }
 			]
 		};
 		this.updatePlay = this.updatePlay.bind(this);
@@ -156,3 +156,4 @@ const Routes = () => (
 )
 
 ReactDOM.render(<Routes></Routes>, document.getElementById('main'));
+export default Main;
