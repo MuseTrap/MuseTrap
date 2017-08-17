@@ -23,7 +23,7 @@ describe('Persistant Mongo Server', function(){
   	expect(db.collection('Samples')).to.exist;
   });
 
-  it('Should add a new user to the database', function(done){
+  xit('Should add a new user to the database', function(done){
     
     //after(function(){db.collection('Users').findOneAndRemove({name: {$eq: 'test'}}), function(err){console.log('deleted user')}});
 
@@ -40,7 +40,7 @@ describe('Persistant Mongo Server', function(){
 
   });
 
-  xit('Should save a sequence to the database', function(done){
+  it('Should save a sequence to the database', function(done){
     var testSequence = {
       userID: 0,
       beats: [undefined, undefined, undefined, undefined],

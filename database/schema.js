@@ -62,7 +62,7 @@ let newUser = function(name, password) { //function to create a new user- probab
     passWord: password
   });
   return user.saveAsync();
-  
+
   
   // Users.create({
   //   sequences: [],
@@ -92,25 +92,39 @@ let updateSequence = function(sequence) {
   .catch()
 }
 
-let saveSequence = function(sequence) {
-  Sequences.create({
+let createSequence = function(sequence){
+ var newSequence = new Sequences ({
     userID: sequence.userID,
     name: sequence.name, //not sure we have discussed how to name a sequence yet, possible user prompt to input a name?
     sequenceRows: sequence.sequenceRows,
     beats: sequence.beats,
     bpm: sequence.bpm
-  }, function(err, sequence){
-    if(err){
-      console.log('save err',  err)
-    }
-  })
-  Users.findOneAndUpdate(  //after saving sequence, also need to update the user who created it
-    {"id": sequence.userID }, {$push: {sequences: sequence}},
-    function(err, sequence){
-      if(err){
-        console.log(err);
-      }
-  })
+  });
+  return newSequence.saveAsync();
+}
+
+let saveSequence = function(sequence) {
+  // Sequences.create({
+  //   userID: sequence.userID,
+  //   name: sequence.name, //not sure we have discussed how to name a sequence yet, possible user prompt to input a name?
+  //   sequenceRows: sequence.sequenceRows,
+  //   beats: sequence.beats,
+  //   bpm: sequence.bpm
+  // }, function(err, sequence){
+  //   if(err){
+  //     console.log('save err',  err)
+  //   }
+  // })
+  
+  createSequence(sequence)
+  .then(Users.findOneAndUpdate(  //after saving sequence, also need to update the user who created it
+      {"id": sequence.userID }, {$push: {sequences: sequence}},
+      function(err, sequence){
+        if(err){
+          console.log(err);
+        }
+        console.log('updated');
+    }))
 }
 
 
@@ -133,6 +147,8 @@ let Samples = mongoose.model('Samples', sampleSchema);
 
 Promise.promisifyAll(Users);
 Promise.promisifyAll(Users.prototype);
+Promise.promisifyAll(Sequences);
+Promise.promisifyAll(Sequences.prototype);
 
 module.exports={
   newUser: newUser,
