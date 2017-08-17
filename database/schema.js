@@ -64,15 +64,21 @@ let newUser = function(name, password) { //function to create a new user- probab
 }
 
 let updateSequence = function(sequence) {
-  db.collection('Sequences').findOneAndUpdate(
-    { "name" : sequence.name},
-     { $set: {"sequenceRows": sequence.sequenceRows}}, 
-     { upsert: true }, function(err, sequence){
-       if(err){
-          console.log('update err', err);
-         }
-       }
-    );
+  // db.collection('Sequences').findOneAndUpdate(
+  //   { "name" : sequence.name},
+  //    { $set: {"sequenceRows": sequence.sequenceRows}}, 
+  //    { upsert: true }, function(err, sequence){
+  //      if(err){
+  //         console.log('update err', err);
+  //        }
+  //      }
+  //   );
+  Promise.promisify(db.collection('Sequences').findOneAndUpdate)(
+    {{ "name" : sequence.name},
+    $set: {"sequenceRows": sequence.sequenceRows}}, 
+    { upsert: true }})
+  .then()
+  .catch()
 }
 
 let saveSequence = function(sequence) {
