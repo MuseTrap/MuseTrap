@@ -1,25 +1,30 @@
 var mongoose = require('mongoose');
+var Promise = require('bluebird');
+var mpUtils = require('mongoose-bluebird-utils');
 mongoose.connect('mongodb://localhost/musetrap'); //will probably change
 var db = mongoose.connection;
 db.on('error', console.error);
 
 var Schema = mongoose.Schema;
 
+var sequenceSchema = new Schema ({
+  id: {type:Schema.Types.ObjectId, unique: true},
+  userID: Number,
+  name: {type: String, unique: true, required: true},
+  sequenceRows: [[]],  // Mongo does not have an 'object' type, so need to use mixed. has some repercussions to discuss
+  bpm: Number,
+  beats: [],
+  shareable: Boolean
+})
+
 /** This is the schema for the Users collection in Mongo */
 var userSchema = new Schema({
-  id: Schema.Types.ObjectId,
+  id: {type:Schema.Types.ObjectId, unique: true},
   sequences: [sequenceSchema], //according to mongo docs, this is how you define an array of a different schema
-  userName: String,
+  userName: {type: String, unique: true, required: true},
   passWord: String
 })
 /** This is the schema for the Sequences collection in Mongo */
-var sequenceSchema = new Schema ({
-  id: Schema.Types.ObjectId,
-  userID: Number,
-  name: String,
-  sequence: Schema.Types.Mixed,  // Mongo does not have an 'object' type, so need to use mixed. has some repercussions to discuss
-  bpm: Number
-})
 
 /** This is the schema for the Samples collection in Mongo */
 var sampleSchema = new Schema ({
@@ -31,44 +36,109 @@ var sampleSchema = new Schema ({
 
 
 var soundBoardMatrix = {
-  beat1: {
-  	sound: null,
-  	row: [0, 0, 0, 0, 0, 0, 0, 0]
-  },
-  beat2: {
-  	sound: null,
-  	row: [0, 0, 0, 0, 0, 0, 0, 0]
-  },
-  beat3: {
-  	sound: null,
-  	row: [0, 0, 0, 0, 0, 0, 0, 0]
-  },
-  bpm: 0 //default?
+  beats: [undefined, undefined, undefined, undefined],
+  bpm: 120,
+  sequenceRows: [
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0]
+    ],
 }
 
+// userSchema.static('create', function (name, password) {
+//   var user = new Users({
+//     sequences: [],
+//     userName: name,
+//     passWord: password
+//  });
+
+// }
+
 let newUser = function(name, password) { //function to create a new user- probably will be needed at login page
-  Users.create({
-    sequences: [],
+ var user = new Users (
+    {sequences: [],
     userName: name,
     passWord: password
-  }, function(err, user){
-  	if(err){console.log('Error adding user: ', err)}
-  	console.log('Saved user');
-  })
+  });
+  return user.saveAsync();
+  
+  
+  // Users.create({
+  //   sequences: [],
+  //   userName: name,
+  //   passWord: password
+  // }, function(err, user){
+  // 	if(err){console.log('Error adding user: ', err)}
+  // 	console.log('Saved user');
+  // })
+}
+
+let updateSequence = function(sequence) {
+  // db.collection('Sequences').findOneAndUpdate(
+  //   { "name" : sequence.name},
+  //    { $set: {"sequenceRows": sequence.sequenceRows}}, 
+  //    { upsert: true }, function(err, sequence){
+  //      if(err){
+  //         console.log('update err', err);
+  //        }
+  //      }
+  //   );
+  Promise.promisify(db.collection('Sequences').findOneAndUpdate)(
+    { "name" : sequence.name},
+    {$set: {"sequenceRows": sequence.sequenceRows}}, 
+    { upsert: true })
+  .then()
+  .catch()
 }
 
 let saveSequence = function(sequence) {
   Sequences.create({
-    userID: this.state.user.id, 
-    name: '', //not sure we have discussed how to name a sequence yet
-    sequence: this.state.sequence,
-    bpm: 120
+    userID: sequence.userID,
+    name: sequence.name, //not sure we have discussed how to name a sequence yet, possible user prompt to input a name?
+    sequenceRows: sequence.sequenceRows,
+    beats: sequence.beats,
+    bpm: sequence.bpm
+  }, function(err, sequence){
+    if(err){
+      console.log('save err',  err)
+    }
+  })
+  Users.findOneAndUpdate(  //after saving sequence, also need to update the user who created it
+    {"id": sequence.userID }, {$push: {sequences: sequence}},
+    function(err, sequence){
+      if(err){
+        console.log(err);
+      }
   })
 }
 
-let Users = mongoose.model('Players', userSchema);
+
+let findSequences = function(user) {
+  return Sequences.find()
+  .where('userID').equals(user.id)
+  .limit(10)
+  .exec(function(err, results){
+    if(err){console.log('find err', err)}
+    return results;
+  })
+}
+
+
+let Users = mongoose.model('Users', userSchema);
 
 let Sequences = mongoose.model('Sequences', sequenceSchema);
 
 let Samples = mongoose.model('Samples', sampleSchema);
 
+Promise.promisifyAll(Users);
+Promise.promisifyAll(Users.prototype);
+
+module.exports={
+  newUser: newUser,
+  saveSequence: saveSequence,
+  Sequences: Sequences,
+  updateSequence: updateSequence,
+  findSequences: findSequences,
+  Users: Users
+}

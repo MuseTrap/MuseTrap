@@ -4,10 +4,13 @@ import Row from './Row.jsx';
 // import Cells from './Cells.jsx';
 
 var SoundBoard = (props) => {
+
 	return (
 		<div>
 			<table>
-				<Row />
+				<tbody>
+					<Row />
+				</tbody>
 			</table>
 		</div>
 	);
