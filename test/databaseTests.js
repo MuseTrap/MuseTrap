@@ -11,6 +11,18 @@ describe('Persistant Mongo Server', function(){
   var dbName = 'musetrap';
   var dbUrl = 'mongodb://localhost:27017/' + dbName;
 
+  it('should have a Users collection', function(){
+  	expect(db.collection('Users')).to.exist;
+  });
+
+  it('should have a Sequences collection', function(){
+  	expect(db.collection('Sequences')).to.exist;
+  });
+
+  it('should have a Samples collection', function(){
+  	expect(db.collection('Samples')).to.exist;
+  });
+
   xit('Should add a new user to the database', function(done){
     
     after(function(){db.collection('Users').remove({userName: 'test'}), function(err){console.log('deleted user')}});
@@ -28,7 +40,7 @@ describe('Persistant Mongo Server', function(){
 
   });
 
-  it('Should save a sequence to the database', function(done){
+  xit('Should save a sequence to the database', function(done){
     
     database.Sequences.create({
           userID: 0,
@@ -58,7 +70,7 @@ describe('Persistant Mongo Server', function(){
 
   
 
-  it('should update an already existing sequence', function(done){
+  xit('should update an already existing sequence', function(done){
     database.Sequences.create({
           userID: 0,
           name: 'sequence', 
@@ -73,12 +85,48 @@ describe('Persistant Mongo Server', function(){
   	        console.log('Saved sequence');          
         });
 
+    database.updateSequence({
+      userID: 0,
+      name: 'sequence', 
+      sequence: [[1,1,1,1,1,1,1,1],
+			[0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0]],
+      bpm: 120,
+      shareable: false
+    });
+
+    setTimeout(function(){
+  	  db.collection('Sequences').find().toArray(function(err, results){
+  	    expect(results.length).toEqual(1);
+  	    expect(results[0].sequence).toMatch([[1,1,1,1,1,1,1,1],
+			[0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0]]);
+  	  })
+  	  	db.close();
+  	  	done();
+    }, 1000);
+
 
   });
 
-  /*
 
   it('should retrieve all the sequences for a particular user', function(done){
+    var sequences = [] 
+    database.findSequences({id:0})
+    .then(function(response){
+    	response.forEach(function(seq){
+    	  sequences.push(seq);
+    	})
+    });
 
-  }) */
+
+    setTimeout(function(){
+      expect(sequences.length).to.equal(10);
+      expect(sequences[0].userID).to.equal(0);
+  	  db.close();
+  	  done();
+    }, 1000)
+  });
 });
