@@ -100,7 +100,7 @@ class ControlPanel extends React.Component {
           onClick={()=>{this.shareClicked()}}>share</Button>;
     }
     return (
-      <div>
+      <div className="row">
         <ButtonToolbar>
           <ButtonGroup>
             <Button style={playStyle} bsStyle={this.state.playstatus === 'paused' ? 'warning' : 'primary'} bsSize="large" active
