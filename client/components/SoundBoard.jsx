@@ -9,7 +9,11 @@ var SoundBoard = (props) => {
 		<div>
 			<table>
 				<tbody>
-					<Row />
+					{
+						props.sequence.map((row)=>{
+							return <Row beat={row.beat} row={row.row} />
+						})
+					}
 				</tbody>
 			</table>
 		</div>
