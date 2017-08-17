@@ -2,7 +2,7 @@ import React from 'react';
 
 var Cell = (props) => {
   return (
-  	<td>{props.cell}</td>
+  	<div className="col-lg-1 bg-info" onClick={()=>{props.cellClick(props.rowIndex, props.colIndex)}}>{props.cell}</div>
   );
 };
 

@@ -3,9 +3,9 @@ import React from 'react';
 var CellHead = (props) => {
 
 	return (
-		<td id="col-head">
+		<div className="col-lg-1 bg-success" onClick={()=>{props.registerClick(props.rowIndex)}}>
 			{props.beat || 'Undefined'}
-		</td>
+		</div>
 	)
 
 }

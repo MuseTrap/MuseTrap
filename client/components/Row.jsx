@@ -3,18 +3,16 @@ import React from 'react';
 import CellHead from './CellHead.jsx';
 import Cell from './Cell.jsx';
 
-
 var Row = (props) => {
 
   return (
-  	<tr>
-  		<CellHead beat={props.beat}/>
+  	<div className="row">
+  		<CellHead beat={props.beat} registerClick={props.registerClick} rowIndex={props.rowIndex}/>
   		{props.row.map(
-  			(cell)=>{
-  				return <Cell cell={cell}/>;
-  			})
-  		}
-  	</tr>
+  			(cell, index)=>{
+  				return <Cell cell={cell} cellClick={props.cellClick} key={index} rowIndex={props.rowIndex} colIndex={index}/>;
+  		})
+  	}</div>
   );
 };
 
