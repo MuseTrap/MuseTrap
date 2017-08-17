@@ -25,7 +25,7 @@ describe('Persistant Mongo Server', function(){
 
   xit('Should add a new user to the database', function(done){
     
-    after(function(){db.collection('Users').remove({userName: 'test'}), function(err){console.log('deleted user')}});
+    after(function(){db.collection('Users').findOneAndRemove({name: {$eq: 'test'}}), function(err){console.log('deleted user')}});
 
     database.newUser('test', 'muse');
 
@@ -41,20 +41,19 @@ describe('Persistant Mongo Server', function(){
   });
 
   xit('Should save a sequence to the database', function(done){
-    
-    database.Sequences.create({
-          userID: 0,
-          name: 'sequence', 
-          sequence: [[0,0,0,0,0,0,0,0],
-    			[0,0,0,0,0,0,0,0],
-    			[0,0,0,0,0,0,0,0],
-    			[0,0,0,0,0,0,0,0]],
-          bpm: 120,
-          shareable: false
-        }, function(err, result){
-  	        if(err){console.log('Error adding sequence: ', err)}
-  	        console.log('Saved sequence');          
-        });
+    var testSequence = {
+      userID: 0,
+      beats: [undefined, undefined, undefined, undefined],
+      name: 'sequence', 
+      sequence: [[0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0]],
+      bpm: 120,
+      shareable: false
+    }
+  
+    database.saveSequence(testSequence);
 
     setTimeout(function(){
   	  db.collection('Sequences').find().toArray(function(err, results){
@@ -68,12 +67,45 @@ describe('Persistant Mongo Server', function(){
 
   });
 
+  xit('should update the user"s sequences array when savin a sequence', function(done){
+     var testSequence = {
+      userID: 0,
+      beats: [undefined, undefined, undefined, undefined],
+      name: 'sequence', 
+      sequence: [[0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0]],
+      bpm: 120,
+      shareable: false
+    }
+  
+    database.saveSequence(testSequence);
+    
+    var updatedUsers = [];
+
+      database.Users.find()
+      .where('id').equals(testSequence.userID)
+      .limit(1)
+      .exec(function(err, results){
+      	if(err){console.log('err', err)}
+        updatedUsers.push(results);
+      })
+
+    setTimeout(function(){
+    	console.log(updatedUsers);
+  	  expect(updatedUsers.length).to.equal(1);
+  	  expect(updatedUsers[0].id).toMatch(testSequence.userID);
+    }) 	
+  })
+
   
 
   xit('should update an already existing sequence', function(done){
     database.Sequences.create({
           userID: 0,
           name: 'sequence', 
+          beats: [undefined, undefined, undefined, undefined],
           sequence: [[0,0,0,0,0,0,0,0],
     			[0,0,0,0,0,0,0,0],
     			[0,0,0,0,0,0,0,0],
@@ -112,7 +144,7 @@ describe('Persistant Mongo Server', function(){
   });
 
 
-  it('should retrieve all the sequences for a particular user', function(done){
+  xit('should retrieve all the sequences for a particular user', function(done){
     var sequences = [] 
     database.findSequences({id:0})
     .then(function(response){
