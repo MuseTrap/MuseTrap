@@ -59,16 +59,6 @@ let newUser = function(name, password) { //function to create a new user- probab
   })
 }
 
-let saveSequence = function() {
-  Sequences.create({
-    userID: req.session.user,
-    name: '', //not sure we have discussed how to name a sequence yet
-    sequence: this.state.sequence,
-    bpm: 120,
-    shareable: false
-  })
-}
-
 let updateSequence = function(sequence) {
   db.collection('Sequences').findOneAndUpdate(
     { "name" : sequence.name},
@@ -80,6 +70,27 @@ let updateSequence = function(sequence) {
        }
     );
 }
+
+let saveSequence = function(sequence) {
+  Sequences.create({
+    userID: this.state.user.id, 
+    name: '', //not sure we have discussed how to name a sequence yet, possible user prompt to input a name?
+    sequence: this.state.sequence,
+    bpm: 120
+  }, function(err, sequence){
+    if(err){
+      console.log('save err,' err)
+    }
+  })
+  db.Users.findOneAndUpdate(  //after saving sequence, also need to update the user who created it
+    {"name": this.state.user.id }, {$push: {sequences: sequence}},
+    function(err, sequence){
+      if(err){
+        console.log(err);
+      }
+  })
+}
+
 
 let findSequences = function(user) {
   return Sequences.find()
