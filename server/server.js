@@ -12,7 +12,7 @@ const bodyParser = require('body-parser');
 const app = express();
 
 //uncomment this when ready to hook up the database
-//const db = require('../database/index.js');
+const db = require('../database/schema.js');
 const compiler = webpack(webpackConfig);
 
 app.use(bodyParser.json());
@@ -25,7 +25,9 @@ app.use(
     secret: 'i like to code and eat food',
     store: new MongoStore({
       url: 'mongodb://localhost/session'
-    })
+    }),
+    saveUninitialized: false,
+    resave: false
   })
 );
 
@@ -44,6 +46,7 @@ const verifySession = (req, res, next) => {
     console.log('made it through verify session')
     next();
   } else {
+    console.log('session did not check out');
     res.redirect('/');
   }
 };
@@ -93,15 +96,17 @@ app.post('/createuser', function(req, res) {
   console.log('create user ', req.body);
   var username = req.body.username;
   var password = req.body.password;
-  //db.newUser(username, password)
-  Promise.resolve('need db.newUser function') //temporary code until db.newUser is implemented
+  db.newUser(username, password)
+  //Promise.resolve('need db.newUser function') //temporary code until db.newUser is implemented
     .then(() => {
       //successful account creation
+      console.log('created user successfully');
       req.session.user = username;
       res.redirect(302, '/member');
     })
     .catch((err) => {
       //something went wrong during account creation, retry again
+      console.log('failed to create user');
       res.redirect(302, '/');
     });
 });
@@ -141,13 +146,14 @@ app.post('/logout', function(req, res) {
 /**GET /users
 * PURPOSE OF THE CLIENT REQUEST TO SERVER: get all sequences for particular user
 * Client should send 1 thing to Server...username
-* Server should call database helper function DB.getAllSequences(username)
+* Server should call database helper function DB.findSequences(username)
 * Database helper function should give array of user's sequences and also be thenable
 * Server should send back user's sequences back to Client where Client can render them somewhere
 */
 app.get('/users', verifySession, function(req, res) {
-  var username = req.query.username;
-  db.getAllSequences(username)
+  var username = req.body.username;
+  console.log(username);
+  db.findSequences(username)
     .then((results) => {
       res.send(results);
     })
@@ -158,16 +164,14 @@ app.get('/users', verifySession, function(req, res) {
 
 /**POST /users
 * PURPOSE OF THE CLIENT REQUEST TO SERVER: save particular sequence for a user
-* Client should send 3 things to Server...username, sequenceName, sequenceObj contents to be saved
+* Client should send 1 thing to Server... sequenceObj contents to be saved
 * Database should save the sequence under the username and also be thenable
 * Server should call database helper function DB.saveSequence(username, sequenceName, sequenceObj)
 * Server should respond with 2xx response code back to Client
 */
 app.post('/users', verifySession, function(req, res) {
-  var username = req.query.username;
-  var sequenceName = req.query.sequenceName;
-  var sequenceObj = req.query.sequenceObj;
-  db.saveSequence(username, sequenceName, sequenceObj)
+  var sequenceObj = req.body.sequenceObj;
+  db.saveSequence(sequenceObj)
     .then(() => {
       res.status(201).send();
     })
@@ -178,16 +182,14 @@ app.post('/users', verifySession, function(req, res) {
 
 /**PUT /users
 * PURPOSE OF THE CLIENT REQUEST TO SERVER: update particular sequence for a user
-* Client should send 3 things to Server...username, sequenceName, sequenceObj contents to be updated
+* Client should send 1 thing to Server... sequenceObj contents to be updated
 * Database should update the sequence under the username and also be thenable
 * Server should call database helper function DB.updateSequence(username, sequenceName, sequenceObj)
 * Server should respond with 2xx respond code back to Client
 */
 app.put('/users', verifySession, function(req, res) {
-  var username = req.query.username;
-  var sequenceName = req.query.sequenceName;
-  var sequenceObj = req.query.sequenceObj;
-  db.updateSequence(username, sequenceName, sequenceObj)
+  var sequenceObj = req.body.sequenceObj;
+  db.updateSequence(sequenceObj)
     .then(() => {
       res.status(201).send();
     })
@@ -207,8 +209,8 @@ app.put('/users', verifySession, function(req, res) {
 * Server should redirect user to shareable link localhost:3000/users/username/sequenceName
 */
 app.get('/users/share', verifySession, function(req, res) {
-  var username = req.query.username;
-  var sequenceName = req.query.sequenceName;
+  var username = req.body.username;
+  var sequenceName = req.body.sequenceName;
   db.shareSequence(username, sequenceName)
     .then(() => {
       //redirect to shared link
@@ -228,7 +230,7 @@ app.get('/users/:username/:sequenceName', function(req, res) {
   var username = req.params.username;
   var sequenceName = req.params.sequenceName;
   //If user doesn't exist, sequenceName doesn't exist under user, or sequenceName is not shared, return a 404 error
-  db.getAllSequences(username)
+  db.findSequences(username)
     .then((results) => {
       var sequenceEntry;
       for (var i = 0; i < results.length; i++) {
@@ -251,9 +253,16 @@ app.get('/users/:username/:sequenceName', function(req, res) {
     });
 });
 
-var port = process.env.PORT || 3000;
-const server = app.listen(port, function() {
-  const host = server.address().address;
-  const port = server.address().port;
-  console.log('Example app listening at http://%s:%s', host, port);
-});
+if (!module.parent) {
+  var port = process.env.PORT || 3000;
+  const server = app.listen(port, function() {
+    const host = server.address().address;
+    const port = server.address().port;
+    console.log('Example app listening at http://%s:%s', host, port);
+  });
+}
+
+module.exports={
+  app: app,
+  db: db.db
+}
