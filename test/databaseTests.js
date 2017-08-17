@@ -23,9 +23,9 @@ describe('Persistant Mongo Server', function(){
   	expect(db.collection('Samples')).to.exist;
   });
 
-  xit('Should add a new user to the database', function(done){
+  it('Should add a new user to the database', function(done){
     
-    after(function(){db.collection('Users').findOneAndRemove({name: {$eq: 'test'}}), function(err){console.log('deleted user')}});
+    //after(function(){db.collection('Users').findOneAndRemove({name: {$eq: 'test'}}), function(err){console.log('deleted user')}});
 
     database.newUser('test', 'muse');
 

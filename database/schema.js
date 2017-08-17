@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-mongoose.Promise = require('bluebird');
+var Promise = require('bluebird');
+var mpUtils = require('mongoose-bluebird-utils');
 mongoose.connect('mongodb://localhost/musetrap'); //will probably change
 var db = mongoose.connection;
 db.on('error', console.error);
@@ -45,14 +46,24 @@ var soundBoardMatrix = {
     ],
 }
 
+// userSchema.static('create', function (name, password) {
+//   var user = new Users({
+//     sequences: [],
+//     userName: name,
+//     passWord: password
+//  });
+
+// }
+
 let newUser = function(name, password) { //function to create a new user- probably will be needed at login page
-  Promise.promisify(Users.create)({
-    sequences: [],
+ var user = new Users (
+    {sequences: [],
     userName: name,
     passWord: password
-  })
-  .then()
-  .catch()
+  });
+  return user.saveAsync();
+  
+  
   // Users.create({
   //   sequences: [],
   //   userName: name,
@@ -74,9 +85,9 @@ let updateSequence = function(sequence) {
   //      }
   //   );
   Promise.promisify(db.collection('Sequences').findOneAndUpdate)(
-    {{ "name" : sequence.name},
-    $set: {"sequenceRows": sequence.sequenceRows}}, 
-    { upsert: true }})
+    { "name" : sequence.name},
+    {$set: {"sequenceRows": sequence.sequenceRows}}, 
+    { upsert: true })
   .then()
   .catch()
 }
@@ -119,6 +130,9 @@ let Users = mongoose.model('Users', userSchema);
 let Sequences = mongoose.model('Sequences', sequenceSchema);
 
 let Samples = mongoose.model('Samples', sampleSchema);
+
+Promise.promisifyAll(Users);
+Promise.promisifyAll(Users.prototype);
 
 module.exports={
   newUser: newUser,
