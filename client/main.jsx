@@ -8,7 +8,7 @@ import NaviBar from './components/NaviBar.jsx';
 import ReactHowler from 'react-howler';
 import SoundBoard from './components/SoundBoard.jsx';
 import ControlPanel from './components/ControlPanel.jsx';
-import SampleSoundBoard from './components/SampleSoundBoard.jsx';
+import SampleLibrary from './components/SampleLibrary.jsx';
 
 /** Main component behavior
  * States:
@@ -23,6 +23,12 @@ class Main extends React.Component {
       samples: [
         { // to be replaced with real sound objectsource: 'soundLocation.wav', toggle: true
         source: './audio_files/sound-synth.wav', playing: false
+        },
+        { // to be replaced with real sound objectsource: 'soundLocation.wav', toggle: true
+        source: './audio_files/sound-electronicClap.wav', playing: false
+        },
+        { // to be replaced with real sound objectsource: 'soundLocation.wav', toggle: true
+        source: './audio_files/sound-kick.wav', playing: false
         }
       ],
       bpm: 120, // moved bpm outside of sequence to make it modular
@@ -67,10 +73,10 @@ class Main extends React.Component {
 
   sampleClickHandler(soundKey) { console.
     log(`Sample sound ${soundKey} clicked`);
-    var newSample = this.state.sample[soundKey];
+    var newSample = this.state.samples[soundKey];
     newSample.toggle =! newSample.toggle;
     this.setState(() => {
-      this.state.sample[soundKey] = newSample;
+      this.state.samples[soundKey] = newSample;
       return { sample: this.state.sample }
     });
 
@@ -159,7 +165,7 @@ class Main extends React.Component {
   render() {return(
     <div id="container">
       <NaviBar loggedIn={this.props.loggedIn} loginCB={this.loginCB.bind(this)} creatAcctCB={this.createAcctCB.bind(this)} logoutCB={this.logoutCB.bind(this)}/>
-      <SampleSoundBoard samples={this.state.samples} sampleClick={this.sampleClickHandler}/>
+      <SampleLibrary samples={this.state.samples} sampleClick={this.sampleClickHandler}/>
       <ControlPanel loggedIn={this.props.loggedIn} samples={this.state.samples} togglePlay={this.updatePlay}/>
       <SoundBoard sequence={this.state.sequence} cellClick={this.cellClickHandler} registerClick={this.registerClickHandler}/>
       <ReactHowler preload={true} src={this.state.samples[0].source} playing={this.state.samples[0].playing} loop={true}/>
