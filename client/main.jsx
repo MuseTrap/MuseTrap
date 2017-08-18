@@ -5,7 +5,6 @@ import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 
 // import Library from './components/Library.jsx';
 import NaviBar from './components/NaviBar.jsx';
-import ReactHowler from 'react-howler';
 import SoundBoard from './components/SoundBoard.jsx';
 import ControlPanel from './components/ControlPanel.jsx';
 import SampleLibrary from './components/SampleLibrary.jsx';
@@ -24,10 +23,10 @@ class Main extends React.Component {
         { // to be replaced with real sound objectsource: 'soundLocation.wav', toggle: true
         source: './audio_files/sound-synth.wav', playing: false
         },
-        { // to be replaced with real sound objectsource: 'soundLocation.wav', toggle: true
+        {
         source: './audio_files/sound-electronicClap.wav', playing: false
         },
-        { // to be replaced with real sound objectsource: 'soundLocation.wav', toggle: true
+        {
         source: './audio_files/sound-kick.wav', playing: false
         }
       ],
@@ -59,7 +58,6 @@ class Main extends React.Component {
           ]
         }
       ]
-
     };
     this.updatePlay = this.updatePlay.bind(this);
     this.cellClickHandler = this.cellClickHandler.bind(this);
@@ -67,21 +65,36 @@ class Main extends React.Component {
     this.sampleClickHandler = this.sampleClickHandler.bind(this);
   }
 
-  registerClickHandler(rowNumber) { console.
-    log('Register Clicked at row ' +rowNumber);
+
+  /** UpdatePlay is passed to the ControlPanel component
+    //Clicking the play or stop button will update the entire sounds state -- something to potentially refactor
+    @param {boolean} playStatus
+    */
+  updatePlay(playStatus) {
+    var newStatus = Object.assign({}, this.state.samples);
+    newStatus[0].playing = playStatus;
+    this.setState({sounds:newStatus});
   }
 
-  sampleClickHandler(soundKey) { console.
-    log(`Sample sound ${soundKey} clicked`);
-    var newSample = this.state.samples[soundKey];
-    newSample.toggle =! newSample.toggle;
-    this.setState(() => {
-      this.state.samples[soundKey] = newSample;
-      return { sample: this.state.sample }
-    });
+
+  /** Triggers when you click on a row header in the soundboard. .*/
+  registerClickHandler(rowNumber) {
+    console.log('Register Clicked at row ' +rowNumber);
+  }
+
+  /** Triggers when you click on a sample in the sampleLibrary. .*/
+  sampleClickHandler(sampleClicked) {
+    console.log(`Sample sound ${sampleClicked} clicked`);
+    var newStatus = Object.assign({}, this.state.samples);
+    newStatus[sampleClicked].playing =! newStatus[sampleClicked].playing;
+    this.setState( {samples: newStatus} );
 
     // TODO for Kamie: play sound on click
   }
+
+
+
+
   /** Click Handler for soundboard. Toggles sound for each 1/8th duration.
 
   */
@@ -104,15 +117,6 @@ class Main extends React.Component {
     console.log('props including react router props are,', this.props);
   }
 
-  /** UpdatePlay is passed to the ControlPanel component
-    //Clicking the play or stop button will update the entire sounds state -- something to potentially refactor
-    @param {boolean} playStatus
-    */
-  updatePlay(playStatus) {
-    var newStatus = Object.assign({}, this.state.samples);
-    newStatus[0].playing = playStatus;
-    this.setState({sounds:newStatus});
-  }
 
   /** Login to the app
   * @param {string} username
@@ -168,7 +172,6 @@ class Main extends React.Component {
       <SampleLibrary samples={this.state.samples} sampleClick={this.sampleClickHandler}/>
       <ControlPanel loggedIn={this.props.loggedIn} samples={this.state.samples} togglePlay={this.updatePlay}/>
       <SoundBoard sequence={this.state.sequence} cellClick={this.cellClickHandler} registerClick={this.registerClickHandler}/>
-      <ReactHowler preload={true} src={this.state.samples[0].source} playing={this.state.samples[0].playing} loop={true}/>
     </div> )
   }
 }
