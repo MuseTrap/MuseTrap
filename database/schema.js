@@ -46,14 +46,6 @@ var soundBoardMatrix = {
     ],
 }
 
-// userSchema.static('create', function (name, password) {
-//   var user = new Users({
-//     sequences: [],
-//     userName: name,
-//     passWord: password
-//  });
-
-// }
 
 let newUser = function(name, password) { //function to create a new user- probably will be needed at login page
  var user = new Users (
@@ -63,7 +55,23 @@ let newUser = function(name, password) { //function to create a new user- probab
   });
   return user.saveAsync();
 
-  
+let updateUser = function(sequence) {
+  var promise = Users.findById(sequence.userID).exec();
+
+  promise.then(function(user) {
+    user.sequences.push(sequence);
+
+    return user.save(); // returns a promise
+  })
+  .then(function(user) {
+    console.log('updated user: ' + user.name);
+    // do something with updated user
+  })
+  .catch(function(err){
+    // just need one of these
+    console.log('error:', err);
+  });
+}
   // Users.create({
   //   sequences: [],
   //   userName: name,
@@ -84,12 +92,21 @@ let updateSequence = function(sequence) {
   //        }
   //      }
   //   );
-  Promise.promisify(db.collection('Sequences').findOneAndUpdate)(
-    { "name" : sequence.name},
-    {$set: {"sequenceRows": sequence.sequenceRows}}, 
-    { upsert: true })
-  .then()
-  .catch()
+  var promise = Sequences.findById(sequence.id).exec();
+
+  promise.then(function(newSequence) {
+    newSequence.sequenceRows = sequence.sequenceRows;
+
+    return newSequence.save(); // returns a promise
+  })
+  .then(function(newSequence) {
+    console.log('updated sequence: ' + newSequence.name);
+    // do something with updated user
+  })
+  .catch(function(err){
+    // just need one of these
+    console.log('error:', err);
+  });
 }
 
 let createSequence = function(sequence){
@@ -117,14 +134,8 @@ let saveSequence = function(sequence) {
   // })
   
   createSequence(sequence)
-  .then(Users.findOneAndUpdate(  //after saving sequence, also need to update the user who created it
-      {"id": sequence.userID }, {$push: {sequences: sequence}},
-      function(err, sequence){
-        if(err){
-          console.log(err);
-        }
-        console.log('updated');
-    }))
+  .then(updateUser(sequence))
+
 }
 
 
