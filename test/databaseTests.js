@@ -40,7 +40,7 @@ describe('Persistant Mongo Server', function(){
 
   });
 
-  it('Should save a sequence to the database', function(done){
+  xit('Should save a sequence to the database', function(done){
     var testSequence = {
       userID: 0,
       beats: [undefined, undefined, undefined, undefined],
@@ -67,7 +67,7 @@ describe('Persistant Mongo Server', function(){
 
   });
 
-  xit('should update the user"s sequences array when savin a sequence', function(done){
+  xit('should update the user"s sequences array when saving a sequence', function(done){
      var testSequence = {
       userID: 0,
       beats: [undefined, undefined, undefined, undefined],
@@ -101,26 +101,27 @@ describe('Persistant Mongo Server', function(){
 
   
 
-  xit('should update an already existing sequence', function(done){
-    database.Sequences.create({
-          userID: 0,
-          name: 'sequence', 
-          beats: [undefined, undefined, undefined, undefined],
-          sequence: [[0,0,0,0,0,0,0,0],
-    			[0,0,0,0,0,0,0,0],
-    			[0,0,0,0,0,0,0,0],
-    			[0,0,0,0,0,0,0,0]],
-          bpm: 120,
-          shareable: false
-        }, function(err, result){
-  	        if(err){console.log('Error adding sequence: ', err)}
-  	        console.log('Saved sequence');          
-        });
+  it('should update an already existing sequence', function(done){
+    // database.Sequences.create({
+    //       userID: 0,
+    //       name: 'sequence', 
+    //       beats: [undefined, undefined, undefined, undefined],
+    //       sequenceRows: [[0,0,0,0,0,0,0,0],
+    // 			[0,0,0,0,0,0,0,0],
+    // 			[0,0,0,0,0,0,0,0],
+    // 			[0,0,0,0,0,0,0,0]],
+    //       bpm: 120,
+    //       shareable: false
+    //     }, function(err, result){
+  	 //        if(err){console.log('Error adding sequence: ', err)}
+  	 //        console.log('Saved sequence');          
+    //     });
 
     database.updateSequence({
+      id: "599619d646f2e62d3b9f92ec",
       userID: 0,
       name: 'sequence', 
-      sequence: [[1,1,1,1,1,1,1,1],
+      sequenceRows: [[1,1,1,1,1,1,1,1],
 			[0,0,0,0,0,0,0,0],
 			[0,0,0,0,0,0,0,0],
 			[0,0,0,0,0,0,0,0]],
@@ -131,7 +132,7 @@ describe('Persistant Mongo Server', function(){
     setTimeout(function(){
   	  db.collection('Sequences').find().toArray(function(err, results){
   	    expect(results.length).toEqual(1);
-  	    expect(results[0].sequence).toMatch([[1,1,1,1,1,1,1,1],
+  	    expect(results[0].sequenceRows).toMatch([[1,1,1,1,1,1,1,1],
 			[0,0,0,0,0,0,0,0],
 			[0,0,0,0,0,0,0,0],
 			[0,0,0,0,0,0,0,0]]);
