@@ -61,47 +61,27 @@ let updateUser = function(sequence) {
   promise.then(function(user) {
     user.sequences.push(sequence);
 
-    return user.save(); // returns a promise
+    return user.save(); 
   })
   .then(function(user) {
     console.log('updated user: ' + user.name);
-    // do something with updated user
   })
   .catch(function(err){
-    // just need one of these
     console.log('error:', err);
   });
 }
-  // Users.create({
-  //   sequences: [],
-  //   userName: name,
-  //   passWord: password
-  // }, function(err, user){
-  // 	if(err){console.log('Error adding user: ', err)}
-  // 	console.log('Saved user');
-  // })
 }
 
 let updateSequence = function(sequence) {
-  // db.collection('Sequences').findOneAndUpdate(
-  //   { "name" : sequence.name},
-  //    { $set: {"sequenceRows": sequence.sequenceRows}}, 
-  //    { upsert: true }, function(err, sequence){
-  //      if(err){
-  //         console.log('update err', err);
-  //        }
-  //      }
-  //   );
   var promise = Sequences.findById(sequence.id).exec();
 
   promise.then(function(newSequence) {
     newSequence.sequenceRows = sequence.sequenceRows;
 
-    return newSequence.save(); // returns a promise
+    return newSequence.save(); 
   })
   .then(function(newSequence) {
     console.log('updated sequence: ' + newSequence.name);
-    // do something with updated user
   })
   .catch(function(err){
     // just need one of these
@@ -121,21 +101,8 @@ let createSequence = function(sequence){
 }
 
 let saveSequence = function(sequence) {
-  // Sequences.create({
-  //   userID: sequence.userID,
-  //   name: sequence.name, //not sure we have discussed how to name a sequence yet, possible user prompt to input a name?
-  //   sequenceRows: sequence.sequenceRows,
-  //   beats: sequence.beats,
-  //   bpm: sequence.bpm
-  // }, function(err, sequence){
-  //   if(err){
-  //     console.log('save err',  err)
-  //   }
-  // })
-  
   createSequence(sequence)
   .then(updateUser(sequence))
-
 }
 
 
