@@ -1,11 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import axios from 'axios';
 import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 
 // import Library from './components/Library.jsx';
-// import Control from './components/Control.jsx';
 import NaviBar from './components/NaviBar.jsx';
 import ReactHowler from 'react-howler';
 import SoundBoard from './components/SoundBoard.jsx';
@@ -24,9 +22,8 @@ class Main extends React.Component {
     this.state = {
       samples: [
         { // to be replaced with real sound objectsource: 'soundLocation.wav', toggle: true
-        }, {
         source: './audio_files/sound-synth.wav', playing: false
-        },
+        }
       ],
       bpm: 120, // moved bpm outside of sequence to make it modular
       sequence: [
@@ -69,11 +66,12 @@ class Main extends React.Component {
   }
 
   sampleClickHandler(soundKey) { console.
-    log(`Sample sound ${soundKey} clicked`); varnewSample = this. state.sample[soundKey]; newSample.
-    toggle =! newSample.toggle;this.
-    setState(() => {this.
-      state.sample[soundKey] = newSample; return {sample:this. state.sample}
-
+    log(`Sample sound ${soundKey} clicked`);
+    var newSample = this.state.sample[soundKey];
+    newSample.toggle =! newSample.toggle;
+    this.setState(() => {
+      this.state.sample[soundKey] = newSample;
+      return { sample: this.state.sample }
     });
 
     // TODO for Kamie: play sound on click
@@ -102,10 +100,11 @@ class Main extends React.Component {
 
   /** UpdatePlay is passed to the ControlPanel component
     //Clicking the play or stop button will update the entire sounds state -- something to potentially refactor
+    @param {boolean} playStatus
     */
-  updatePlay(status) {
-    var newStatus = Object.assign({}, this.state.sounds);
-    newStatus[0].playing = status;
+  updatePlay(playStatus) {
+    var newStatus = Object.assign({}, this.state.samples);
+    newStatus[0].playing = playStatus;
     this.setState({sounds:newStatus});
   }
 
@@ -158,16 +157,14 @@ class Main extends React.Component {
   }
 
   render() {return(
-      <div id="container">
+    <div id="container">
       <NaviBar loggedIn={this.props.loggedIn} loginCB={this.loginCB.bind(this)} creatAcctCB={this.createAcctCB.bind(this)} logoutCB={this.logoutCB.bind(this)}/>
-      <SampleSoundBoard sounds={this.state.sample} sampleClick={this.sampleClickHandler}/>
-      <ControlPanel loggedIn={this.props.loggedIn} sounds={this.state.sounds} togglePlay={this.updatePlay}/>
+      <SampleSoundBoard samples={this.state.samples} sampleClick={this.sampleClickHandler}/>
+      <ControlPanel loggedIn={this.props.loggedIn} samples={this.state.samples} togglePlay={this.updatePlay}/>
       <SoundBoard sequence={this.state.sequence} cellClick={this.cellClickHandler} registerClick={this.registerClickHandler}/>
       <ReactHowler preload={true} src={this.state.samples[0].source} playing={this.state.samples[0].playing} loop={true}/>
-
     </div> )
   }
-
 }
 
 /**
@@ -190,4 +187,4 @@ Routes = () =>(
   </Switch>
 </Router> )
 
-ReactDOM.render(<Routes></Routes>,document. getElementById('main'));
+ReactDOM.render(<Routes></Routes>,document.getElementById('main'));
