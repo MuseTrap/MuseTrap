@@ -96,7 +96,7 @@ describe('Persistant Mongo Server', function(){
 
   
 
-  it('should update an already existing sequence', function(done){
+  xit('should update an already existing sequence', function(done){
 
     database.updateSequence({
       id: "5997848c0bfea72fe4eea9f9",
@@ -120,6 +120,7 @@ describe('Persistant Mongo Server', function(){
 
   });
 
+
   xit('should retrieve all the sequences for a particular user', function(done){
     var sequences = []; 
     database.findSequences({id:0})
@@ -138,4 +139,19 @@ describe('Persistant Mongo Server', function(){
   });
 
 });
+
+    it('should return true for an existing user', function(done){
+    var results = false;
+    database.loginUser('test', 'muse')
+    .then(function(response){
+      results = response;
+    });
+
+    setTimeout(function(){
+      expect(results.length).to.equal(1);
+      db.close();
+      done();
+    }, 1000);
+
+  });
 });
