@@ -11,12 +11,11 @@ var sequenceSchema = new Schema ({
   id: {type:Schema.Types.ObjectId, unique: true},
   user: String,
   sequenceRows: [{}],
-  shareable: Boolean
+  shareable: {type: Boolean, default: false}
 })
 
 
 var userSchema = new Schema({
-  id: {type:Schema.Types.ObjectId, unique: true}, 
   userName: {type: String, unique: true, required: true},
   passWord: String
 })
@@ -82,6 +81,18 @@ let findSequences = function(user) {
   })
 }
 
+let loginUser = function(username, password){
+  return Users.find()
+  .where('userName').equals(username)
+  .where('passWord').equals(password)
+  .exec(function(err, user){
+    if(err){console.log('Could not log in: ', err)}
+    else if (user) {
+      return true;
+    }
+  })
+}
+
 let Users = mongoose.model('Users', userSchema);
 
 let Sequences = mongoose.model('Sequences', sequenceSchema);
@@ -99,5 +110,6 @@ module.exports = {
   Sequences: Sequences,
   updateSequence: updateSequence,
   findSequences: findSequences,
-  Users: Users
+  Users: Users,
+  loginUser: loginUser
 }
