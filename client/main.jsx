@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
+import Howler from 'howler';
+
 import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 
 // import Library from './components/Library.jsx';
@@ -19,17 +21,7 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      samples: [
-        { // to be replaced with real sound objectsource: 'soundLocation.wav', toggle: true
-        source: './audio_files/sound-synth.wav', playing: false
-        },
-        {
-        source: './audio_files/sound-electronicClap.wav', playing: false
-        },
-        {
-        source: './audio_files/sound-kick.wav', playing: false
-        }
-      ],
+      samples: [],
       bpm: 120, // moved bpm outside of sequence to make it modular
       sequence: [
         { // changed sequence type to Array from objec to make it easier to map in soundboard component.
@@ -62,7 +54,7 @@ class Main extends React.Component {
     this.updatePlay = this.updatePlay.bind(this);
     this.cellClickHandler = this.cellClickHandler.bind(this);
     this.registerClickHandler = this.registerClickHandler.bind(this);
-    this.sampleClickHandler = this.sampleClickHandler.bind(this);
+    this.playSampleFromLibrary = this.playSampleFromLibrary.bind(this);
   }
 
 
@@ -82,21 +74,16 @@ class Main extends React.Component {
     console.log('Register Clicked at row ' +rowNumber);
   }
 
-  /** Triggers when you click on a sample in the sampleLibrary. .*/
-  sampleClickHandler(sampleClicked) {
+  /** Triggers when you click on a sample in the sampleLibrary.
+    @param {number} indexOfSampleClicked
+  */
+  playSampleFromLibrary(sampleClicked) {
     console.log(`Sample sound ${sampleClicked} clicked`);
-    var newStatus = Object.assign({}, this.state.samples);
-    newStatus[sampleClicked].playing =! newStatus[sampleClicked].playing;
-    this.setState( {samples: newStatus} );
-
-    // TODO for Kamie: play sound on click
+    this.state.samples[sampleClicked].play();
   }
 
 
-
-
   /** Click Handler for soundboard. Toggles sound for each 1/8th duration.
-
   */
   cellClickHandler(row,col) { console.
     log(`clicked at ${row}, ${col}`);
@@ -115,6 +102,45 @@ class Main extends React.Component {
 
   componentDidMount() {
     console.log('props including react router props are,', this.props);
+
+    var sampleLibrary = [
+      { name: 'bass', url: './audio_files/sound-bass.wav'},
+      { name: 'clap', url: './audio_files/sound-electronicClap.wav'},
+      { name: 'hat', url: './audio_files/sound-hat.wav'},
+      { name: 'hat', url: './audio_files/sound-hat2.wav'},
+      { name: 'kick', url: './audio_files/sound-kick.wav'},
+      { name: 'kick', url: './audio_files/sound-kick2.wav'},
+      { name: 'kick', url: './audio_files/sound-kick3.wav'},
+      { name: 'percussion', url: './audio_files/sound-percussion.wav'},
+      { name: 'pluck', url: './audio_files/sound-pluck.wav'},
+      { name: 'snap', url: './audio_files/sound-snap.wav'},
+      { name: 'snare', url: './audio_files/sound-snare.wav'},
+      { name: 'speedy', url: './audio_files/sound-speedy.wav'},
+      { name: 'synth', url: './audio_files/sound-synth.wav'},
+      { name: 'trumpet', url: './audio_files/sound-trumpet.wav'},
+      { name: 'vocal', url: './audio_files/sound-vocal.wav'},
+      { name: 'yea', url: './audio_files/sound-vocoder.wav'}
+    ];
+
+    /** Loops over the sampleLibrary and returns each as a Howl object with methods
+    */
+    sampleLibrary = sampleLibrary.map( sample => {
+      var newObj =  new Howl({
+        src: [sample.url],
+        autoplay: false,
+        loop: false,
+        onload:function(){
+          console.log(sample, "LOADED");
+        },
+        onend: function() {
+          console.log('Finished!');
+        }
+      });
+      newObj.name = sample.name;
+      return newObj;
+    })
+
+    this.setState({samples: sampleLibrary})
   }
 
 
@@ -169,7 +195,7 @@ class Main extends React.Component {
   render() {return(
     <div id="container">
       <NaviBar loggedIn={this.props.loggedIn} loginCB={this.loginCB.bind(this)} creatAcctCB={this.createAcctCB.bind(this)} logoutCB={this.logoutCB.bind(this)}/>
-      <SampleLibrary samples={this.state.samples} sampleClick={this.sampleClickHandler}/>
+      <SampleLibrary samples={this.state.samples} sampleClick={this.playSampleFromLibrary}/>
       <ControlPanel loggedIn={this.props.loggedIn} samples={this.state.samples} togglePlay={this.updatePlay}/>
       <SoundBoard sequence={this.state.sequence} cellClick={this.cellClickHandler} registerClick={this.registerClickHandler}/>
     </div> )
