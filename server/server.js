@@ -12,7 +12,7 @@ const bodyParser = require('body-parser');
 const app = express();
 
 //uncomment this when ready to hook up the database
-const db = require('../database/schema.js');
+//const db = require('../database/schema.js');
 const compiler = webpack(webpackConfig);
 
 app.use(bodyParser.json());
@@ -263,6 +263,6 @@ if (!module.parent) {
 }
 
 module.exports={
-  app: app,
-  db: db.db
+  app: app
+  //db: db.db
 }
