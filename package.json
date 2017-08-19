@@ -10,7 +10,7 @@
   },
   "scripts": {
     "compile": "webpack",
-    "test": "mocha",
+    "test": "mocha test/helpers/browser.js --bail --reporter nyan test/*.js; pkill -n node;",
     "start": "nodemon server/server.js"
   },
   "dependencies": {
@@ -44,7 +44,13 @@
     "babel-register": "^6.7.2",
     "chai": "^4.1.1",
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
-    "mocha": "^3.5.0"
+    "jsdom": "^11.1.0",
+    "jsdom-global": "^3.0.2",
+    "mocha": "^3.5.0",
+    "react-addons-test-utils": "^15.6.0",
+    "react-test-renderer": "^15.6.1",
+    "sinon": "^3.2.1",
+    "supertest": "^3.0.0"
   },
   "babel": {
     "presets": [

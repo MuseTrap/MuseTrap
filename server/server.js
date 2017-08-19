@@ -106,7 +106,7 @@ app.post('/createuser', function(req, res) {
     })
     .catch((err) => {
       //something went wrong during account creation, retry again
-      console.log('failed to create user');
+      console.log('failed to create user', err);
       res.redirect(302, '/');
     });
 });
@@ -121,14 +121,19 @@ app.post('/login', function(req, res) {
   console.log('login user ', req.body);
   var username = req.body.username;
   var password = req.body.password;
-  Promise.resolve('need db.loginUser function') //temporary code until db.loginUser is implemented
-  //db.loginUser(username, password)
-    .then(() => {
+  //Promise.resolve('need db.loginUser function') //temporary code until db.loginUser is implemented
+  db.loginUser(username, password)
+    .then((result) => {
+      //console.log('login result ', result);
+      if (result.length === 0) {
+        throw 'user or password is incorrect';
+      }
       //successful login
       req.session.user = username;
       res.redirect(302, '/member');
     })
     .catch((err) => {
+      console.log('error during login ', err);
       //something went wrong during login, retry again
       res.redirect(302, '/');
     });
@@ -139,6 +144,7 @@ app.post('/login', function(req, res) {
 * logout button was clicked somewhere on client side
 */
 app.post('/logout', function(req, res) {
+  console.log('logging out');
   req.session.destroy();
   res.redirect(302, '/');
 });
@@ -155,9 +161,10 @@ app.get('/users', verifySession, function(req, res) {
   console.log(username);
   db.findSequences(username)
     .then((results) => {
+      console.log('retrieved user sequences: ', results);
       res.send(results);
     })
-    .error((err) => {
+    .catch((err) => {
       res.status(500).send(err);
     });
 });
@@ -166,7 +173,7 @@ app.get('/users', verifySession, function(req, res) {
 * PURPOSE OF THE CLIENT REQUEST TO SERVER: save particular sequence for a user
 * Client should send 1 thing to Server... sequenceObj contents to be saved
 * Database should save the sequence under the username and also be thenable
-* Server should call database helper function DB.saveSequence(username, sequenceName, sequenceObj)
+* Server should call database helper function DB.saveSequence(sequenceObj)
 * Server should respond with 2xx response code back to Client
 */
 app.post('/users', verifySession, function(req, res) {
@@ -175,7 +182,7 @@ app.post('/users', verifySession, function(req, res) {
     .then(() => {
       res.status(201).send();
     })
-    .error((err) => {
+    .catch((err) => {
       res.status(500).send(err);
     });
 });
@@ -184,16 +191,17 @@ app.post('/users', verifySession, function(req, res) {
 * PURPOSE OF THE CLIENT REQUEST TO SERVER: update particular sequence for a user
 * Client should send 1 thing to Server... sequenceObj contents to be updated
 * Database should update the sequence under the username and also be thenable
-* Server should call database helper function DB.updateSequence(username, sequenceName, sequenceObj)
+* Server should call database helper function DB.updateSequence(sequenceObj)
 * Server should respond with 2xx respond code back to Client
 */
 app.put('/users', verifySession, function(req, res) {
   var sequenceObj = req.body.sequenceObj;
+  console.log('will update this sequence obj: ', sequenceObj);
   db.updateSequence(sequenceObj)
     .then(() => {
       res.status(201).send();
     })
-    .error((err) => {
+    .catch((err) => {
       res.status(500).send(err);
     });
 });
@@ -206,41 +214,65 @@ app.put('/users', verifySession, function(req, res) {
 * Client should force user to save the sequence before sharing
 * Database should mark the sequence's share=true and also be thenable
 * Server should ask database to mark the song as share=true
-* Server should redirect user to shareable link localhost:3000/users/username/sequenceName
+* Server should redirect user to shareable link localhost:3000/users/username/sequenceObjID
 */
 app.get('/users/share', verifySession, function(req, res) {
   var username = req.body.username;
-  var sequenceName = req.body.sequenceName;
-  db.shareSequence(username, sequenceName)
-    .then(() => {
-      //redirect to shared link
-      res.redirect(302, `/users/${username}/${sequenceName}`);
-    })
-    .error((err) => {
-      res.status(500).send();
-    });
-});
-
-/**GET /users/:username/:sequenceName
-* PURPOSE: this is essentially the demo page PLUS the shared sequence/song loaded up on the player
-* Server should return a 404 error if user doesn't exist, the sequenceName doesn't exist, or  is not shared by owner
-* Client should then ask the server to retrieve the particular user's sequenceName to load on the page
-*/
-app.get('/users/:username/:sequenceName', function(req, res) {
-  var username = req.params.username;
-  var sequenceName = req.params.sequenceName;
-  //If user doesn't exist, sequenceName doesn't exist under user, or sequenceName is not shared, return a 404 error
+  var sequenceObjID = req.body.sequenceObjID;
+  //console.log(username, sequenceObjID);
   db.findSequences(username)
     .then((results) => {
       var sequenceEntry;
       for (var i = 0; i < results.length; i++) {
-        if (sequenceName === results[i].name) {
+        //console.log('each of sharing users sequence is ', results[i]);
+        if (JSON.stringify(sequenceObjID) === JSON.stringify(results[i]._id)) {
           sequenceEntry = results[i];
           break;
         }
       }
-      if (sequenceEntry === undefined || !sequenceEntry.shared) {
-        throw 'No song found or song is not allowed by owner to share';
+      if (sequenceEntry === undefined) {
+        throw 'User doesnt exist, or user has no such saved song';
+      } else {
+        sequenceEntry.shareable = true;
+        //console.log('sequence attempt to change shareable to true', sequenceEntry);
+        return sequenceEntry;
+      }
+    })
+    .then((sequenceObj) => {
+      return db.updateSequence(sequenceObj);
+    })
+    .then(() => {
+      //redirect to shared link
+      res.redirect(302, `/users/${username}/${sequenceObjID}`);
+    })
+    .catch((err) => {
+      console.log('error during share, ', err);
+      res.status(500).send(err);
+    });
+});
+
+/**GET /users/:username/:sequenceObjID
+* PURPOSE: this is essentially the demo page PLUS the shared sequence/song loaded up on the player
+* Server should return a 404 error if user doesn't exist, the sequenceObjID doesn't exist, or  is not shared by owner
+* Client should then ask the server to retrieve the particular user's sequenceObjID to load on the page
+*/
+app.get('/users/:username/:sequenceObjID', function(req, res) {
+  var username = req.params.username;
+  var sequenceObjID = req.params.sequenceObjID;
+  //console.log(username, sequenceObjID);
+  //If user doesn't exist, sequenceObjID doesn't exist under user, or sequenceObjID is not shared, return a 404 error
+  db.findSequences(username)
+    .then((results) => {
+      var sequenceEntry;
+      for (var i = 0; i < results.length; i++) {
+        //console.log('each of sharing users sequence is ', results[i]);
+        if (JSON.stringify(sequenceObjID) === JSON.stringify(results[i]._id)) {
+          sequenceEntry = results[i];
+          break;
+        }
+      }
+      if (sequenceEntry === undefined || !sequenceEntry.shareable) {
+        throw 'User doesnt exist, or No song found, or song is not allowed by owner to share';
       } else {
         return sequenceEntry;
       }
@@ -249,6 +281,7 @@ app.get('/users/:username/:sequenceName', function(req, res) {
       res.sendFile('index.html',{root : __dirname + '/../public'});
     })
     .catch((err) => {
+      console.log('error during retrieve shared song: ', err)
       res.status(404).send();
     });
 });

@@ -6,9 +6,6 @@ var expect = chai.expect;
 import { mount, shallow } from 'enzyme';
 import sinon from 'sinon';
 
-//import {Howl, Howler} from 'howler/howler.core.js';
-// import {HowlerGlobal} from 'howler';
-// global.HowlerGlobal = HowlerGlobal; //needed for mocha tests or else HowlerGlobal is undefined
 import Main from '../client/main.jsx';
 
 sinon.spy(Main.prototype, 'loginCB');

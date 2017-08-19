@@ -193,7 +193,7 @@ class Main extends React.Component {
       window.location ='/member';
     })
     .catch((err) => {
-      console.log('error during acct creation');
+      console.log('error during acct creation', err);
     });
   }
 

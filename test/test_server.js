@@ -72,7 +72,7 @@ describe('', function() {
 
     //app.post('/login'..)
     //if user does NOT successfully log in from the '/' page, user should still be at the '/' page
-    xit('user should be directed back to root page after unsuccessful login', function(done) {
+    it('user should be directed back to root page after unsuccessful login', function(done) {
       agent.post(`/login`)
         .send({username: 'bad', password: 'bad'})
         .expect('Location', `/`)
@@ -91,7 +91,8 @@ describe('', function() {
 
     //app.post('/createuser'..)
     //if user does NOT successfully create user from the '/' page, user should still be at the '/' page
-    xit('user should still be at root page if cannot create user account', function(done) {
+    it('user should still be at root page if cannot create user account', function(done) {
+      this.timeout(3000);
       agent.get(`/`)
         .then((res) => {
           expect(res.status).to.equal(200);
@@ -107,9 +108,18 @@ describe('', function() {
         .then((res) => {
           expect(res.status).to.equal(302);
           expect(res.header['location']).to.equal(`/`);
-          return agent.post('/createuser')
-            //creating another account under the same username should not be allowed
-            .send({username: 'Steve', password: 'pass'});
+          var promise = new Promise(function(resolve, reject) {
+            setTimeout(() => {resolve(
+              agent.post('/createuser')
+                //creating another account under the same username should not be allowed
+                .send({username: 'Steve', password: 'pass'})
+              )}, 1000
+            );
+          })
+          return promise;
+          // return agent.post('/createuser')
+          //   //creating another account under the same username should not be allowed
+          //   .send({username: 'Steve', password: 'pass'});
         })
         .then((res) => {
           expect(res.status).to.equal(302);
@@ -125,7 +135,7 @@ describe('', function() {
     //app.post('/login'..)
     //app.get('/member'..)
     //if user successfully logs in from the '/' page, user should eventually end up at '/member'
-    xit('user should be directed to member page after logging in', function(done) {
+    it('user should be directed to member page after logging in', function(done) {
       agent.get(`/`)
         .then((res) => {
           expect(res.status).to.equal(200);
@@ -155,7 +165,7 @@ describe('', function() {
     //app.post('/createuser'..)
     //app.get('/member'..)
     //if user successfully creates user from the '/' page, user should eventually end up at '/member'
-    xit('user should be directed to member page after successful account creation', function(done) {
+    it('user should be directed to member page after successful account creation', function(done) {
       agent.get(`/`)
         .then((res) => {
           expect(res.status).to.equal(200);
@@ -181,7 +191,7 @@ describe('', function() {
 
     //app.post('/logout'..)
     //if user successfully logs out from the '/member' page, user should eventually end up at '/'
-    xit('user should be directed to demo page after logging out', function(done) {
+    it('user should be directed to demo page after logging out', function(done) {
       agent.get(`/`)
         .then((res) => {
           expect(res.status).to.equal(200);
@@ -209,7 +219,7 @@ describe('', function() {
     //app.post('/users'
     //app.get('/users'
     //if user saves a song sequence, it should be retrieveable
-    xit('user should be able to retrieve song sequence that was previously saved', function(done) {
+    it('user should be able to retrieve song sequence that was previously saved', function(done) {
       agent.get(`/`)
         .then((res) => {
           expect(res.status).to.equal(200);
@@ -219,30 +229,31 @@ describe('', function() {
         .then((res) => {
           expect(res.status).to.equal(302);
           expect(res.header['location']).to.equal(`/member`);
-          return db.Users.findOne({userName: 'Steve'});
-        })
-        .then((user) =>{
-          var userID = user.id;
           return agent.post(`/users`)
-            .send({sequenceObj: {
-              userID: userID,
-              name: 'mySong',
-              sequenceRows: [[0,0,0,0],[1,1,1,1]],
-              bpm: 120,
-              beats: ['sound1', 'sound2'],
-              shareable: false
-            }});
+            .send({sequenceObj:
+              {
+                user: 'Steve',
+                sequenceRows:
+                [
+                  {beat: 'blah', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+                  {beat: 'undefined', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+                  {beat: 'undefined', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+                  {beat: 'undefined', row: [0, 0, 0, 0, 0, 0, 0, 0]}
+                ]
+              }
+            });
         })
         .then((res) => {
           expect(res.status).to.equal(201);
-          expect(res.header['location']).to.equal(`/member`);
+          //expect(res.header['location']).to.equal(`/member`);
           return agent.get('/users')
-            .send({username: Steve});
+            .send({username: 'Steve'});
         })
         .then((res) => {
           expect(res.status).to.equal(200);
-          expect(res.header['location']).to.equal(`/member`);
-          expect(res.results[0].name).to.equal('mySong');
+          //expect(res.header['location']).to.equal(`/member`);
+          var realData = JSON.parse(res.res.text);
+          expect(realData[0].sequenceRows[0].beat).to.equal('blah');
           done();
         })
         .catch((err) => {
@@ -256,7 +267,7 @@ describe('', function() {
     //app.put('/users'
     //app.get('/users'
     //if user updates an existing song sequence, it should update in the databse and be retrieveable
-    xit('user should be able to update song sequence that was previously saved', function(done) {
+    it('user should be able to update song sequence that was previously saved', function(done) {
       agent.get(`/`)
         .then((res) => {
           expect(res.status).to.equal(200);
@@ -266,43 +277,48 @@ describe('', function() {
         .then((res) => {
           expect(res.status).to.equal(302);
           expect(res.header['location']).to.equal(`/member`);
-          return db.Users.findOne({userName: 'Steve'});
-        })
-        .then((user) =>{
-          var userID = user.id;
           return agent.post(`/users`)
-            .send({sequenceObj: {
-              userID: userID,
-              name: 'mySong',
-              sequenceRows: [[0,0,0,0],[1,1,1,1]],
-              bpm: 120,
-              beats: ['sound1', 'sound2'],
-              shareable: false
-            }});
+            .send({sequenceObj:
+              {
+                user: 'Steve',
+                sequenceRows:
+                [
+                  {beat: 'blah', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+                  {beat: 'undefined', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+                  {beat: 'undefined', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+                  {beat: 'undefined', row: [0, 0, 0, 0, 0, 0, 0, 0]}
+                ]
+              }
+            });
         })
         .then((res) => {
           expect(res.status).to.equal(201);
-          expect(res.header['location']).to.equal(`/member`);
-          return agent.put('/users')
-            .send({sequenceObj: {
-              userID: userID,
-              name: 'mySong',
-              sequenceRows: [[0,0,0,0],[1,1,1,1]],
-              bpm: 60,
-              beats: ['sound1', 'sound2'],
-              shareable: false
-            }});
-        })
-        .then((res) => {
-          expect(res.status).to.equal(201);
-          expect(res.header['location']).to.equal(`/member`);
+          //expect(res.header['location']).to.equal(`/member`);
           return agent.get('/users')
-            .send({username: Steve});
+            .send({username: 'Steve'});
         })
         .then((res) => {
           expect(res.status).to.equal(200);
-          expect(res.header['location']).to.equal(`/member`);
-          expect(res.results[0].bpm).to.equal(60);
+          //expect(res.header['location']).to.equal(`/member`);
+          var realData = JSON.parse(res.res.text);
+          expect(realData[0].sequenceRows[0].beat).to.equal('blah');
+          realData[0].sequenceRows[0].beat = 'blah2';
+          return agent.put(`/users`)
+            .send({sequenceObj:
+              realData[0]
+            });
+        })
+        .then((res) => {
+          expect(res.status).to.equal(201);
+          //expect(res.header['location']).to.equal(`/member`);
+          return agent.get('/users')
+            .send({username: 'Steve'});
+        })
+        .then((res) => {
+          expect(res.status).to.equal(200);
+          //expect(res.header['location']).to.equal(`/member`);
+          var realData = JSON.parse(res.res.text);
+          expect(realData[0].sequenceRows[0].beat).to.equal('blah2');
           done();
         })
         .catch((err) => {
@@ -315,8 +331,9 @@ describe('', function() {
     //app.post('/users'
     //app.get('/users/share'
     //if user shares an existing song sequence from the /member page,
-    //  user should be redirected to shareable link localhost:3000/users/username/sequenceName
-    xit('user should be able to share song sequence that was previously saved', function(done) {
+    //  user should be redirected to shareable link localhost:3000/users/username/sequenceObjID
+    it('user should be able to share song sequence that was previously saved', function(done) {
+      var sequenceObjID;
       agent.get(`/`)
         .then((res) => {
           expect(res.status).to.equal(200);
@@ -326,44 +343,53 @@ describe('', function() {
         .then((res) => {
           expect(res.status).to.equal(302);
           expect(res.header['location']).to.equal(`/member`);
-          return db.Users.findOne({userName: 'Steve'});
-        })
-        .then((user) =>{
-          var userID = user.id;
           return agent.post(`/users`)
-            .send({sequenceObj: {
-              userID: userID,
-              name: 'mySong',
-              sequenceRows: [[0,0,0,0],[1,1,1,1]],
-              bpm: 120,
-              beats: ['sound1', 'sound2'],
-              shareable: false
-            }});
+            .send({sequenceObj:
+              {
+                user: 'Steve',
+                sequenceRows:
+                [
+                  {beat: 'blah', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+                  {beat: 'undefined', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+                  {beat: 'undefined', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+                  {beat: 'undefined', row: [0, 0, 0, 0, 0, 0, 0, 0]}
+                ]
+              }
+            });
         })
         .then((res) => {
           expect(res.status).to.equal(201);
-          expect(res.header['location']).to.equal(`/member`);
+          //expect(res.header['location']).to.equal(`/member`);
+          return agent.get('/users')
+            .send({username: 'Steve'});
+        })
+        .then((res) => {
+          expect(res.status).to.equal(200);
+          //expect(res.header['location']).to.equal(`/member`);
+          var realData = JSON.parse(res.res.text);
+          sequenceObjID = realData[0]._id;
           return agent.get('/users/share')
             .send({
               username: 'Steve',
-              sequenceName: 'mySong'
+              sequenceObjID: sequenceObjID
             });
         })
         .then((res) => {
           expect(res.status).to.equal(302);
-          expect(res.header['location']).to.equal(`/users/Steve/mySong`);
+          expect(res.header['location']).to.equal(`/users/Steve/${sequenceObjID}`);
           return agent.get('/users')
-            .send({username: Steve});
+            .send({username: 'Steve'});
         })
         .then((res) => {
           expect(res.status).to.equal(200);
-          expect(res.results[0].shareable).to.equal(true);
-          expect(res.header['location']).to.equal(`/users/Steve/mySong`);
-          return agent.get('/users/Steve/mySong');
+          var realData = JSON.parse(res.res.text);
+          expect(realData[0].shareable).to.equal(true);
+          //expect(res.header['location']).to.equal(`/users/Steve/${sequenceObjID}`);
+          return agent.get(`/users/Steve/${sequenceObjID}`);
         })
         .then((res) => {
           expect(res.status).to.equal(200);
-          expect(res.header['location']).to.equal(`/users/Steve/mySong`);
+          //expect(res.header['location']).to.equal(`/users/Steve/${sequenceObjID}`);
           done();
         })
         .catch((err) => {
@@ -373,13 +399,13 @@ describe('', function() {
     });
 
     //this will need an updated schema.js to progress further in the test!!!!!!!!!!!!!!!!!!
-    //app.get('/users/:username/:sequenceName'
+    //app.get('/users/:username/:sequenceObjID'
     //if try to access a bogus user, server should return a 404 error
-    xit('if user doesnt exist, should not be able to share their song', function(done) {
-      agent.get('/users/Steve/mySong')
+    it('if user doesnt exist, should not be able to share their song', function(done) {
+      agent.get('/users/Steve/bogusID')
         .then((res) => {
           expect(res.status).to.equal(404);
-          expect(res.header['location']).to.equal(`/users/Steve/mySong`);
+          //expect(res.header['location']).to.equal(`/users/Steve/bogusID`);
           done();
         })
         .catch((err) => {
@@ -389,9 +415,9 @@ describe('', function() {
     });
 
     //this will need an updated schema.js to progress further in the test!!!!!!!!!!!!!!!!!!
-    //app.get('/users/:username/:sequenceName'
+    //app.get('/users/:username/:sequenceObjID'
     //if try to access a song that doesn't exist under a user, server should return a 404 error
-    xit('if song doesnt exist under user, should not be able to share', function(done) {
+    it('if song doesnt exist under user, should not be able to share', function(done) {
       agent.get(`/`)
         .then((res) => {
           expect(res.status).to.equal(200);
@@ -401,37 +427,37 @@ describe('', function() {
         .then((res) => {
           expect(res.status).to.equal(302);
           expect(res.header['location']).to.equal(`/member`);
-          return db.Users.findOne({userName: 'Steve'});
-        })
-        .then((user) =>{
-          var userID = user.id;
           return agent.post(`/users`)
-            .send({sequenceObj: {
-              userID: userID,
-              name: 'mySong',
-              sequenceRows: [[0,0,0,0],[1,1,1,1]],
-              bpm: 120,
-              beats: ['sound1', 'sound2'],
-              shareable: false
-            }});
+            .send({sequenceObj:
+              {
+                user: 'Steve',
+                sequenceRows:
+                [
+                  {beat: 'blah', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+                  {beat: 'undefined', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+                  {beat: 'undefined', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+                  {beat: 'undefined', row: [0, 0, 0, 0, 0, 0, 0, 0]}
+                ]
+              }
+            });
         })
         .then((res) => {
           expect(res.status).to.equal(201);
-          expect(res.header['location']).to.equal(`/member`);
+          //expect(res.header['location']).to.equal(`/member`);
           return agent.get('/users/share')
             .send({
               username: 'Steve',
-              sequenceName: 'bogusSong'
+              sequenceObjID: 'bogusSong'
             });
         })
         .then((res) => {
           expect(res.status).to.equal(500);
-          expect(res.header['location']).to.equal(`/users/Steve/bogusSong`);
+          //expect(res.header['location']).to.equal(`/users/Steve/bogusSong`);
           return agent.get('/users/Steve/bogusSong');
         })
         .then((res) => {
           expect(res.status).to.equal(404);
-          expect(res.header['location']).to.equal(`/users/Steve/bogusSong`);
+          //expect(res.header['location']).to.equal(`/users/Steve/bogusSong`);
           done();
         })
         .catch((err) => {
@@ -441,9 +467,10 @@ describe('', function() {
     });
 
     //this will need an updated schema.js to progress further in the test!!!!!!!!!!!!!!!!!!
-    //app.get('/users/:username/:sequenceName'
+    //app.get('/users/:username/:sequenceObjID'
     //if try to access a song that isn't shared, server should return a 404 error
-    xit('if song isnt shared, should not be able to share', function(done) {
+    it('if song isnt shared, should not be able to share', function(done) {
+      var sequenceObjID;
       agent.get(`/`)
         .then((res) => {
           expect(res.status).to.equal(200);
@@ -453,28 +480,36 @@ describe('', function() {
         .then((res) => {
           expect(res.status).to.equal(302);
           expect(res.header['location']).to.equal(`/member`);
-          return db.Users.findOne({userName: 'Steve'});
-        })
-        .then((user) =>{
-          var userID = user.id;
-          return agent.post(`/users`)
-            .send({sequenceObj: {
-              userID: userID,
-              name: 'mySong',
-              sequenceRows: [[0,0,0,0],[1,1,1,1]],
-              bpm: 120,
-              beats: ['sound1', 'sound2'],
-              shareable: false
-            }});
+          return agent.post('/users')
+            .send({sequenceObj:
+              {
+                user: 'Steve',
+                sequenceRows:
+                [
+                  {beat: 'blah', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+                  {beat: 'undefined', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+                  {beat: 'undefined', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+                  {beat: 'undefined', row: [0, 0, 0, 0, 0, 0, 0, 0]}
+                ]
+              }
+            });
         })
         .then((res) => {
           expect(res.status).to.equal(201);
-          expect(res.header['location']).to.equal(`/member`);
-          return agent.get('/users/Steve/mySong');
+          //expect(res.header['location']).to.equal(`/member`);
+          return agent.get('/users')
+            .send({username: 'Steve'});
+        })
+        .then((res) => {
+          expect(res.status).to.equal(200);
+          //expect(res.header['location']).to.equal(`/member`);
+          var realData = JSON.parse(res.res.text);
+          sequenceObjID = realData[0]._id;
+          return agent.get(`/users/Steve/${sequenceObjID}`);
         })
         .then((res) => {
           expect(res.status).to.equal(404);
-          expect(res.header['location']).to.equal(`/users/Steve/bogusSong`);
+          //expect(res.header['location']).to.equal(`/users/Steve/mySong`);
           done();
         })
         .catch((err) => {
@@ -498,8 +533,3 @@ describe('', function() {
 //Hitting the stop button should should not change the state of playstatus 'stopped'
 //Hitting the stop button should change state of playstatus from 'playing' to 'stopped'
 //Hitting the stop button should change state of playstatus from 'paused' to 'stopped'
-
-
-//NaviBar component
-//should render login form if user is not logged in
-//should render logout button if user is logged in
