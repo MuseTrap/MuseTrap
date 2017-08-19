@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Promise = require('bluebird');
 var mpUtils = require('mongoose-bluebird-utils');
-mongoose.connect('mongodb://localhost/musetrap'); //will probably change
+mongoose.connect('mongodb://localhost/musetrap'); 
 var db = mongoose.connection;
 db.on('error', console.error);
 
@@ -9,67 +9,37 @@ var Schema = mongoose.Schema;
 
 var sequenceSchema = new Schema ({
   id: {type:Schema.Types.ObjectId, unique: true},
-  userID: Number,
-  name: {type: String, unique: true, required: true},
-  sequenceRows: [[]],  // Mongo does not have an 'object' type, so need to use mixed. has some repercussions to discuss
-  bpm: Number,
-  beats: [],
+  user: String,
+  sequenceRows: [{}],
   shareable: Boolean
 })
 
-/** This is the schema for the Users collection in Mongo */
+
 var userSchema = new Schema({
-  id: {type:Schema.Types.ObjectId, unique: true},
-  sequences: [sequenceSchema], //according to mongo docs, this is how you define an array of a different schema
+  id: {type:Schema.Types.ObjectId, unique: true}, 
   userName: {type: String, unique: true, required: true},
   passWord: String
 })
-/** This is the schema for the Sequences collection in Mongo */
 
-/** This is the schema for the Samples collection in Mongo */
 var sampleSchema = new Schema ({
   id: Schema.Types.ObjectId,
-  location: String, //will be a url
-  name: String,
-  category: String
+  url: String, 
+  name: String
 })
 
+var soundBoardMatrix = [
+  {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]},
+  {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]},
+  {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]},
+  {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]}
+]
 
-var soundBoardMatrix = {
-  beats: [undefined, undefined, undefined, undefined],
-  bpm: 120,
-  sequenceRows: [
-    [0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0]
-    ],
-}
-
-
-let newUser = function(name, password) { //function to create a new user- probably will be needed at login page
+let newUser = function(name, password) { 
  var user = new Users (
-    {sequences: [],
-    userName: name,
+    { userName: name,
     passWord: password
   });
   return user.saveAsync();
-
-let updateUser = function(sequence) {
-  var promise = Users.findById(sequence.userID).exec();
-
-  promise.then(function(user) {
-    user.sequences.push(sequence);
-
-    return user.save(); 
-  })
-  .then(function(user) {
-    console.log('updated user: ' + user.name);
-  })
-  .catch(function(err){
-    console.log('error:', err);
-  });
-}
 }
 
 let updateSequence = function(sequence) {
@@ -81,7 +51,8 @@ let updateSequence = function(sequence) {
     return newSequence.save(); 
   })
   .then(function(newSequence) {
-    console.log('updated sequence: ' + newSequence.name);
+    console.log('updated sequence: ', newSequence);
+    return newSequence;
   })
   .catch(function(err){
     // just need one of these
@@ -91,31 +62,25 @@ let updateSequence = function(sequence) {
 
 let createSequence = function(sequence){
  var newSequence = new Sequences ({
-    userID: sequence.userID,
-    name: sequence.name, //not sure we have discussed how to name a sequence yet, possible user prompt to input a name?
+    user: sequence.user,
     sequenceRows: sequence.sequenceRows,
-    beats: sequence.beats,
-    bpm: sequence.bpm
   });
   return newSequence.saveAsync();
 }
 
 let saveSequence = function(sequence) {
-  createSequence(sequence)
-  .then(updateUser(sequence))
+  return createSequence(sequence)
 }
-
 
 let findSequences = function(user) {
   return Sequences.find()
-  .where('userID').equals(user.id)
+  .where('user').equals(user)
   .limit(10)
   .exec(function(err, results){
     if(err){console.log('find err', err)}
     return results;
   })
 }
-
 
 let Users = mongoose.model('Users', userSchema);
 
@@ -128,7 +93,7 @@ Promise.promisifyAll(Users.prototype);
 Promise.promisifyAll(Sequences);
 Promise.promisifyAll(Sequences.prototype);
 
-module.exports={
+module.exports = {
   newUser: newUser,
   saveSequence: saveSequence,
   Sequences: Sequences,
