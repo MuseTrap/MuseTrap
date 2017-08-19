@@ -59,10 +59,27 @@ let newUser = function(name, password) {
   });
 }
 
-let updateSequence = function(sequence) {
-  var promise = Sequences.findById(sequence.id).exec();
+let updateUser = function(sequence) {
+  var promise = Users.find().where('userName')equals(sequence.user).exec();
 
-  promise.then(function(newSequence) {
+  return promise.then(function(user) {
+    user.sequences.push(sequence);
+
+    return user.save(); 
+  })
+  .then(function(user) {
+    console.log('updated user: ' + user.name);
+  })
+  .catch(function(err){
+    console.log('error:', err);
+  });
+}
+
+let updateSequence = function(sequence) {
+  var promise = Sequences.findById(sequence._id).exec();
+
+  return promise.then(function(newSequence) {
+    newSequence.shareable = sequence.shareable;
     newSequence.sequenceRows = sequence.sequenceRows;
 
     return newSequence.save(); 
