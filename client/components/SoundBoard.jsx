@@ -5,10 +5,20 @@ var SoundBoard = (props) => {
 
 	return (
 		<div className="container"> {
-				props.sequence.map((row, index)=>{
-					return <Row beat={row.beat} row={row.row} registerClick={props.registerClick} cellClick={props.cellClick} key={index} rowIndex={index}/>
-				})
-			}
+			props.sequence.map((row, index)=>{
+				return (
+					<Row
+						sample={row.sample}
+						row={row.row}
+						registerClick={props.registerClick}
+						cellClick={props.cellClick}
+						key={index}
+						rowIndex={index}
+						removeSample={props.removeSample}
+					/>
+				)
+			})
+		}
 		</div>
 	);
 }
