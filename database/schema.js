@@ -60,7 +60,7 @@ let newUser = function(name, password) {
 }
 
 let updateUser = function(sequence) {
-  var promise = Users.find().where('userName')equals(sequence.user).exec();
+  var promise = Users.find().where('userName').equals(sequence.user).exec();
 
   return promise.then(function(user) {
     user.sequences.push(sequence);
@@ -91,6 +91,7 @@ let updateSequence = function(sequence) {
   .catch(function(err){
     // just need one of these
     console.log('error:', err);
+    throw err;
   });
 }
 
