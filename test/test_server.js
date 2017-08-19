@@ -7,8 +7,6 @@
 
 var mongoose = require('mongoose');
 var expect = require('chai').expect;
-var axios = require('axios');
-axios.defaults.withCredentials = true;
 
 //supertest is used to preserve login sessions during mocha tests
 const request = require('supertest');

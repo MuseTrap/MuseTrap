@@ -222,4 +222,9 @@ Routes = () =>(
   </Switch>
 </Router> )
 
-ReactDOM.render(<Routes></Routes>,document.getElementById('main'));
+//This event listener is needed or else the reactdom render will cause mocha test to fail
+document.addEventListener('DOMContentLoaded', function() {
+  ReactDOM.render(<Routes></Routes>, document.getElementById('main'));
+});
+
+export default Main;
