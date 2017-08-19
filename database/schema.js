@@ -1,7 +1,12 @@
 var mongoose = require('mongoose');
 var Promise = require('bluebird');
-var mpUtils = require('mongoose-bluebird-utils');
-mongoose.connect('mongodb://localhost/musetrap'); 
+var mpUtils = require('mongoose-bluebird-utils'); 
+
+var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, 
+                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };  
+
+var mongodbUri = 'mongodb://heroku_tkrwhxb3:ljk1iikq8pag0rcusofkbir363@ds149613.mlab.com:49613/heroku_tkrwhxb3';
+mongoose.connect(mongodbUri, options); 
 var db = mongoose.connection;
 db.on('error', console.error);
 
@@ -33,12 +38,25 @@ var soundBoardMatrix = [
   {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]}
 ]
 
-let newUser = function(name, password) { 
- var user = new Users (
+let newUser = function(name, password) {
+  var user = new Users (
     { userName: name,
-    passWord: password
+      passWord: password
+    });
+  var query = Users.findOne({userName: name});
+  var promise = query.exec();
+    
+  return promise
+  .then((results) => {
+    if (results !== null) {
+      throw 'duplicate entry';
+    } else {
+      return 'dummy';
+    }
+  })
+  .then(() => {
+    return user.saveAsync()
   });
-  return user.saveAsync();
 }
 
 let updateSequence = function(sequence) {
