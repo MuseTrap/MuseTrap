@@ -29,14 +29,30 @@ describe('Persistant Mongo Server', function(){
 
     database.newUser('test', 'muse');
 
-    setTimeout(function(){
-  	  db.collection('Users').find().toArray(function(err, results){
-  	    expect(results.length).toEqual(1);
-  	    expect(results[0].userName).toMatch('test');
-  	  })
-  	  	db.close();
-  	  	done();
-    }, 1000);
+    // setTimeout(function(){
+  	 //  db.collection('Users').find().toArray(function(err, results){
+  	 //    expect(results.length).toEqual(1);
+  	 //    expect(results[0].userName).toMatch('test');
+  	 //  })
+  	 //  	db.close();
+  	 //  	done();
+    // }, 1000);
+
+    var query = Users.findOne({userName: name});
+    var promise = query.exec();
+    return promise
+    .then((results) => {
+      if (results !== null) {
+        throw 'duplicate entry';
+      } else {
+        return 'dummy';
+      }
+    })
+    .then(() => {
+      return user.saveAsync()
+    });
+
+
   });
 
   xit('Should save a sequence to the database', function(done){
