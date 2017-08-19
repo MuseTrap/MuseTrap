@@ -37,19 +37,17 @@ describe('Persistant Mongo Server', function(){
   	  	db.close();
   	  	done();
     }, 1000);
-
   });
 
   xit('Should save a sequence to the database', function(done){
     var testSequence = {
-      userID: 0,
-      beats: [undefined, undefined, undefined, undefined],
-      name: 'sequence', 
-      sequence: [[0,0,0,0,0,0,0,0],
-			[0,0,0,0,0,0,0,0],
-			[0,0,0,0,0,0,0,0],
-			[0,0,0,0,0,0,0,0]],
-      bpm: 120,
+      user: 'test',
+      sequenceRows: [
+        {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]},
+        {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]},
+        {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]},
+        {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]}
+        ],
       shareable: false
     }
   
@@ -63,20 +61,17 @@ describe('Persistant Mongo Server', function(){
   	  	db.close();
   	  	done();
     }, 1000);
-
-
   });
 
   xit('should update the user"s sequences array when saving a sequence', function(done){
      var testSequence = {
-      userID: 0,
-      beats: [undefined, undefined, undefined, undefined],
-      name: 'sequence', 
-      sequence: [[0,0,0,0,0,0,0,0],
-			[0,0,0,0,0,0,0,0],
-			[0,0,0,0,0,0,0,0],
-			[0,0,0,0,0,0,0,0]],
-      bpm: 120,
+      user: 'test',
+      sequenceRows: [
+        {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]},
+        {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]},
+        {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]},
+        {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]}
+        ],
       shareable: false
     }
   
@@ -85,7 +80,7 @@ describe('Persistant Mongo Server', function(){
     var updatedUsers = [];
 
       database.Users.find()
-      .where('id').equals(testSequence.userID)
+      .where('userName').equals(testSequence.user)
       .limit(1)
       .exec(function(err, results){
       	if(err){console.log('err', err)}
@@ -95,58 +90,38 @@ describe('Persistant Mongo Server', function(){
     setTimeout(function(){
     	console.log(updatedUsers);
   	  expect(updatedUsers.length).to.equal(1);
-  	  expect(updatedUsers[0].id).toMatch(testSequence.userID);
+  	  expect(updatedUsers[0].userName).toMatch(testSequence.user);
     }) 	
   })
 
   
 
   it('should update an already existing sequence', function(done){
-    // database.Sequences.create({
-    //       userID: 0,
-    //       name: 'sequence', 
-    //       beats: [undefined, undefined, undefined, undefined],
-    //       sequenceRows: [[0,0,0,0,0,0,0,0],
-    // 			[0,0,0,0,0,0,0,0],
-    // 			[0,0,0,0,0,0,0,0],
-    // 			[0,0,0,0,0,0,0,0]],
-    //       bpm: 120,
-    //       shareable: false
-    //     }, function(err, result){
-  	 //        if(err){console.log('Error adding sequence: ', err)}
-  	 //        console.log('Saved sequence');          
-    //     });
 
     database.updateSequence({
-      id: "599619d646f2e62d3b9f92ec",
-      userID: 0,
-      name: 'sequence', 
-      sequenceRows: [[1,1,1,1,1,1,1,1],
-			[0,0,0,0,0,0,0,0],
-			[0,0,0,0,0,0,0,0],
-			[0,0,0,0,0,0,0,0]],
-      bpm: 120,
+      id: "5997848c0bfea72fe4eea9f9",
+      user: 'test',
+      sequenceRows: [
+        {beat: undefined, row: [1, 1, 1, 1, 1, 1, 1, 1]},
+        {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]},
+        {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]},
+        {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]}
+        ],
       shareable: false
     });
 
     setTimeout(function(){
   	  db.collection('Sequences').find().toArray(function(err, results){
-  	    expect(results.length).toEqual(1);
-  	    expect(results[0].sequenceRows).toMatch([[1,1,1,1,1,1,1,1],
-			[0,0,0,0,0,0,0,0],
-			[0,0,0,0,0,0,0,0],
-			[0,0,0,0,0,0,0,0]]);
-  	  })
+  	    expect(results.length).to.equal(1);
+  	    expect(results[0].sequenceRows[0].row).toMatch([1,1,1,1,1,1,1,1])
   	  	db.close();
   	  	done();
     }, 1000);
 
-
   });
 
-
   xit('should retrieve all the sequences for a particular user', function(done){
-    var sequences = [] 
+    var sequences = []; 
     database.findSequences({id:0})
     .then(function(response){
     	response.forEach(function(seq){
@@ -154,12 +129,13 @@ describe('Persistant Mongo Server', function(){
     	})
     });
 
-
     setTimeout(function(){
       expect(sequences.length).to.equal(10);
-      expect(sequences[0].userID).to.equal(0);
+      expect(sequences[0].user).toMatch('test');
   	  db.close();
   	  done();
     }, 1000)
   });
+
+});
 });
