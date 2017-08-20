@@ -269,5 +269,3 @@ Routes = () =>(
 document.addEventListener('DOMContentLoaded', function() {
   ReactDOM.render(<Routes></Routes>, document.getElementById('main'));
 });
-
-export default Main;
