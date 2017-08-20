@@ -20,6 +20,11 @@ module.exports = {
       },
     ],
   },
+  externals: {
+    'cheerio': 'window',
+    'react/lib/ExecutionEnvironment': true,
+    'react/lib/ReactContext': true,
+  },
   resolve: {
     modules: [
       path.join(__dirname, 'node_modules'),

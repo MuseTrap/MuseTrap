@@ -1,29 +1,30 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
+import SampleSound from './SampleSound.jsx';
+import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import Grid from 'react-bootstrap/lib/Grid';
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
 
- class SampleLibrary extends React.Component {
-  constructor(props){
-  	super(props);
-  }
 
-  render(){
-  	return (
-      //table of buttons
-      //sounds loaded from library database
-      //plays sound from howl related to each button
-      <ButtonToolbar>
-        <ToggleButtonGroup> bsSize="small" <span class="glyphicons glyphicons-music-alt"></span>
-          <Button>Sound1</Button>
-          <Button>Sound2</Button>
-          <Button>Sound3</Button>
-          <Button>Sound4</Button>
-        </ToggleButtonGroup>
-      </ButtonToolbar>
-  	)
-  }
-}
+var SampleLibrary = (props) => {
+  console.log("PROPS", props);
+  return (
 
-ReactDOM.render(<SampleLibrary/>, document.getElementById('main'));
+    <div className="container">
+    <Grid>
+      <Row className="show-grid">
+        {
+          props.samples.map( (sound, index) => {
+            console.log('SOUND', sound);
+            return <div key={index} >
+              <Col xs={3} md={4} onClick={() => {props.sampleClick(index)}}>{sound.name}</Col>
+            </div>
+          })
+        }
+      </Row>
+    </Grid>
+    </div>
+  );
+};
 
 export default SampleLibrary;
