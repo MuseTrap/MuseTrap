@@ -234,7 +234,7 @@ class Main extends React.Component {
       this.state.intervalId = setInterval(()=>{
 
         this.playSequence();
-      }, 2000);
+      }, (30/this.state.bpm*1000)*8);
 
     } 
     //this.props.playCB();
@@ -305,7 +305,7 @@ class Main extends React.Component {
           if (item===1) {
             setTimeout(()=>{
               this.state.samples[sequence.beat].play();
-            }, 250*rowIndex);
+            }, (30/this.state.bpm*1000)*rowIndex);
           }
         });
       }
