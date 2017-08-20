@@ -19,6 +19,9 @@ import NavDropdown from 'react-bootstrap/lib/NavDropdown';
       passField: ''
     };
   }
+  
+  componentDidMount() {
+  }
 
   dropdownToggle(event) {
     this.setState({open: !this.state.open});
