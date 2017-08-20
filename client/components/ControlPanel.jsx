@@ -15,7 +15,7 @@ import Glyphicon from 'react-bootstrap/lib/Glyphicon';
  */
 
 var ControlPanel = (props) => {
-  console.log("PROPS", props);
+  // console.log("PROPS", props);
  
   var playStyle = {
     display: (props.playstatus === 'paused') || (props.playstatus === 'stopped') ? 'inline' : 'none'

@@ -7,7 +7,8 @@ import Col from 'react-bootstrap/lib/Col';
 
 
 var SampleLibrary = (props) => {
-  console.log("PROPS", props);
+  //console.log("PROPS", props);
+  
   return (
 
     <div className="container">
@@ -15,9 +16,9 @@ var SampleLibrary = (props) => {
       <Row className="show-grid">
         {
           props.samples.map( (sound, index) => {
-            console.log('SOUND', sound);
+            //console.log('SOUND', sound);
             return <div key={index} >
-              <Col xs={3} md={4} onClick={() => {props.sampleClick(index)}}>{sound.name}</Col>
+              <Col xs={3} md={4} onClick={() => {props.sampleClick(index)}} onDoubleClick={()=>{props.doubleClick(sound.sampleId)}}>{sound.name}</Col>
             </div>
           })
         }
