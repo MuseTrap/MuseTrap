@@ -7,12 +7,26 @@ var Row = (props) => {
 
   return (
   	<div className="row">
-  		<CellHead beat={props.beat} registerClick={props.registerClick} rowIndex={props.rowIndex}/>
+  		<CellHead
+        sample={props.sample}
+        registerClick={props.registerClick}
+        rowIndex={props.rowIndex}
+        removeSample={props.removeSample}
+      />
   		{props.row.map(
-  			(cell, index)=>{
-  				return <Cell cell={cell} cellClick={props.cellClick} key={index} rowIndex={props.rowIndex} colIndex={index}/>;
-  		})
-  	}</div>
+  			(cell, index) => {
+  				return (
+            <Cell
+              cell={cell}
+              cellClick={props.cellClick}
+              key={index}
+              rowIndex={props.rowIndex}
+              colIndex={index}
+            />
+          )
+  		  })
+  	  }
+    </div>
   );
 };
 

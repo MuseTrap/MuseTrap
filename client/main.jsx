@@ -25,36 +25,40 @@ class Main extends React.Component {
       bpm: 120, // moved bpm outside of sequence to make it modular
       sequence: [
         { // changed sequence type to Array from objec to make it easier to map in soundboard component.
-        beat:
-          undefined, row:
-          [
+          sample: undefined,
+          row: [
             0, 0, 0, 0, 0, 0, 0, 0
           ]
-        }, {
-        beat:
-          undefined, row:
-          [
+        },
+        {
+          sample: undefined,
+          row: [
             0, 0, 0, 0, 0, 0, 0, 0
           ]
-        }, {
-        beat:
-          undefined, row:
-          [
+        },
+        {
+          sample: undefined,
+          row: [
             0, 0, 0, 0, 0, 0, 0, 0
           ]
-        }, {
-        beat:
-          undefined, row:
-          [
+        },
+        {
+          sample: undefined,
+          row: [
             0, 0, 0, 0, 0, 0, 0, 0
           ]
         }
       ]
     };
+    this.loginCB = this.loginCB.bind(this);
+    this.createAcctCB = this.createAcctCB.bind(this);
+    this.logoutCB = this.logoutCB.bind(this);
     this.updatePlay = this.updatePlay.bind(this);
     this.cellClickHandler = this.cellClickHandler.bind(this);
     this.registerClickHandler = this.registerClickHandler.bind(this);
     this.playSampleFromLibrary = this.playSampleFromLibrary.bind(this);
+    this.addSampleToBoard = this.addSampleToBoard.bind(this);
+    this.removeSampleFromBoard = this.removeSampleFromBoard.bind(this);
   }
 
 
@@ -74,12 +78,35 @@ class Main extends React.Component {
     console.log('Register Clicked at row ' +rowNumber);
   }
 
-  /** Triggers when you click on a sample in the sampleLibrary.
+  /** When you click on a sample in the sampleLibrary, this function plays the associated sound.
     @param {number} indexOfSampleClicked
   */
   playSampleFromLibrary(sampleClicked) {
-    console.log(`Sample sound ${sampleClicked} clicked`);
+    // console.log(`Sample sound ${sampleClicked} clicked`);
     this.state.samples[sampleClicked].play();
+  }
+
+  /** When you doubleClick on a sample in the sampleLibrary, this function updates the sequence state adding it to the SoundBoard
+    @param {number} indexOfSampleClicked
+  */
+  addSampleToBoard(sampleClicked) {
+    for (var i = 0; i < this.state.sequence.length; i++) {
+      if (this.state.sequence[i].sample === undefined) {
+        var newSequence = Object.assign([], this.state.sequence);
+        newSequence[i].sample = this.state.samples[sampleClicked];
+        this.setState({sequence: newSequence});
+        break;
+      }
+    }
+  }
+
+  /** When you click on the X next to a sample name in the soundboard, this function removes the sample from the sequence and soundboard
+    @param {number} indexOfSampleClicked
+  */
+  removeSampleFromBoard(sampleClicked) {
+    var newSequence = Object.assign([], this.state.sequence);
+    newSequence[sampleClicked].sample = undefined;
+    this.setState({sequence: newSequence});
   }
 
 
@@ -125,21 +152,20 @@ class Main extends React.Component {
     /** Loops over the sampleLibrary and returns each as a Howl object with methods
     */
     sampleLibrary = sampleLibrary.map( sample => {
-      var newObj =  new Howl({
+      var obj =  new Howl({
         src: [sample.url],
         autoplay: false,
         loop: false,
         onload:function(){
-          console.log(sample, "LOADED");
+          // console.log(sample, "LOADED");
         },
         onend: function() {
-          console.log('Finished!');
+          // console.log('Finished!');
         }
       });
-      newObj.name = sample.name;
-      return newObj;
+      obj.name = sample.name;
+      return obj;
     })
-
     this.setState({samples: sampleLibrary})
   }
 
@@ -194,10 +220,27 @@ class Main extends React.Component {
 
   render() {return(
     <div id="container">
-      <NaviBar loggedIn={this.props.loggedIn} loginCB={this.loginCB.bind(this)} creatAcctCB={this.createAcctCB.bind(this)} logoutCB={this.logoutCB.bind(this)}/>
-      <SampleLibrary samples={this.state.samples} sampleClick={this.playSampleFromLibrary}/>
-      <ControlPanel loggedIn={this.props.loggedIn} samples={this.state.samples} togglePlay={this.updatePlay}/>
-      <SoundBoard sequence={this.state.sequence} cellClick={this.cellClickHandler} registerClick={this.registerClickHandler}/>
+      <NaviBar loggedIn={this.props.loggedIn}
+        loginCB={this.loginCB}
+        creatAcctCB={this.createAcctCB}
+        logoutCB={this.logoutCB}
+      />
+      <SampleLibrary
+        samples={this.state.samples}
+        playSample={this.playSampleFromLibrary}
+        addSample={this.addSampleToBoard}
+      />
+      <ControlPanel
+        loggedIn={this.props.loggedIn}
+        samples={this.state.samples}
+        togglePlay={this.updatePlay}
+      />
+      <SoundBoard
+        sequence={this.state.sequence}
+        cellClick={this.cellClickHandler}
+        registerClick={this.registerClickHandler}
+        removeSample={this.removeSampleFromBoard}
+      />
     </div> )
   }
 }
@@ -226,5 +269,3 @@ Routes = () =>(
 document.addEventListener('DOMContentLoaded', function() {
   ReactDOM.render(<Routes></Routes>, document.getElementById('main'));
 });
-
-export default Main;
