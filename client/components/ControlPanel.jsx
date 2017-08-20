@@ -18,13 +18,11 @@ var ControlPanel = (props) => {
   // console.log("PROPS", props);
  
   var playStyle = {
-    display: (props.playstatus === 'paused') || (props.playstatus === 'stopped') ? 'inline' : 'none'
+    display: 'inline' 
   };
-  var pauseStyle = {
-    display: props.playstatus === 'playing' ? 'inline' : 'none'
-  };
-  var saveButton = <Button style={{display: 'none'}}> dummyButton </Button>;
-  var shareButton = <Button style={{display: 'none'}}> dummyButton </Button>;
+
+  // var saveButton = <Button style={{display: 'inline'}}> Save </Button>;
+  // var shareButton = <Button style={{display: 'inline'}}> Share </Button>;
   if (props.loggedIn) {
     saveButton =
       <Button bsStyle="primary" bsSize="large" active
@@ -37,17 +35,12 @@ var ControlPanel = (props) => {
     <div className="row">
       <ButtonToolbar>
         <ButtonGroup>
-
-          <Button style={playStyle} bsStyle={props.playstatus === 'paused' ? 'warning' : 'primary'} bsSize="large" active
+          <Button style={playStyle} bsStyle='primary' bsSize="large" active
             onClick={()=>{props.playClicked()}}><Glyphicon glyph="play"/></Button>
-          <Button style={pauseStyle} bsStyle="warning" bsSize="large" active
-            onClick={()=>{props.pauseClicked()}}><Glyphicon glyph="pause"/></Button>
           <Button bsStyle="primary" bsSize="large" active
             onClick={()=>{props.stopClicked()}}><Glyphicon glyph="stop"/></Button>
           <Button bsStyle={props.loopButton? "success" : "default"} bsSize="large" active
             onClick={()=>{props.loopClicked()}}><Glyphicon glyph="repeat"/></Button>
-          {saveButton}
-          {shareButton}
         </ButtonGroup>
       </ButtonToolbar>
     </div>
