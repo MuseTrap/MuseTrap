@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import Howler from 'howler';
+import $ from 'jquery';
 
 import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 
@@ -21,6 +22,8 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      playstatus: 'stopped', //'playing', 'paused', or 'stopped'
+      loopButton: false,
       samples: [],
       bpm: 120, // moved bpm outside of sequence to make it modular
       sequence: [
@@ -55,13 +58,19 @@ class Main extends React.Component {
     this.cellClickHandler = this.cellClickHandler.bind(this);
     this.registerClickHandler = this.registerClickHandler.bind(this);
     this.playSampleFromLibrary = this.playSampleFromLibrary.bind(this);
+    this.playClicked = this.playClicked.bind(this);
+    this.pauseClicked = this.pauseClicked.bind(this);
+    this.stopClicked = this.stopClicked.bind(this);
+    this.loopClicked = this.loopClicked.bind(this);
+    this.saveClicked = this.saveClicked.bind(this);
+    this.shareClicked = this.shareClicked.bind(this);
   }
 
 
   /** UpdatePlay is passed to the ControlPanel component
-    //Clicking the play or stop button will update the entire sounds state -- something to potentially refactor
+    Clicking the play or stop button will update the entire sounds state -- something to potentially refactor
     @param {boolean} playStatus
-    */
+  */
   updatePlay(playStatus) {
     var newStatus = Object.assign({}, this.state.samples);
     newStatus[0].playing = playStatus;
@@ -191,12 +200,94 @@ class Main extends React.Component {
       console.log('error during logout');
     });
   }
+  /** Plays registered sequnces once
+
+  */
+
+
+  /** Clicking the play button will toggle between play and pause
+  change play visualizer to visible+moving if was stopped
+   change play visualizer to moving if was paused
+  Run Main callback to "play"
+  play sounds starting from time 0 OR last pause (Assume that Main component keeps track of last time)
+  */
+
+  playClicked() {
+    this.updatePlay(true);
+    this.setState({
+      playstatus: 'playing'
+    });
+
+    //this.props.playCB();
+  }
+
+  /** Clicking the pause button will toggle between play and pause
+  //Make the play visualizer still visible but stop moving/animating
+  Run Main callback to "pause"
+  pause play at timeX at the Main component level */
+  pauseClicked() {
+    this.updatePlay(false);
+    this.setState({
+      playstatus: 'paused'
+    });
+
+    //this.props.pauseCB();
+  }
+  /** Clicking the stop button will stops the sound
+    change the play button image to triangle button
+    change play visualizer to invisible and not moving
+    Leave loop button alone 
+  */
+  stopClicked() {
+    this.updatePlay(false);
+    this.setState({
+      playstatus: 'stopped'
+    });
+    //this.props.stopCB();
+  }
+
+  /** Clicking the loop button will toggle between on or off (CURRENTLY NOT WORKING)
+    Run Main callback to toggle looping
+  */
+  loopClicked() {
+    this.updatePlay(false);
+    this.setState({
+      loopButton: !this.state.loopButton
+    });
+    //this.props.toggleLoop();
+  }
+  /**When the save button is clicked
+    Run Main callback to "save"
+  */
+  saveClicked() {
+    //this.props.save();
+    console.log('Save Clicked');
+  }
+  /**When the share button is clicked
+    Run Main callback to "share"
+  */
+  shareClicked() {
+    //this.props.share();
+    console.log('Share Clicked');
+  }
+
 
   render() {return(
     <div id="container">
       <NaviBar loggedIn={this.props.loggedIn} loginCB={this.loginCB.bind(this)} creatAcctCB={this.createAcctCB.bind(this)} logoutCB={this.logoutCB.bind(this)}/>
       <SampleLibrary samples={this.state.samples} sampleClick={this.playSampleFromLibrary}/>
-      <ControlPanel loggedIn={this.props.loggedIn} samples={this.state.samples} togglePlay={this.updatePlay}/>
+      <ControlPanel
+        playstatus={this.state.playstatus}
+        loggedIn={this.props.loggedIn} 
+        samples={this.state.samples} 
+        togglePlay={this.updatePlay}
+        playClicked={this.playClicked}
+        pauseClicked={this.pauseClicked}
+        stopClicked={this.stopClicked} 
+        loopClicked={this.loopClicked}
+        saveClicked={this.saveClicked}
+        shareClicked={this.shareClicked}
+      />
       <SoundBoard sequence={this.state.sequence} cellClick={this.cellClickHandler} registerClick={this.registerClickHandler}/>
     </div> )
   }
@@ -223,3 +314,4 @@ Routes = () =>(
 </Router> )
 
 ReactDOM.render(<Routes></Routes>,document.getElementById('main'));
+
