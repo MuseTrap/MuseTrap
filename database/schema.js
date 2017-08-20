@@ -1,105 +1,135 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/musetrap'); //will probably change
+var Promise = require('bluebird');
+var mpUtils = require('mongoose-bluebird-utils'); 
+
+var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, 
+                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };  
+
+var mongodbUri = 'mongodb://heroku_tkrwhxb3:ljk1iikq8pag0rcusofkbir363@ds149613.mlab.com:49613/heroku_tkrwhxb3';
+mongoose.connect(mongodbUri, options); 
 var db = mongoose.connection;
 db.on('error', console.error);
 
 var Schema = mongoose.Schema;
 
-/** This is the schema for the Users collection in Mongo */
+var sequenceSchema = new Schema ({
+  id: {type:Schema.Types.ObjectId, unique: true},
+  user: String,
+  sequenceRows: [{}],
+  shareable: {type: Boolean, default: false}
+})
+
+
 var userSchema = new Schema({
-  id: Schema.Types.ObjectId,
-  sequences: [sequenceSchema], //according to mongo docs, this is how you define an array of a different schema
-  userName: String,
+  userName: {type: String, unique: true, required: true},
   passWord: String
 })
-/** This is the schema for the Sequences collection in Mongo */
-var sequenceSchema = new Schema ({
-  id: Schema.Types.ObjectId,
-  userID: Number,
-  name: String,
-  sequence: Schema.Types.Mixed,  // Mongo does not have an 'object' type, so need to use mixed. has some repercussions to discuss
-  bpm: Number
-})
 
-/** This is the schema for the Samples collection in Mongo */
 var sampleSchema = new Schema ({
   id: Schema.Types.ObjectId,
-  location: String, //will be a url
-  name: String,
-  category: String
+  url: String, 
+  name: String
 })
 
+var soundBoardMatrix = [
+  {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]},
+  {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]},
+  {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]},
+  {beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]}
+]
 
-var soundBoardMatrix = {
-  beat1: {
-  	sound: null,
-  	row: [0, 0, 0, 0, 0, 0, 0, 0]
-  },
-  beat2: {
-  	sound: null,
-  	row: [0, 0, 0, 0, 0, 0, 0, 0]
-  },
-  beat3: {
-  	sound: null,
-  	row: [0, 0, 0, 0, 0, 0, 0, 0]
-  },
-  bpm: 0 //default?
-}
-
-let newUser = function(name, password) { //function to create a new user- probably will be needed at login page
-  Users.create({
-    sequences: [],
-    userName: name,
-    passWord: password
-  }, function(err, user){
-    if(err){console.log('Error adding user: ', err)}
-    console.log('Saved user');
+let newUser = function(name, password) {
+  var user = new Users (
+    { userName: name,
+      passWord: password
+    });
+  var query = Users.findOne({userName: name});
+  var promise = query.exec();
+    
+  return promise
+  .then((results) => {
+    if (results !== null) {
+      throw 'duplicate entry';
+    } else {
+      return 'dummy';
+    }
   })
+  .then(() => {
+    return user.saveAsync()
+  });
 }
 
 let updateSequence = function(sequence) {
-  db.Sequences.findOneAndUpdate(
-    { "name" : sequence.name},
-     { $set {"sequence": sequence.sequence}, 
-     upsert: true }, function(err, sequence){
-       if(err){
-          console.log('update err', err);
-         }
-       }
-    );
+  var promise = Sequences.findById(sequence._id).exec();
+
+  return promise.then(function(newSequence) {
+    newSequence.shareable = sequence.shareable;
+    newSequence.sequenceRows = sequence.sequenceRows;
+
+    return newSequence.save(); 
+  })
+  .then(function(newSequence) {
+    console.log('updated sequence: ', newSequence);
+    return newSequence;
+  })
+  .catch(function(err){
+    // just need one of these
+    console.log('error:', err);
+    throw err;
+  });
+}
+
+let createSequence = function(sequence){
+ var newSequence = new Sequences ({
+    user: sequence.user,
+    sequenceRows: sequence.sequenceRows,
+  });
+  return newSequence.saveAsync();
 }
 
 let saveSequence = function(sequence) {
-  Sequences.create({
-    userID: this.state.user.id, 
-    name: '', //not sure we have discussed how to name a sequence yet, possible user prompt to input a name?
-    sequence: this.state.sequence,
-    bpm: 120
-  }, function(err, sequence){
-    if(err){
-      console.log('save err,' err)
-    }
-  })
-  db.Users.findOneAndUpdate(  //after saving sequence, also need to update the user who created it
-    {"name": this.state.user.id }, {$push: {sequences: sequence}},
-    function(err, sequence){
-      if(err){
-        console.log(err);
-      }
-  })
+  return createSequence(sequence)
 }
 
 let findSequences = function(user) {
-  db.Sequences.find({"userId": user.id}, function(err, sequence){
-    if(err){
-      console.log('error finding sequences:', err)
+  return Sequences.find()
+  .where('user').equals(user)
+  .limit(10)
+  .exec(function(err, results){
+    if(err){console.log('find err', err)}
+    return results;
+  })
+}
+
+let loginUser = function(username, password){
+  return Users.find()
+  .where('userName').equals(username)
+  .where('passWord').equals(password)
+  .exec(function(err, user){
+    if(err){console.log('Could not log in: ', err)}
+    else if (user) {
+      return true;
     }
   })
 }
 
-let Users = mongoose.model('Players', userSchema);
+let Users = mongoose.model('Users', userSchema);
 
 let Sequences = mongoose.model('Sequences', sequenceSchema);
 
 let Samples = mongoose.model('Samples', sampleSchema);
 
+Promise.promisifyAll(Users);
+Promise.promisifyAll(Users.prototype);
+Promise.promisifyAll(Sequences);
+Promise.promisifyAll(Sequences.prototype);
+
+module.exports = {
+  newUser: newUser,
+  saveSequence: saveSequence,
+  Sequences: Sequences,
+  updateSequence: updateSequence,
+  findSequences: findSequences,
+  Users: Users,
+  loginUser: loginUser
+}
