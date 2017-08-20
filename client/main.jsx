@@ -99,7 +99,9 @@ class Main extends React.Component {
       }
     }
   }
-
+  /** When you click on the X next to a sample name in the soundboard, this function removes the sample from the sequence and soundboard
+     @param {number} indexOfSampleClicked
+  */
   removeSampleFromBoard(sampleClicked) {
     var newSequence = Object.assign([], this.state.sequence);
     newSequence[sampleClicked].sample = undefined;
@@ -266,5 +268,3 @@ Routes = () =>(
 document.addEventListener('DOMContentLoaded', function() {
   ReactDOM.render(<Routes></Routes>, document.getElementById('main'));
 });
-
-export default Main;
