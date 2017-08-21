@@ -33,7 +33,7 @@ var ControlPanel = (props) => {
           onClick={()=>{props.stopClicked()}}><Glyphicon glyph="stop"/></Button>
         <Button className="col-lg-2" bsStyle={props.loopButton? "warning" : "success"} bsSize="large" active
           onClick={()=>{props.loopClicked()}}><Glyphicon glyph="repeat"/></Button>
-        <div className="col-lg-2" style={inLineStyle} >BPM {props.bpm}</div>
+        <div className="col-lg-2 bg-warning" style={inLineStyle} >BPM {props.bpm}</div>
         <input className="col-lg-2" style={{height:40}}  id="bpm"  type="number" name="bpm" min="60" max="999" />
         <Button className="col-lg-2" style={{height:40}} bsStyle={"default"} bsSize="large" active
           onClick={()=>{props.changeBPM()}}>Update BPM</Button>
