@@ -12,7 +12,7 @@ var SampleLibrary = (props) => {
   var yellow = props.samplesOnTheBoard[3];
 
   return (
-    <Grid >
+    <Grid style={{marginBottom: '60px'}}>
       <Row className="show-grid">
         <Col xs={12} sm={8} smOffset={2} sm={6} smOffset={3} className={'center'}>
         {
