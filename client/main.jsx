@@ -108,7 +108,7 @@ class Main extends React.Component {
   */
   toggleSoundOnBoard( row, col) {
     console.log(`clicked at ${row}, ${col}`);
-    if (this.state.sequence[row].sampleIndex!==undefined) { // this fixes bug not toggling when 2 drums selected 
+    if (this.state.sequence[row].sampleIndex!==undefined) { // this fixes bug not toggling when 2 drums selected
       var newRow = this.state.sequence[row].row;
       if (newRow[col] === 0) {
         newRow[col] = 1;
@@ -489,15 +489,10 @@ class Main extends React.Component {
       });
       clearInterval(this.state.intervalId);
       this.stopClicked();
-
-
-
     } else {
       alert('BPM should be between 60 and 999');
     }
-    
-
-  }  
+  }
 
 
   render() {
@@ -517,6 +512,7 @@ class Main extends React.Component {
         samples={this.state.samples}
         playSample={this.playSampleFromLibrary}
         registerSample={this.addSampleToBoard}
+        samplesOnTheBoard={this.state.sequence.map(sample => sample.sampleIndex)}
 
       />
       <ControlPanel
