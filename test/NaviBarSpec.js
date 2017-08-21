@@ -9,7 +9,7 @@ import NaviBar from '../client/components/NaviBar';
 
 
 //'<NaviBar loggedIn={true} loginCB={()=>{}} creatAcctCB={()=>{}} logoutCB={()=>{}}/>'
-describe('<NaviBar />', () => {
+xdescribe('<NaviBar />', () => {
   //should render login form if user is not logged in
   it('NaviBar has login form if not logged in', () => {
     var handleClickLoginStub = sinon.spy();

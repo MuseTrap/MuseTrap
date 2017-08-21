@@ -14,7 +14,7 @@ import MockAdapter from 'axios-mock-adapter';
 var mock;
 //sinon.spy(Main.prototype, 'loginCB');
 
-describe('<Main />', () => {
+xdescribe('<Main />', () => {
   //var xhr, requests;
   beforeEach(function() {
     //xhr = sinon.useFakeXMLHttpRequest();
