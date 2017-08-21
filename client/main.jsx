@@ -21,7 +21,7 @@ class Main extends React.Component {
     this.state = {
       username: '',
       intervalId: undefined, // interval id for SoundBoard loop
-      playstatus: 'stopped', //'playing', 'paused', or 'stopped'
+      playstatus: false, //'playing', 'paused', or 'stopped'
       loopButton: false,
       samples: [],
       bpm: 120, // moved bpm outside of sequence to make it modular
@@ -52,12 +52,12 @@ class Main extends React.Component {
 
     //ControlPanel binds
     this.playClicked = this.playClicked.bind(this);
-    this.pauseClicked = this.pauseClicked.bind(this);
     this.stopClicked = this.stopClicked.bind(this);
     this.loopClicked = this.loopClicked.bind(this);
     this.saveClicked = this.saveClicked.bind(this);
     this.shareClicked = this.shareClicked.bind(this);
     this.playSequence = this.playSequence.bind(this);
+    this.changeBPM = this.changeBPM.bind(this);
 
     // SoundLibrary binds
     this.playSampleFromLibrary = this.playSampleFromLibrary.bind(this);
@@ -91,6 +91,7 @@ class Main extends React.Component {
   removeSampleFromBoard(sampleClicked) {
     var newSequence = Object.assign([], this.state.sequence);
     newSequence[sampleClicked].sampleIndex = undefined;
+    newSequence[sampleClicked].row = [0,0,0,0,0,0,0,0]; // sets undefined row to all 0.
     this.setState({sequence: newSequence});
   }
 
@@ -375,15 +376,18 @@ class Main extends React.Component {
   */
 
   playClicked() {
-    this.setState({
-      playstatus: 'playing'
-    });
+    if (this.state.loopButton) {
+      this.setState({
+        playstatus: true
+      });
+    }
+
 
     this.playSequence();
     if (this.state.loopButton) {
       this.state.intervalId = setInterval(()=>{
         this.playSequence();
-      }, (30/this.state.bpm*1000)*8);
+      }, (60/this.state.bpm*1000)*8);
 
     }
     //this.props.playCB();
@@ -393,14 +397,7 @@ class Main extends React.Component {
   //Make the play visualizer still visible but stop moving/animating
   Run Main callback to "pause"
   pause play at timeX at the Main component level */
-  pauseClicked() {
-    // this.updatePlay(false);
-    this.setState({
-      playstatus: 'paused'
-    });
 
-    //this.props.pauseCB();
-  }
   /** Clicking the stop button will stops the sound
     change the play button image to triangle button
     change play visualizer to invisible and not moving
@@ -409,11 +406,12 @@ class Main extends React.Component {
   stopClicked() {
     // this.updatePlay(false);
     this.setState({
-      playstatus: 'stopped'
+      playstatus: false
     });
     clearInterval(this.state.intervalId);
     //this.props.stopCB();
   }
+
 
   /** Clicking the loop button will toggle between on or off (CURRENTLY NOT WORKING)
     Run Main callback to toggle looping
@@ -423,6 +421,7 @@ class Main extends React.Component {
     this.setState({
       loopButton: !this.state.loopButton
     });
+    if (this.state.playstatus) this.state.playstatus = !this.state.playstatus;
     if (this.state.loopButton) {
       clearInterval(this.state.intervalId);
     }
@@ -470,42 +469,36 @@ class Main extends React.Component {
           if (item === 1) {
             setTimeout( () => {
               this.state.samples[this.state.sequence[sequenceIndex].sampleIndex].play();
-            }, (30 / this.state.bpm * 1000) * rowIndex);
+            }, (60 / this.state.bpm * 1000) * rowIndex);
           }
         });
       }
     });
   }
-  /** Handles double click. Stages beat to register if beatToRegister in undefined. if defined, changes to undefined
-    @param {number} index
+  /** changes bpm of the sequence. takes number between 60-999
+
   */
-  sampleDoubleClickHandler(index) {
-    console.log('Double click: ', index );
-    if (this.state.beatToRegister === undefined) {
+  changeBPM () {
+    console.log("Change BPM Clicked ", document.getElementById('bpm').value);
+    var bpm = document.getElementById('bpm').value;
+    if ( 60 <=bpm && bpm<=999 ) {
       this.setState({
-        beatToRegister: index
+        bpm: bpm,
+        playstatus: !this.state.playstatus,
+        loopButton: !this.state.loopButton
       });
+      clearInterval(this.state.intervalId);
+      this.stopClicked();
+
+
+
     } else {
-      this.setState({
-        beatToRegister: undefined
-      });
+      alert('BPM should be between 60 and 999');
     }
+    
 
-  }
-  /** When register column is double clicked, it unregisters sound for the row if row is registered
+  }  
 
-    @param {number} index
-  */
-  unregisterDoubleClickHandler(index) {
-    console.log('Double Clicked to Unregister row: ', index);
-    if (this.state.sequence[index].beat!==undefined) {
-      this.state.sequence[index].beat=undefined;
-      this.state.sequence[index].row=[0,0,0,0,0,0,0,0];
-      this.setState({
-        sequence: this.state.sequence
-      });
-    }
-  }
 
   render() {
     var welcomeUsername = this.props.loggedIn &&
@@ -527,16 +520,17 @@ class Main extends React.Component {
 
       />
       <ControlPanel
+        bpm={this.state.bpm}
+        loopButton={this.state.loopButton}
         playstatus={this.state.playstatus}
         loggedIn={this.props.loggedIn}
         samples={this.state.samples}
         playClicked={this.playClicked}
-        pauseClicked={this.pauseClicked}
         stopClicked={this.stopClicked}
         loopClicked={this.loopClicked}
         saveClicked={this.saveClicked}
-        loopButton={this.state.loopButton}
-
+        shareClicked={this.shareClicked}
+        changeBPM={this.changeBPM}
       />
 
       <SoundBoard
