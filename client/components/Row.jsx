@@ -4,14 +4,28 @@ import CellHead from './CellHead.jsx';
 import Cell from './Cell.jsx';
 
 var Row = (props) => {
-	
   return (
   	<div className="row">
-  		<CellHead soundId={props.soundId} sample={props.sample} beat={props.beat} registerClick={props.registerClick} rowIndex={props.rowIndex} unregister={props.unregister} />
+  		<CellHead
+        samples={props.samples}
+        soundId={props.soundId}
+        sampleIndex={props.sampleIndex}
+        registerSample={props.registerSample}
+        rowIndex={props.rowIndex}
+        unregisterSample={props.unregisterSample}
+      />
   		{props.row.map(
-  			(cell, index)=>{
-  				return <Cell cell={cell} cellClick={props.cellClick} key={index} rowIndex={props.rowIndex} colIndex={index}/>;
-  		})
+  			(cell, index) => {
+  				return (
+            <Cell
+              cell={cell}
+              toggleCell={props.toggleCell}
+              key={index}
+              rowIndex={props.rowIndex}
+              colIndex={index}
+            />
+          )
+      })
   	}</div>
   );
 };

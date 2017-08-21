@@ -18,44 +18,36 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      beatToRegister: undefined, // beat to register to row
-      intervalId: undefined, // interval id for loop
+      intervalId: undefined, // interval id for SoundBoard loop
       playstatus: 'stopped', //'playing', 'paused', or 'stopped'
       loopButton: false,
       samples: [],
       bpm: 120, // moved bpm outside of sequence to make it modular
       sequence: [
-        { // changed sequence type to Array from objec to make it easier to map in soundboard component.
-        beat: 
-          undefined, row:
-          [
-            0, 0, 0, 0, 0, 0, 0, 0
-          ]
-        }, {
-        beat:
-          undefined, row:
-          [
-            0, 0, 0, 0, 0, 0, 0, 0
-          ]
-        }, {
-        beat:
-          undefined, row:
-          [
-            0, 0, 0, 0, 0, 0, 0, 0
-          ]
-        }, {
-        beat:
-          undefined, row:
-          [
-            0, 0, 0, 0, 0, 0, 0, 0
-          ]
+        {
+          sampleIndex: undefined, // index from the SampleLibrary setup during ComponentDidMount
+          row: [ 0, 0, 0, 0, 0, 0, 0, 0 ]
+        },
+        {
+          sampleIndex: undefined,
+          row: [ 0, 0, 0, 0, 0, 0, 0, 0 ]
+        },
+        {
+          sampleIndex: undefined,
+          row: [ 0, 0, 0, 0, 0, 0, 0, 0 ]
+        },
+        {
+          sampleIndex: undefined,
+          row: [ 0, 0, 0, 0, 0, 0, 0, 0 ]
         }
       ]
     };
-    this.updatePlay = this.updatePlay.bind(this);
-    this.cellClickHandler = this.cellClickHandler.bind(this);
-    this.registerClickHandler = this.registerClickHandler.bind(this);
-    this.playSampleFromLibrary = this.playSampleFromLibrary.bind(this);
+    //session binds
+    this.loginCB = this.loginCB.bind(this);
+    this.createAcctCB = this.createAcctCB.bind(this);
+    this.logoutCB = this.logoutCB.bind(this);
+
+    //ControlPanel binds
     this.playClicked = this.playClicked.bind(this);
     this.pauseClicked = this.pauseClicked.bind(this);
     this.stopClicked = this.stopClicked.bind(this);
@@ -63,36 +55,53 @@ class Main extends React.Component {
     this.saveClicked = this.saveClicked.bind(this);
     this.shareClicked = this.shareClicked.bind(this);
     this.playSequence = this.playSequence.bind(this);
-    this.sampleDoubleClickHandler = this.sampleDoubleClickHandler.bind(this);
-    this.unregisterDoubleClickHandler = this.unregisterDoubleClickHandler.bind(this);
+
+    // SoundLibrary binds
+    this.playSampleFromLibrary = this.playSampleFromLibrary.bind(this);
+    this.addSampleToBoard = this.addSampleToBoard.bind(this);
+
+    // SoundBoard binds
+    this.removeSampleFromBoard = this.removeSampleFromBoard.bind(this);
+    this.toggleSoundOnBoard = this.toggleSoundOnBoard.bind(this);
   }
 
 
-  /** UpdatePlay is passed to the ControlPanel component
-    Clicking the play or stop button will update the entire sounds state -- something to potentially refactor
-    @param {boolean} playStatus
+  // /** Triggers when you click on a row header in the soundboard. .*/
+  // addSampleToSoundBoard(rowNumber) {
+  //   console.log('Register Clicked at row ' +rowNumber);
+  //   if (this.state.beatToRegister!==undefined) {
+  //     this.state.sequence[rowNumber].beat=this.state.beatToRegister;
+  //
+  //     this.setState({
+  //       sequence: this.state.sequence,
+  //       beatToRegister: undefined
+  //
+  //     });
+  //   }
+  // }
+
+  /** When you doubleClick on a sample in the sampleLibrary, this function updates the sequence state adding it to the SoundBoard
+    @param {number} indexOfSampleClicked
   */
-  updatePlay(playStatus) {
-    var newStatus = Object.assign({}, this.state.samples);
-    newStatus[0].playing = playStatus;
-    this.setState({sounds:newStatus});
-  }
-
-
-  /** Triggers when you click on a row header in the soundboard. .*/
-  registerClickHandler(rowNumber) {
-    console.log('Register Clicked at row ' +rowNumber);
-    if (this.state.beatToRegister!==undefined) {
-      this.state.sequence[rowNumber].beat=this.state.beatToRegister;
-
-      this.setState({
-        sequence: this.state.sequence,
-        beatToRegister: undefined
-
-      });
+  addSampleToBoard(sampleClicked) {
+    for (var i = 0; i < this.state.sequence.length; i++) {
+      if (this.state.sequence[i].sampleIndex === undefined) {
+        var newSequence = Object.assign([], this.state.sequence);
+        newSequence[i].sampleIndex = sampleClicked;
+        this.setState({sequence: newSequence});
+        break;
+      }
     }
   }
 
+  /** When you click on the X next to a sample name in the soundboard, this function removes the sample from the sequence and soundboard
+     @param {number} indexOfSampleClicked
+  */
+  removeSampleFromBoard(sampleClicked) {
+    var newSequence = Object.assign([], this.state.sequence);
+    newSequence[sampleClicked].sampleIndex = undefined;
+    this.setState({sequence: newSequence});
+  }
 
   /** Triggers when you click on a sample in the sampleLibrary.
     @param {number} indexOfSampleClicked
@@ -105,9 +114,9 @@ class Main extends React.Component {
 
   /** Click Handler for soundboard. Toggles sound for each 1/8th duration.
   */
-  cellClickHandler(row,col) { console.
-    log(`clicked at ${row}, ${col}`);
-    if (this.state.sequence[row].beat) {
+  toggleSoundOnBoard( row, col) {
+    console.log(`clicked at ${row}, ${col}`);
+    if (this.state.sequence[row].sampleIndex) {
       var newRow = this.state.sequence[row].row;
       if (newRow[col] === 0) {
         newRow[col] = 1;
@@ -152,10 +161,10 @@ class Main extends React.Component {
         autoplay: false,
         loop: false,
         onload:function(){
-          console.log(sample, "LOADED");
+          // console.log(sample, "LOADED");
         },
         onend: function() {
-          console.log('Finished!');
+          // console.log('Finished!');
         }
       });
       newObj.name = sample.name;
@@ -216,7 +225,6 @@ class Main extends React.Component {
   }
 
 
-
   /** Clicking the play button will toggle between play and pause
   change play visualizer to visible+moving if was stopped
    change play visualizer to moving if was paused
@@ -225,18 +233,17 @@ class Main extends React.Component {
   */
 
   playClicked() {
-    this.updatePlay(true);
     this.setState({
       playstatus: 'playing'
     });
+
     this.playSequence();
     if (this.state.loopButton) {
       this.state.intervalId = setInterval(()=>{
-
         this.playSequence();
       }, (30/this.state.bpm*1000)*8);
 
-    } 
+    }
     //this.props.playCB();
   }
 
@@ -245,7 +252,7 @@ class Main extends React.Component {
   Run Main callback to "pause"
   pause play at timeX at the Main component level */
   pauseClicked() {
-    this.updatePlay(false);
+    // this.updatePlay(false);
     this.setState({
       playstatus: 'paused'
     });
@@ -255,10 +262,10 @@ class Main extends React.Component {
   /** Clicking the stop button will stops the sound
     change the play button image to triangle button
     change play visualizer to invisible and not moving
-    Leave loop button alone 
+    Leave loop button alone
   */
   stopClicked() {
-    this.updatePlay(false);
+    // this.updatePlay(false);
     this.setState({
       playstatus: 'stopped'
     });
@@ -270,7 +277,7 @@ class Main extends React.Component {
     Run Main callback to toggle looping
   */
   loopClicked() {
-    this.updatePlay(false);
+    // this.updatePlay(false);
     this.setState({
       loopButton: !this.state.loopButton
     });
@@ -284,7 +291,6 @@ class Main extends React.Component {
   */
   saveClicked() {
     //this.props.save();
-    
     console.log('Save Clicked');
   }
   /**When the share button is clicked
@@ -292,20 +298,19 @@ class Main extends React.Component {
   */
   shareClicked() {
     //this.props.share();
-
     console.log('Share Clicked');
   }
   /** Plays current sequence. If loop is true, then play with interval.
-    
-  */ 
+
+  */
   playSequence() {
-    this.state.sequence.forEach((sequence, sequenceIndex)=>{
-      if (sequence.beat!==undefined) {
-        sequence.row.forEach((item, rowIndex)=>{
-          if (item===1) {
-            setTimeout(()=>{
-              this.state.samples[sequence.beat].play();
-            }, (30/this.state.bpm*1000)*rowIndex);
+    this.state.sequence.forEach((sequence, sequenceIndex) => {
+      if (sequence.sampleIndex !== undefined) {
+        sequence.row.forEach((item, rowIndex) => {
+          if (item === 1) {
+            setTimeout( () => {
+              this.state.samples[this.state.sequence[sequenceIndex].sampleIndex].play();
+            }, (30 / this.state.bpm * 1000) * rowIndex);
           }
         });
       }
@@ -316,7 +321,7 @@ class Main extends React.Component {
   */
   sampleDoubleClickHandler(index) {
     console.log('Double click: ', index );
-    if (this.state.beatToRegister===undefined) {
+    if (this.state.beatToRegister === undefined) {
       this.setState({
         beatToRegister: index
       });
@@ -344,22 +349,38 @@ class Main extends React.Component {
 
   render() {return(
     <div id="container">
-      <NaviBar loggedIn={this.props.loggedIn} loginCB={this.loginCB.bind(this)} creatAcctCB={this.createAcctCB.bind(this)} logoutCB={this.logoutCB.bind(this)}/>
-      <SampleLibrary beatToRegister={this.state.beatToRegister} samples={this.state.samples} sampleClick={this.playSampleFromLibrary} doubleClick={this.sampleDoubleClickHandler} />
+      <NaviBar
+        loggedIn={this.props.loggedIn}
+        loginCB={this.loginCB}
+        creatAcctCB={this.createAcctCB}
+        logoutCB={this.logoutCB}
+      />
+      <SampleLibrary
+        beatToRegister={this.state.beatToRegister}
+        samples={this.state.samples}
+        playSample={this.playSampleFromLibrary}
+        registerSample={this.addSampleToBoard}
+
+      />
       <ControlPanel
         playstatus={this.state.playstatus}
-        loggedIn={this.props.loggedIn} 
-        samples={this.state.samples} 
-        togglePlay={this.updatePlay}
+        loggedIn={this.props.loggedIn}
+        samples={this.state.samples}
         playClicked={this.playClicked}
         pauseClicked={this.pauseClicked}
-        stopClicked={this.stopClicked} 
+        stopClicked={this.stopClicked}
         loopClicked={this.loopClicked}
         saveClicked={this.saveClicked}
         shareClicked={this.shareClicked}
 
       />
-      <SoundBoard samples={this.state.samples} sequence={this.state.sequence} cellClick={this.cellClickHandler} registerClick={this.registerClickHandler} unregisterDoubleClick={this.unregisterDoubleClickHandler} />
+
+      <SoundBoard
+        samples={this.state.samples}
+        sequence={this.state.sequence}
+        toggleCell={this.toggleSoundOnBoard}
+        removeSample={this.removeSampleFromBoard}
+      />
     </div> )
   }
 }
