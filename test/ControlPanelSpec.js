@@ -8,7 +8,7 @@ import sinon from 'sinon';
 import ControlPanel from '../client/components/ControlPanel';
 
 
-xdescribe('<ControlPanel />', () => {
+describe('<ControlPanel />', () => {
   //should not render share or save buttons if user is not logged in
   it('ControlPanel has 3 buttons if not logged in', () => {
     const wrapper = mount(<ControlPanel loggedIn={false}/>);
