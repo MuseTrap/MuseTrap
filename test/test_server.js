@@ -18,14 +18,14 @@ var server;
 var db = serverjs.db;
 var port = process.env.PORT || 3000;
 
-describe('Close connections', function() {
+xdescribe('Close connections', function() {
   it('closes connections', function(done) {
     //close mongoose connections so that the beforeEach and afterEach later on can take care of opening and closing
     mongoose.disconnect(done);
   });
 });
 
-describe('', function() {
+xdescribe('', function() {
   var server, db;
 
   beforeEach(function(done) {
