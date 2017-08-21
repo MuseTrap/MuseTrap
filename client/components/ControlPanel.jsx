@@ -21,7 +21,7 @@ var ControlPanel = (props) => {
   // var saveButton = <Button style={{display: 'inline'}}> Save </Button>;
   // var shareButton = <Button style={{display: 'inline'}}> Share </Button>;
   var saveButton = props.loggedIn &&
-    <Button className="col-lg-1" bsStyle="primary" bsSize="large" active
+    <Button className="col-lg-12" bsStyle="primary" bsSize="large" active
       onClick={()=>{props.saveClicked()}}>save</Button>;
   var inLineStyle={"text-align":'center', "height":40, "margin" : 'auto', "font-size" : 20, "padding" : 5};
   return (
