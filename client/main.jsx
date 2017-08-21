@@ -108,7 +108,7 @@ class Main extends React.Component {
   */
   toggleSoundOnBoard( row, col) {
     console.log(`clicked at ${row}, ${col}`);
-    if (this.state.sequence[row].sampleIndex) {
+    if (this.state.sequence[row].sampleIndex!==undefined) { // this fixes bug not toggling when 2 drums selected 
       var newRow = this.state.sequence[row].row;
       if (newRow[col] === 0) {
         newRow[col] = 1;
