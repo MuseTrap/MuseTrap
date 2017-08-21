@@ -25,16 +25,19 @@ var SampleLibrary = (props) => {
                   <Button
                     bsStyle="default"
                     className={
-                      green === index ? "green btnPulse sampleLibraryBtn" :
-                      blue === index ? "blue btnPulse sampleLibraryBtn" :
-                      red === index ? "red btnPulse sampleLibraryBtn" :
-                      yellow === index ? "yellow btnPulse sampleLibraryBtn" :
+                      green === index ? "green greenPulse btnPulseOnce sampleLibraryBtn" :
+                      blue === index ? "blue bluePulse btnPulseOnce sampleLibraryBtn" :
+                      red === index ? "red redPulse btnPulseOnce sampleLibraryBtn" :
+                      yellow === index ? "yellow yellowPulse btnPulseOnce btnPulseOnce sampleLibraryBtn" :
                       "sampleLibraryBtn"
                     }
-                    onClick={() => {props.playSample(index)}}
+                    onClick={() => {
+                      props.playSample(index)
+
+                    }}
                     onDoubleClick={() => {props.registerSample(index)}}>
                   </Button>
-                  <div className={'center'}>{sound.name.toUpperCase()}</div>
+                  <div className={'center, whiteFont'}>{sound.name.toUpperCase()}</div>
 
                 </Col>
               </div>

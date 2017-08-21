@@ -27,17 +27,17 @@ var ControlPanel = (props) => {
     <div className="container">
       <div className="row">
 
-        <Button lg={1} bsStyle={props.playstatus ? "warning" : "primary" } bsSize="large" active
+        <Button bsStyle={props.playstatus ? "warning" : "primary" } bsSize="large" active
           onClick={()=>{props.playClicked()}}><Glyphicon glyph="play"/></Button>
-        <Button lg={1} bsStyle="primary" bsSize="large" active
+        <Button bsStyle="primary" bsSize="large" active
           onClick={()=>{props.stopClicked()}}><Glyphicon glyph="stop"/></Button>
-        <Button lg={1} bsStyle={props.loopButton? "warning" : "success"} bsSize="large" active
+        <Button bsStyle={props.loopButton? "warning" : "success"} bsSize="large" active
           onClick={()=>{props.loopClicked()}}><Glyphicon glyph="repeat"/></Button>
         {saveButton}
-        BPM {props.bpm}
+        <span style={{margin: '0 10px'}}>BPM {props.bpm}</span>
         <input className="col-lg-1" id="bpm"  type="number" name="bpm" min="60" max="999" />
-        <input className="col-lg-1" type="submit" value="Change" onClick={()=>{props.changeBPM()}} />
-        
+        <input className="col-lg-1" type="submit" value="Update BPM" onClick={()=>{props.changeBPM()}} />
+
       </div>
     </div>
   );
