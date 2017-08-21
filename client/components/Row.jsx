@@ -7,7 +7,7 @@ var Row = (props) => {
   return (
   	<div className="row">
   		<CellHead
-        samples={props.samples}
+        sample={props.sample}
         soundId={props.soundId}
         sampleIndex={props.sampleIndex}
         registerSample={props.registerSample}

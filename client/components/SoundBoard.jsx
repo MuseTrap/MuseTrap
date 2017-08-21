@@ -14,7 +14,7 @@ var SoundBoard = (props) => {
 						<Row
 							soundId={soundId}
 							sampleIndex={row.sampleIndex}
-							samples={props.samples}
+							sample={props.samples[row.sampleIndex]}
 							row={row.row}
 							registerSample={props.registerSample}
 							unregisterSample={props.removeSample}

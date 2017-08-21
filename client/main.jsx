@@ -65,21 +65,6 @@ class Main extends React.Component {
     this.toggleSoundOnBoard = this.toggleSoundOnBoard.bind(this);
   }
 
-
-  // /** Triggers when you click on a row header in the soundboard. .*/
-  // addSampleToSoundBoard(rowNumber) {
-  //   console.log('Register Clicked at row ' +rowNumber);
-  //   if (this.state.beatToRegister!==undefined) {
-  //     this.state.sequence[rowNumber].beat=this.state.beatToRegister;
-  //
-  //     this.setState({
-  //       sequence: this.state.sequence,
-  //       beatToRegister: undefined
-  //
-  //     });
-  //   }
-  // }
-
   /** When you doubleClick on a sample in the sampleLibrary, this function updates the sequence state adding it to the SoundBoard
     @param {number} indexOfSampleClicked
   */
