@@ -23,14 +23,12 @@ var ControlPanel = (props) => {
 
   // var saveButton = <Button style={{display: 'inline'}}> Save </Button>;
   // var shareButton = <Button style={{display: 'inline'}}> Share </Button>;
-  if (props.loggedIn) {
-    saveButton = props.loggedIn &&
-      <Button bsStyle="primary" bsSize="large" active
-        onClick={()=>{props.saveClicked()}}>save</Button>;
-    shareButton = props.loggedIn &&
-      <Button bsStyle="primary" bsSize="large" active
-        onClick={()=>{props.shareClicked()}}>share</Button>;
-  }
+  var saveButton = props.loggedIn &&
+    <Button bsStyle="primary" bsSize="large" active
+      onClick={()=>{props.saveClicked()}}>save</Button>;
+  var shareButton = props.loggedIn &&
+    <Button bsStyle="primary" bsSize="large" active
+      onClick={()=>{props.shareClicked()}}>share</Button>;
   return (
     <div className="row">
       <ButtonToolbar>

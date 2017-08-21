@@ -38625,24 +38625,22 @@ var ControlPanel = function ControlPanel(props) {
 
   // var saveButton = <Button style={{display: 'inline'}}> Save </Button>;
   // var shareButton = <Button style={{display: 'inline'}}> Share </Button>;
-  if (props.loggedIn) {
-    saveButton = props.loggedIn && _react2.default.createElement(
-      _Button2.default,
-      { bsStyle: 'primary', bsSize: 'large', active: true,
-        onClick: function onClick() {
-          props.saveClicked();
-        } },
-      'save'
-    );
-    shareButton = props.loggedIn && _react2.default.createElement(
-      _Button2.default,
-      { bsStyle: 'primary', bsSize: 'large', active: true,
-        onClick: function onClick() {
-          props.shareClicked();
-        } },
-      'share'
-    );
-  }
+  var saveButton = props.loggedIn && _react2.default.createElement(
+    _Button2.default,
+    { bsStyle: 'primary', bsSize: 'large', active: true,
+      onClick: function onClick() {
+        props.saveClicked();
+      } },
+    'save'
+  );
+  var shareButton = props.loggedIn && _react2.default.createElement(
+    _Button2.default,
+    { bsStyle: 'primary', bsSize: 'large', active: true,
+      onClick: function onClick() {
+        props.shareClicked();
+      } },
+    'share'
+  );
   return _react2.default.createElement(
     'div',
     { className: 'row' },
