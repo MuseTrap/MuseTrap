@@ -24,10 +24,10 @@ var ControlPanel = (props) => {
   // var saveButton = <Button style={{display: 'inline'}}> Save </Button>;
   // var shareButton = <Button style={{display: 'inline'}}> Share </Button>;
   if (props.loggedIn) {
-    saveButton =
+    saveButton = props.loggedIn &&
       <Button bsStyle="primary" bsSize="large" active
         onClick={()=>{props.saveClicked()}}>save</Button>;
-    shareButton =
+    shareButton = props.loggedIn &&
       <Button bsStyle="primary" bsSize="large" active
         onClick={()=>{props.shareClicked()}}>share</Button>;
   }
@@ -41,6 +41,8 @@ var ControlPanel = (props) => {
             onClick={()=>{props.stopClicked()}}><Glyphicon glyph="stop"/></Button>
           <Button bsStyle={props.loopButton? "success" : "default"} bsSize="large" active
             onClick={()=>{props.loopClicked()}}><Glyphicon glyph="repeat"/></Button>
+          {saveButton}
+          {shareButton}
         </ButtonGroup>
       </ButtonToolbar>
     </div>
@@ -49,5 +51,3 @@ var ControlPanel = (props) => {
 };
 
 export default ControlPanel;
-
-

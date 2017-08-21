@@ -520,16 +520,3 @@ describe('', function() {
 
   });
 });
-//ControlPanel component
-//should not render share or save buttons if user is not logged in
-//should render share and save buttons if user is logged in
-//Hitting each control button should call their respective event handler callback functions
-//state of loopButton should start out as false
-//state of loopButton should toggle between true and false
-//state of playstatus should begin as 'stopped'
-//Hitting the play button should change state of playstatus from 'stopped' to 'playing'
-//Hitting the pause button should change state of playstatus from 'playing' to 'paused'
-//Hitting the play button should change state of playstatus from 'paused' to 'playing'
-//Hitting the stop button should should not change the state of playstatus 'stopped'
-//Hitting the stop button should change state of playstatus from 'playing' to 'stopped'
-//Hitting the stop button should change state of playstatus from 'paused' to 'stopped'

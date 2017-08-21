@@ -14704,7 +14704,7 @@ var Main = function (_React$Component) {
         console.log('successful login');
         window.location = '/member';
       }).catch(function (err) {
-        console.log('error during login');
+        console.log('error during login', err);
       });
     }
 
@@ -38626,7 +38626,7 @@ var ControlPanel = function ControlPanel(props) {
   // var saveButton = <Button style={{display: 'inline'}}> Save </Button>;
   // var shareButton = <Button style={{display: 'inline'}}> Share </Button>;
   if (props.loggedIn) {
-    saveButton = _react2.default.createElement(
+    saveButton = props.loggedIn && _react2.default.createElement(
       _Button2.default,
       { bsStyle: 'primary', bsSize: 'large', active: true,
         onClick: function onClick() {
@@ -38634,7 +38634,7 @@ var ControlPanel = function ControlPanel(props) {
         } },
       'save'
     );
-    shareButton = _react2.default.createElement(
+    shareButton = props.loggedIn && _react2.default.createElement(
       _Button2.default,
       { bsStyle: 'primary', bsSize: 'large', active: true,
         onClick: function onClick() {
@@ -38675,7 +38675,9 @@ var ControlPanel = function ControlPanel(props) {
               props.loopClicked();
             } },
           _react2.default.createElement(_Glyphicon2.default, { glyph: 'repeat' })
-        )
+        ),
+        saveButton,
+        shareButton
       )
     )
   );

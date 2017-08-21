@@ -174,8 +174,8 @@ class Main extends React.Component {
       console.log('successful login');
       window.location ='/member';
     })
-    .catch((err) => {console.
-      log('error during login');
+    .catch((err) => {
+      console.log('error during login', err);
     });
   }
 
