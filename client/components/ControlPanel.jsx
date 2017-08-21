@@ -23,7 +23,7 @@ var ControlPanel = (props) => {
   var saveButton = props.loggedIn &&
     <Button className="col-lg-12" bsStyle="primary" bsSize="large" active
       onClick={()=>{props.saveClicked()}}>save</Button>;
-  var inLineStyle={"text-align":'center', "height":40, "margin" : 'auto', "font-size" : 20, "padding" : 5};
+  var inLineStyle={"textAlign":'center', "height":40, "margin" : 'auto', "fontSize" : 20, "padding" : 5};
   return (
     <div className="container">
       <div className="row">
