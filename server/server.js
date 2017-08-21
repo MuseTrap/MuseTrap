@@ -149,6 +149,13 @@ app.post('/logout', function(req, res) {
   res.redirect(302, '/');
 });
 
+/**GET /username
+* PURPOSE OF THE CLIENT REQUEST TO SERVER: get username of person logged in
+*/
+app.get('/username', verifySession, function(req, res) {
+  res.send(req.session.user);
+});
+
 /**GET /users
 * PURPOSE OF THE CLIENT REQUEST TO SERVER: get all sequences for particular user
 * Client should send 1 thing to Server...username
@@ -157,8 +164,8 @@ app.post('/logout', function(req, res) {
 * Server should send back user's sequences back to Client where Client can render them somewhere
 */
 app.get('/users', verifySession, function(req, res) {
-  var username = req.body.username;
-  console.log(username);
+  var username = req.body.username || req.query.username;
+  console.log('retrieve this users songs ', username);
   db.findSequences(username)
     .then((results) => {
       console.log('retrieved user sequences: ', results);
@@ -178,6 +185,7 @@ app.get('/users', verifySession, function(req, res) {
 */
 app.post('/users', verifySession, function(req, res) {
   var sequenceObj = req.body.sequenceObj;
+  console.log('sequenceObj to be saved ', sequenceObj);
   db.saveSequence(sequenceObj)
     .then(() => {
       res.status(201).send();
@@ -217,8 +225,8 @@ app.put('/users', verifySession, function(req, res) {
 * Server should redirect user to shareable link localhost:3000/users/username/sequenceObjID
 */
 app.get('/users/share', verifySession, function(req, res) {
-  var username = req.body.username;
-  var sequenceObjID = req.body.sequenceObjID;
+  var username = req.body.username || req.query.username;
+  var sequenceObjID = req.body.sequenceObjID || req.query.sequenceObjID;
   //console.log(username, sequenceObjID);
   db.findSequences(username)
     .then((results) => {
@@ -279,6 +287,39 @@ app.get('/users/:username/:sequenceObjID', function(req, res) {
     })
     .then((seqEntry) => {
       res.sendFile('index.html',{root : __dirname + '/../public'});
+    })
+    .catch((err) => {
+      console.log('error during retrieve shared song: ', err)
+      res.status(404).send();
+    });
+});
+
+/**GET /users/share/
+* PURPOSE: this is to get a shared sequenceObjID
+*/
+app.get('/users/sharedObjID', function(req, res) {
+  var username = req.body.username || req.query.username;
+  var sequenceObjID = req.body.sequenceObjID || req.query.sequenceObjID;
+  //console.log(username, sequenceObjID);
+  //If user doesn't exist, sequenceObjID doesn't exist under user, or sequenceObjID is not shared, return a 404 error
+  db.findSequences(username)
+    .then((results) => {
+      var sequenceEntry;
+      for (var i = 0; i < results.length; i++) {
+        //console.log('each of sharing users sequence is ', results[i]);
+        if (JSON.stringify(sequenceObjID) === JSON.stringify(results[i]._id)) {
+          sequenceEntry = results[i];
+          break;
+        }
+      }
+      if (sequenceEntry === undefined || !sequenceEntry.shareable) {
+        throw 'User doesnt exist, or No song found, or song is not allowed by owner to share';
+      } else {
+        return sequenceEntry;
+      }
+    })
+    .then((seqEntry) => {
+      res.send(seqEntry);
     })
     .catch((err) => {
       console.log('error during retrieve shared song: ', err)

@@ -18,7 +18,10 @@ var ControlPanel = (props) => {
   // console.log("PROPS", props);
  
   var playStyle = {
-    display: 'inline' 
+    display: 'inline'
+  };
+  var buttonToolBarStyle = {
+    'marginLeft': '100px'
   };
 
   // var saveButton = <Button style={{display: 'inline'}}> Save </Button>;
@@ -26,12 +29,9 @@ var ControlPanel = (props) => {
   var saveButton = props.loggedIn &&
     <Button bsStyle="primary" bsSize="large" active
       onClick={()=>{props.saveClicked()}}>save</Button>;
-  var shareButton = props.loggedIn &&
-    <Button bsStyle="primary" bsSize="large" active
-      onClick={()=>{props.shareClicked()}}>share</Button>;
   return (
     <div className="row">
-      <ButtonToolbar>
+      <ButtonToolbar style={buttonToolBarStyle}>
         <ButtonGroup>
           <Button style={playStyle} bsStyle='primary' bsSize="large" active
             onClick={()=>{props.playClicked()}}><Glyphicon glyph="play"/></Button>
@@ -40,7 +40,6 @@ var ControlPanel = (props) => {
           <Button bsStyle={props.loopButton? "success" : "default"} bsSize="large" active
             onClick={()=>{props.loopClicked()}}><Glyphicon glyph="repeat"/></Button>
           {saveButton}
-          {shareButton}
         </ButtonGroup>
       </ButtonToolbar>
     </div>

@@ -2089,7 +2089,7 @@ var CallbackQueue = __webpack_require__(124);
 var PooledClass = __webpack_require__(34);
 var ReactFeatureFlags = __webpack_require__(125);
 var ReactReconciler = __webpack_require__(41);
-var Transaction = __webpack_require__(62);
+var Transaction = __webpack_require__(63);
 
 var invariant = __webpack_require__(2);
 
@@ -2403,7 +2403,7 @@ if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 /***/ (function(module, exports, __webpack_require__) {
 
 var store = __webpack_require__(100)('wks');
-var uid = __webpack_require__(67);
+var uid = __webpack_require__(68);
 var Symbol = __webpack_require__(31).Symbol;
 var USE_SYMBOL = typeof Symbol == 'function';
 
@@ -3066,7 +3066,7 @@ var _assign = __webpack_require__(12);
 var ReactCurrentOwner = __webpack_require__(21);
 
 var warning = __webpack_require__(3);
-var canDefineProperty = __webpack_require__(59);
+var canDefineProperty = __webpack_require__(60);
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 
 var REACT_ELEMENT_TYPE = __webpack_require__(115);
@@ -3682,7 +3682,7 @@ var cloneElement = ReactElement.cloneElement;
 
 if (process.env.NODE_ENV !== 'production') {
   var lowPriorityWarning = __webpack_require__(71);
-  var canDefineProperty = __webpack_require__(59);
+  var canDefineProperty = __webpack_require__(60);
   var ReactElementValidator = __webpack_require__(117);
   var didWarnPropTypesDeprecated = false;
   createElement = ReactElementValidator.createElement;
@@ -4019,7 +4019,7 @@ module.exports = ReactReconciler;
 
 
 var DOMNamespaces = __webpack_require__(79);
-var setInnerHTML = __webpack_require__(64);
+var setInnerHTML = __webpack_require__(65);
 
 var createMicrosoftUnsafeLocalFunction = __webpack_require__(80);
 var setTextContent = __webpack_require__(129);
@@ -4570,7 +4570,7 @@ module.exports = EventPropagators;
 
 var _prodInvariant = __webpack_require__(5);
 
-var EventPluginRegistry = __webpack_require__(61);
+var EventPluginRegistry = __webpack_require__(62);
 var EventPluginUtils = __webpack_require__(73);
 var ReactErrorUtils = __webpack_require__(74);
 
@@ -5068,6 +5068,145 @@ module.exports = {};
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+exports.__esModule = true;
+
+var _values = __webpack_require__(367);
+
+var _values2 = _interopRequireDefault(_values);
+
+var _objectWithoutProperties2 = __webpack_require__(7);
+
+var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+
+var _extends3 = __webpack_require__(6);
+
+var _extends4 = _interopRequireDefault(_extends3);
+
+var _classCallCheck2 = __webpack_require__(8);
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _possibleConstructorReturn2 = __webpack_require__(9);
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = __webpack_require__(10);
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _classnames = __webpack_require__(11);
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(4);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _elementType = __webpack_require__(27);
+
+var _elementType2 = _interopRequireDefault(_elementType);
+
+var _bootstrapUtils = __webpack_require__(14);
+
+var _StyleConfig = __webpack_require__(47);
+
+var _SafeAnchor = __webpack_require__(110);
+
+var _SafeAnchor2 = _interopRequireDefault(_SafeAnchor);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var propTypes = {
+  active: _propTypes2['default'].bool,
+  disabled: _propTypes2['default'].bool,
+  block: _propTypes2['default'].bool,
+  onClick: _propTypes2['default'].func,
+  componentClass: _elementType2['default'],
+  href: _propTypes2['default'].string,
+  /**
+   * Defines HTML button type attribute
+   * @defaultValue 'button'
+   */
+  type: _propTypes2['default'].oneOf(['button', 'reset', 'submit'])
+};
+
+var defaultProps = {
+  active: false,
+  block: false,
+  disabled: false
+};
+
+var Button = function (_React$Component) {
+  (0, _inherits3['default'])(Button, _React$Component);
+
+  function Button() {
+    (0, _classCallCheck3['default'])(this, Button);
+    return (0, _possibleConstructorReturn3['default'])(this, _React$Component.apply(this, arguments));
+  }
+
+  Button.prototype.renderAnchor = function renderAnchor(elementProps, className) {
+    return _react2['default'].createElement(_SafeAnchor2['default'], (0, _extends4['default'])({}, elementProps, {
+      className: (0, _classnames2['default'])(className, elementProps.disabled && 'disabled')
+    }));
+  };
+
+  Button.prototype.renderButton = function renderButton(_ref, className) {
+    var componentClass = _ref.componentClass,
+        elementProps = (0, _objectWithoutProperties3['default'])(_ref, ['componentClass']);
+
+    var Component = componentClass || 'button';
+
+    return _react2['default'].createElement(Component, (0, _extends4['default'])({}, elementProps, {
+      type: elementProps.type || 'button',
+      className: className
+    }));
+  };
+
+  Button.prototype.render = function render() {
+    var _extends2;
+
+    var _props = this.props,
+        active = _props.active,
+        block = _props.block,
+        className = _props.className,
+        props = (0, _objectWithoutProperties3['default'])(_props, ['active', 'block', 'className']);
+
+    var _splitBsProps = (0, _bootstrapUtils.splitBsProps)(props),
+        bsProps = _splitBsProps[0],
+        elementProps = _splitBsProps[1];
+
+    var classes = (0, _extends4['default'])({}, (0, _bootstrapUtils.getClassSet)(bsProps), (_extends2 = {
+      active: active
+    }, _extends2[(0, _bootstrapUtils.prefix)(bsProps, 'block')] = block, _extends2));
+    var fullClassName = (0, _classnames2['default'])(className, classes);
+
+    if (elementProps.href) {
+      return this.renderAnchor(elementProps, fullClassName);
+    }
+
+    return this.renderButton(elementProps, fullClassName);
+  };
+
+  return Button;
+}(_react2['default'].Component);
+
+Button.propTypes = propTypes;
+Button.defaultProps = defaultProps;
+
+exports['default'] = (0, _bootstrapUtils.bsClass)('btn', (0, _bootstrapUtils.bsSizes)([_StyleConfig.Size.LARGE, _StyleConfig.Size.SMALL, _StyleConfig.Size.XSMALL], (0, _bootstrapUtils.bsStyles)([].concat((0, _values2['default'])(_StyleConfig.State), [_StyleConfig.Style.DEFAULT, _StyleConfig.Style.PRIMARY, _StyleConfig.Style.LINK]), _StyleConfig.Style.DEFAULT, Button)));
+module.exports = exports['default'];
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -5096,7 +5235,7 @@ module.exports = canDefineProperty;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5122,7 +5261,7 @@ module.exports = emptyObject;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5381,7 +5520,7 @@ module.exports = EventPluginRegistry;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5615,7 +5754,7 @@ module.exports = TransactionImpl;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5692,7 +5831,7 @@ SyntheticUIEvent.augmentClass(SyntheticMouseEvent, MouseEventInterface);
 module.exports = SyntheticMouseEvent;
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5795,7 +5934,7 @@ if (ExecutionEnvironment.canUseDOM) {
 module.exports = setInnerHTML;
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5922,7 +6061,7 @@ function escapeTextContentForBrowser(text) {
 module.exports = escapeTextContentForBrowser;
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5940,7 +6079,7 @@ module.exports = escapeTextContentForBrowser;
 
 var _assign = __webpack_require__(12);
 
-var EventPluginRegistry = __webpack_require__(61);
+var EventPluginRegistry = __webpack_require__(62);
 var ReactEventEmitterMixin = __webpack_require__(224);
 var ViewportMetrics = __webpack_require__(128);
 
@@ -6251,7 +6390,7 @@ var ReactBrowserEventEmitter = _assign({}, ReactEventEmitterMixin, {
 module.exports = ReactBrowserEventEmitter;
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports) {
 
 var id = 0;
@@ -6262,7 +6401,7 @@ module.exports = function (key) {
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6307,145 +6446,6 @@ function all() {
 
   return (0, _createChainableTypeChecker2.default)(allPropTypes);
 }
-module.exports = exports['default'];
-
-/***/ }),
-/* 69 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-
-var _values = __webpack_require__(367);
-
-var _values2 = _interopRequireDefault(_values);
-
-var _objectWithoutProperties2 = __webpack_require__(7);
-
-var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
-
-var _extends3 = __webpack_require__(6);
-
-var _extends4 = _interopRequireDefault(_extends3);
-
-var _classCallCheck2 = __webpack_require__(8);
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _possibleConstructorReturn2 = __webpack_require__(9);
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = __webpack_require__(10);
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _classnames = __webpack_require__(11);
-
-var _classnames2 = _interopRequireDefault(_classnames);
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(4);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _elementType = __webpack_require__(27);
-
-var _elementType2 = _interopRequireDefault(_elementType);
-
-var _bootstrapUtils = __webpack_require__(14);
-
-var _StyleConfig = __webpack_require__(47);
-
-var _SafeAnchor = __webpack_require__(110);
-
-var _SafeAnchor2 = _interopRequireDefault(_SafeAnchor);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var propTypes = {
-  active: _propTypes2['default'].bool,
-  disabled: _propTypes2['default'].bool,
-  block: _propTypes2['default'].bool,
-  onClick: _propTypes2['default'].func,
-  componentClass: _elementType2['default'],
-  href: _propTypes2['default'].string,
-  /**
-   * Defines HTML button type attribute
-   * @defaultValue 'button'
-   */
-  type: _propTypes2['default'].oneOf(['button', 'reset', 'submit'])
-};
-
-var defaultProps = {
-  active: false,
-  block: false,
-  disabled: false
-};
-
-var Button = function (_React$Component) {
-  (0, _inherits3['default'])(Button, _React$Component);
-
-  function Button() {
-    (0, _classCallCheck3['default'])(this, Button);
-    return (0, _possibleConstructorReturn3['default'])(this, _React$Component.apply(this, arguments));
-  }
-
-  Button.prototype.renderAnchor = function renderAnchor(elementProps, className) {
-    return _react2['default'].createElement(_SafeAnchor2['default'], (0, _extends4['default'])({}, elementProps, {
-      className: (0, _classnames2['default'])(className, elementProps.disabled && 'disabled')
-    }));
-  };
-
-  Button.prototype.renderButton = function renderButton(_ref, className) {
-    var componentClass = _ref.componentClass,
-        elementProps = (0, _objectWithoutProperties3['default'])(_ref, ['componentClass']);
-
-    var Component = componentClass || 'button';
-
-    return _react2['default'].createElement(Component, (0, _extends4['default'])({}, elementProps, {
-      type: elementProps.type || 'button',
-      className: className
-    }));
-  };
-
-  Button.prototype.render = function render() {
-    var _extends2;
-
-    var _props = this.props,
-        active = _props.active,
-        block = _props.block,
-        className = _props.className,
-        props = (0, _objectWithoutProperties3['default'])(_props, ['active', 'block', 'className']);
-
-    var _splitBsProps = (0, _bootstrapUtils.splitBsProps)(props),
-        bsProps = _splitBsProps[0],
-        elementProps = _splitBsProps[1];
-
-    var classes = (0, _extends4['default'])({}, (0, _bootstrapUtils.getClassSet)(bsProps), (_extends2 = {
-      active: active
-    }, _extends2[(0, _bootstrapUtils.prefix)(bsProps, 'block')] = block, _extends2));
-    var fullClassName = (0, _classnames2['default'])(className, classes);
-
-    if (elementProps.href) {
-      return this.renderAnchor(elementProps, fullClassName);
-    }
-
-    return this.renderButton(elementProps, fullClassName);
-  };
-
-  return Button;
-}(_react2['default'].Component);
-
-Button.propTypes = propTypes;
-Button.defaultProps = defaultProps;
-
-exports['default'] = (0, _bootstrapUtils.bsClass)('btn', (0, _bootstrapUtils.bsSizes)([_StyleConfig.Size.LARGE, _StyleConfig.Size.SMALL, _StyleConfig.Size.XSMALL], (0, _bootstrapUtils.bsStyles)([].concat((0, _values2['default'])(_StyleConfig.State), [_StyleConfig.Style.DEFAULT, _StyleConfig.Style.PRIMARY, _StyleConfig.Style.LINK]), _StyleConfig.Style.DEFAULT, Button)));
 module.exports = exports['default'];
 
 /***/ }),
@@ -7043,7 +7043,7 @@ var ReactDOMComponentTree = __webpack_require__(13);
 var ReactInstrumentation = __webpack_require__(18);
 
 var createMicrosoftUnsafeLocalFunction = __webpack_require__(80);
-var setInnerHTML = __webpack_require__(64);
+var setInnerHTML = __webpack_require__(65);
 var setTextContent = __webpack_require__(129);
 
 function getNodeAfter(parentNode, node) {
@@ -8916,7 +8916,7 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var shared = __webpack_require__(100)('keys');
-var uid = __webpack_require__(67);
+var uid = __webpack_require__(68);
 module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
@@ -9498,8 +9498,8 @@ var _prodInvariant = __webpack_require__(40),
 
 var ReactNoopUpdateQueue = __webpack_require__(114);
 
-var canDefineProperty = __webpack_require__(59);
-var emptyObject = __webpack_require__(60);
+var canDefineProperty = __webpack_require__(60);
+var emptyObject = __webpack_require__(61);
 var invariant = __webpack_require__(2);
 var lowPriorityWarning = __webpack_require__(71);
 
@@ -9827,7 +9827,7 @@ var ReactElement = __webpack_require__(33);
 
 var checkReactTypeSpec = __webpack_require__(181);
 
-var canDefineProperty = __webpack_require__(59);
+var canDefineProperty = __webpack_require__(60);
 var getIteratorFn = __webpack_require__(116);
 var warning = __webpack_require__(3);
 var lowPriorityWarning = __webpack_require__(71);
@@ -11151,8 +11151,8 @@ module.exports = ViewportMetrics;
 
 
 var ExecutionEnvironment = __webpack_require__(15);
-var escapeTextContentForBrowser = __webpack_require__(65);
-var setInnerHTML = __webpack_require__(64);
+var escapeTextContentForBrowser = __webpack_require__(66);
+var setInnerHTML = __webpack_require__(65);
 
 /**
  * Set the textContent property of a node, ensuring that whitespace is preserved
@@ -12599,7 +12599,7 @@ var _prodInvariant = __webpack_require__(5);
 var DOMLazyTree = __webpack_require__(42);
 var DOMProperty = __webpack_require__(29);
 var React = __webpack_require__(39);
-var ReactBrowserEventEmitter = __webpack_require__(66);
+var ReactBrowserEventEmitter = __webpack_require__(67);
 var ReactCurrentOwner = __webpack_require__(21);
 var ReactDOMComponentTree = __webpack_require__(13);
 var ReactDOMContainerInfo = __webpack_require__(265);
@@ -12612,10 +12612,10 @@ var ReactReconciler = __webpack_require__(41);
 var ReactUpdateQueue = __webpack_require__(86);
 var ReactUpdates = __webpack_require__(22);
 
-var emptyObject = __webpack_require__(60);
+var emptyObject = __webpack_require__(61);
 var instantiateReactComponent = __webpack_require__(135);
 var invariant = __webpack_require__(2);
-var setInnerHTML = __webpack_require__(64);
+var setInnerHTML = __webpack_require__(65);
 var shouldUpdateReactComponent = __webpack_require__(84);
 var warning = __webpack_require__(3);
 
@@ -14417,11 +14417,11 @@ var _propTypes = __webpack_require__(4);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _all = __webpack_require__(68);
+var _all = __webpack_require__(69);
 
 var _all2 = _interopRequireDefault(_all);
 
-var _Button = __webpack_require__(69);
+var _Button = __webpack_require__(59);
 
 var _Button2 = _interopRequireDefault(_Button);
 
@@ -14542,6 +14542,10 @@ var _SampleLibrary = __webpack_require__(415);
 
 var _SampleLibrary2 = _interopRequireDefault(_SampleLibrary);
 
+var _SavedSequences = __webpack_require__(418);
+
+var _SavedSequences2 = _interopRequireDefault(_SavedSequences);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -14564,26 +14568,33 @@ var Main = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
 
     _this.state = {
-      beatToRegister: undefined, // beat to register to row
-      intervalId: undefined, // interval id for loop
+      username: '',
+      intervalId: undefined, // interval id for SoundBoard loop
       playstatus: 'stopped', //'playing', 'paused', or 'stopped'
       loopButton: false,
       samples: [],
       bpm: 120, // moved bpm outside of sequence to make it modular
-      sequence: [{ // changed sequence type to Array from objec to make it easier to map in soundboard component.
-        beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]
+      sequence: [{
+        sampleIndex: undefined, // index from the SampleLibrary setup during ComponentDidMount
+        row: [0, 0, 0, 0, 0, 0, 0, 0]
       }, {
-        beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]
+        sampleIndex: undefined,
+        row: [0, 0, 0, 0, 0, 0, 0, 0]
       }, {
-        beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]
+        sampleIndex: undefined,
+        row: [0, 0, 0, 0, 0, 0, 0, 0]
       }, {
-        beat: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0]
-      }]
+        sampleIndex: undefined,
+        row: [0, 0, 0, 0, 0, 0, 0, 0]
+      }],
+      savedSequences: []
     };
-    _this.updatePlay = _this.updatePlay.bind(_this);
-    _this.cellClickHandler = _this.cellClickHandler.bind(_this);
-    _this.registerClickHandler = _this.registerClickHandler.bind(_this);
-    _this.playSampleFromLibrary = _this.playSampleFromLibrary.bind(_this);
+    //session binds
+    _this.loginCB = _this.loginCB.bind(_this);
+    _this.createAcctCB = _this.createAcctCB.bind(_this);
+    _this.logoutCB = _this.logoutCB.bind(_this);
+
+    //ControlPanel binds
     _this.playClicked = _this.playClicked.bind(_this);
     _this.pauseClicked = _this.pauseClicked.bind(_this);
     _this.stopClicked = _this.stopClicked.bind(_this);
@@ -14591,40 +14602,48 @@ var Main = function (_React$Component) {
     _this.saveClicked = _this.saveClicked.bind(_this);
     _this.shareClicked = _this.shareClicked.bind(_this);
     _this.playSequence = _this.playSequence.bind(_this);
-    _this.sampleDoubleClickHandler = _this.sampleDoubleClickHandler.bind(_this);
-    _this.unregisterDoubleClickHandler = _this.unregisterDoubleClickHandler.bind(_this);
+
+    // SoundLibrary binds
+    _this.playSampleFromLibrary = _this.playSampleFromLibrary.bind(_this);
+    _this.addSampleToBoard = _this.addSampleToBoard.bind(_this);
+
+    // SoundBoard binds
+    _this.removeSampleFromBoard = _this.removeSampleFromBoard.bind(_this);
+    _this.toggleSoundOnBoard = _this.toggleSoundOnBoard.bind(_this);
+
+    //SavedSequences binds
+    _this.loadSavedSequence = _this.loadSavedSequence.bind(_this);
     return _this;
   }
 
-  /** UpdatePlay is passed to the ControlPanel component
-    Clicking the play or stop button will update the entire sounds state -- something to potentially refactor
-    @param {boolean} playStatus
+  /** When you doubleClick on a sample in the sampleLibrary, this function updates the sequence state adding it to the SoundBoard
+    @param {number} indexOfSampleClicked
   */
 
 
   _createClass(Main, [{
-    key: 'updatePlay',
-    value: function updatePlay(playStatus) {
-      var newStatus = Object.assign({}, this.state.samples);
-      newStatus[0].playing = playStatus;
-      this.setState({ sounds: newStatus });
+    key: 'addSampleToBoard',
+    value: function addSampleToBoard(sampleClicked) {
+      for (var i = 0; i < this.state.sequence.length; i++) {
+        if (this.state.sequence[i].sampleIndex === undefined) {
+          var newSequence = Object.assign([], this.state.sequence);
+          newSequence[i].sampleIndex = sampleClicked;
+          this.setState({ sequence: newSequence });
+          break;
+        }
+      }
     }
 
-    /** Triggers when you click on a row header in the soundboard. .*/
+    /** When you click on the X next to a sample name in the soundboard, this function removes the sample from the sequence and soundboard
+       @param {number} indexOfSampleClicked
+    */
 
   }, {
-    key: 'registerClickHandler',
-    value: function registerClickHandler(rowNumber) {
-      console.log('Register Clicked at row ' + rowNumber);
-      if (this.state.beatToRegister !== undefined) {
-        this.state.sequence[rowNumber].beat = this.state.beatToRegister;
-
-        this.setState({
-          sequence: this.state.sequence,
-          beatToRegister: undefined
-
-        });
-      }
+    key: 'removeSampleFromBoard',
+    value: function removeSampleFromBoard(sampleClicked) {
+      var newSequence = Object.assign([], this.state.sequence);
+      newSequence[sampleClicked].sampleIndex = undefined;
+      this.setState({ sequence: newSequence });
     }
 
     /** Triggers when you click on a sample in the sampleLibrary.
@@ -14642,12 +14661,12 @@ var Main = function (_React$Component) {
     */
 
   }, {
-    key: 'cellClickHandler',
-    value: function cellClickHandler(row, col) {
+    key: 'toggleSoundOnBoard',
+    value: function toggleSoundOnBoard(row, col) {
       var _this2 = this;
 
       console.log('clicked at ' + row + ', ' + col);
-      if (this.state.sequence[row].beat) {
+      if (this.state.sequence[row].sampleIndex) {
         var newRow = this.state.sequence[row].row;
         if (newRow[col] === 0) {
           newRow[col] = 1;
@@ -14663,6 +14682,8 @@ var Main = function (_React$Component) {
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
+      var _this3 = this;
+
       console.log('props including react router props are,', this.props);
 
       var sampleLibrary = [{ sampleId: 0, name: 'bass', url: './audio_files/sound-bass.wav' }, { sampleId: 1, name: 'clap', url: './audio_files/sound-electronicClap.wav' }, { sampleId: 2, name: 'hat1', url: './audio_files/sound-hat.wav' }, { sampleId: 3, name: 'hat2', url: './audio_files/sound-hat2.wav' }, { sampleId: 4, name: 'kick1', url: './audio_files/sound-kick.wav' }, { sampleId: 5, name: 'kick2', url: './audio_files/sound-kick2.wav' }, { sampleId: 6, name: 'kick3', url: './audio_files/sound-kick3.wav' }, { sampleId: 7, name: 'percussion', url: './audio_files/sound-percussion.wav' }, { sampleId: 8, name: 'pluck', url: './audio_files/sound-pluck.wav' }, { sampleId: 9, name: 'snap', url: './audio_files/sound-snap.wav' }, { sampleId: 10, name: 'snare', url: './audio_files/sound-snare.wav' }, { sampleId: 11, name: 'speedy', url: './audio_files/sound-speedy.wav' }, { sampleId: 12, name: 'synth', url: './audio_files/sound-synth.wav' }, { sampleId: 13, name: 'trumpet', url: './audio_files/sound-trumpet.wav' }, { sampleId: 14, name: 'vocal', url: './audio_files/sound-vocal.wav' }, { sampleId: 15, name: 'yea', url: './audio_files/sound-vocoder.wav' }];
@@ -14675,10 +14696,10 @@ var Main = function (_React$Component) {
           autoplay: false,
           loop: false,
           onload: function onload() {
-            console.log(sample, "LOADED");
+            // console.log(sample, "LOADED");
           },
           onend: function onend() {
-            console.log('Finished!');
+            // console.log('Finished!');
           }
         });
         newObj.name = sample.name;
@@ -14687,6 +14708,18 @@ var Main = function (_React$Component) {
       });
 
       this.setState({ samples: sampleLibrary });
+
+      if (this.props.loggedIn) {
+        this.getUserName().then(function (username) {
+          _this3.getSavedSequences(username);
+        });
+      }
+
+      //load shared song if this is a shareable link
+      ///users/:username/:sequenceObjID
+      if (this.props.sequenceObjID) {
+        this.loadSharedSequence();
+      }
     }
 
     /** Login to the app
@@ -14741,6 +14774,157 @@ var Main = function (_React$Component) {
       });
     }
 
+    /** Get username of person logged in, and also the usernames saved sequences
+    */
+
+  }, {
+    key: 'getUserName',
+    value: function getUserName() {
+      var _this4 = this;
+
+      return _axios2.default.get('/username').then(function (res) {
+        console.log('successful get username', res.data);
+        var username = res.data;
+        _this4.setState({
+          username: username
+        });
+        return username;
+      }).catch(function (err) {
+        console.log('error during username retrieval', err);
+      });
+    }
+
+    /** Get the usernames saved sequences
+    * @params username
+    */
+
+  }, {
+    key: 'getSavedSequences',
+    value: function getSavedSequences(username) {
+      var _this5 = this;
+
+      return _axios2.default.get('/users', { params: { username: username } }).then(function (res) {
+        console.log('successful saved sequences retrieval: ', res.data);
+        _this5.setState({
+          savedSequences: res.data
+        });
+        return true;
+      }).catch(function (err) {
+        console.log('error during username and saved sequences retrieval', err);
+        throw err;
+      });
+    }
+
+    /** Load retrieved sequence to the page
+    * @params index
+    */
+
+  }, {
+    key: 'loadSavedSequence',
+    value: function loadSavedSequence(index) {
+      //clear out the existing sequence first
+      var sequence = [];
+      for (var i = 0; i < this.state.sequence.length; i++) {
+        sequence.push({ sampleIndex: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0] });
+      }
+      this.setState({
+        sequence: sequence
+      });
+      var loadedSequence = this.state.savedSequences[index];
+      var loadedSequenceRows = loadedSequence.sequenceRows;
+      for (var i = 0; i < loadedSequenceRows.length; i++) {
+        if (i === sequence.length) {
+          //no more room to load a sequence row
+          break;
+        }
+        var sampleIndex = undefined;
+        if (loadedSequenceRows[i]['beat'] !== undefined) {
+          //look for beat's index in this.state.samples
+          var foundSampleArray = this.state.samples.filter(function (eachsample) {
+            return eachsample.name === loadedSequenceRows[i]['beat'];
+          });
+          if (foundSampleArray.length > 0) {
+            sampleIndex = foundSampleArray[0].sampleId;
+          }
+        }
+        if (sampleIndex !== undefined) {
+          sequence[i].sampleIndex = sampleIndex;
+          sequence[i].row = loadedSequenceRows[i].row;
+        }
+      }
+      this.setState({
+        sequence: sequence
+      });
+    }
+
+    /**load shared song if this is a shareable link
+    * users/:username/:sequenceObjID
+    */
+
+  }, {
+    key: 'loadSharedSequence',
+    value: function loadSharedSequence() {
+      var _this6 = this;
+
+      return _axios2.default.get('/users/sharedObjID', { params: {
+          username: this.props.username,
+          sequenceObjID: this.props.sequenceObjID
+        } }).then(function (res) {
+        console.log('successful get shared sequence', res.data);
+        var sharedSeq = res.data;
+        _this6.setState({
+          savedSequences: [sharedSeq]
+        });
+        return sharedSeq;
+      }).then(function () {
+        _this6.loadSavedSequence(0);
+        return true;
+      }).catch(function (err) {
+        console.log('error during load shared sequence', err);
+      });
+    }
+
+    /** Save current sequence on the page
+    * to look like this in the database
+    * {
+    *  user: 'MyUserName',
+    *  sequenceRows:
+    *    [
+    *      {beat: 'blah', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+    *      {beat: 'blah2', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+    *      {beat: 'blah3', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+    *      {beat: 'blah4', row: [0, 0, 0, 0, 0, 0, 0, 0]}
+    *    ]
+    * }
+    */
+
+  }, {
+    key: 'saveSequence',
+    value: function saveSequence() {
+      var _this7 = this;
+
+      var sequenceRows = [];
+      for (var i = 0; i < this.state.sequence.length; i++) {
+        if (this.state.sequence[i].sampleIndex !== undefined) {
+          var matchedSample;
+          var matchedSampleArray = this.state.samples.filter(function (eachsample) {
+            return eachsample.sampleId === _this7.state.sequence[i].sampleIndex;
+          });
+          if (matchedSampleArray.length > 0) {
+            matchedSample = matchedSampleArray[0];
+            sequenceRows.push({ beat: matchedSample.name, row: this.state.sequence[i].row });
+          }
+        }
+      }
+      var sequenceObj = { user: this.state.username, sequenceRows: sequenceRows };
+      return _axios2.default.post('/users', { sequenceObj: sequenceObj }).then(function (res) {
+        return _this7.getSavedSequences(_this7.state.username);
+      }).catch(function (err) {
+        console.log('error during save sequence', err);
+        throw err;
+      });
+    }
+
     /** Clicking the play button will toggle between play and pause
     change play visualizer to visible+moving if was stopped
      change play visualizer to moving if was paused
@@ -14751,17 +14935,16 @@ var Main = function (_React$Component) {
   }, {
     key: 'playClicked',
     value: function playClicked() {
-      var _this3 = this;
+      var _this8 = this;
 
-      this.updatePlay(true);
       this.setState({
         playstatus: 'playing'
       });
+
       this.playSequence();
       if (this.state.loopButton) {
         this.state.intervalId = setInterval(function () {
-
-          _this3.playSequence();
+          _this8.playSequence();
         }, 30 / this.state.bpm * 1000 * 8);
       }
       //this.props.playCB();
@@ -14775,7 +14958,7 @@ var Main = function (_React$Component) {
   }, {
     key: 'pauseClicked',
     value: function pauseClicked() {
-      this.updatePlay(false);
+      // this.updatePlay(false);
       this.setState({
         playstatus: 'paused'
       });
@@ -14785,13 +14968,13 @@ var Main = function (_React$Component) {
     /** Clicking the stop button will stops the sound
       change the play button image to triangle button
       change play visualizer to invisible and not moving
-      Leave loop button alone 
+      Leave loop button alone
     */
 
   }, {
     key: 'stopClicked',
     value: function stopClicked() {
-      this.updatePlay(false);
+      // this.updatePlay(false);
       this.setState({
         playstatus: 'stopped'
       });
@@ -14806,7 +14989,7 @@ var Main = function (_React$Component) {
   }, {
     key: 'loopClicked',
     value: function loopClicked() {
-      this.updatePlay(false);
+      // this.updatePlay(false);
       this.setState({
         loopButton: !this.state.loopButton
       });
@@ -14823,8 +15006,8 @@ var Main = function (_React$Component) {
     key: 'saveClicked',
     value: function saveClicked() {
       //this.props.save();
-
       console.log('Save Clicked');
+      this.saveSequence();
     }
     /**When the share button is clicked
       Run Main callback to "share"
@@ -14832,27 +15015,39 @@ var Main = function (_React$Component) {
 
   }, {
     key: 'shareClicked',
-    value: function shareClicked() {
-      //this.props.share();
+    value: function shareClicked(index) {
+      var _this9 = this;
 
+      //this.props.share();
       console.log('Share Clicked');
+      return _axios2.default.get('/users/share', { params: {
+          username: this.state.username,
+          sequenceObjID: JSON.parse(JSON.stringify(this.state.savedSequences[index]._id))
+        } }).then(function (res) {
+        console.log('successful sharing of sequence');
+        return true;
+      }).then(function () {
+        return _this9.getSavedSequences(_this9.state.username);
+      }).catch(function (err) {
+        console.log('error during sharing of sequence', err);
+        throw err;
+      });
     }
     /** Plays current sequence. If loop is true, then play with interval.
-      
-    */
+      */
 
   }, {
     key: 'playSequence',
     value: function playSequence() {
-      var _this4 = this;
+      var _this10 = this;
 
       this.state.sequence.forEach(function (sequence, sequenceIndex) {
-        if (sequence.beat !== undefined) {
+        if (sequence.sampleIndex !== undefined) {
           sequence.row.forEach(function (item, rowIndex) {
             if (item === 1) {
               setTimeout(function () {
-                _this4.state.samples[sequence.beat].play();
-              }, 30 / _this4.state.bpm * 1000 * rowIndex);
+                _this10.state.samples[_this10.state.sequence[sequenceIndex].sampleIndex].play();
+              }, 30 / _this10.state.bpm * 1000 * rowIndex);
             }
           });
         }
@@ -14895,25 +15090,53 @@ var Main = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var welcomeUsername = this.props.loggedIn && _react2.default.createElement(
+        'div',
+        null,
+        'Welcome ',
+        this.state.username
+      );
       return _react2.default.createElement(
         'div',
         { id: 'container' },
-        _react2.default.createElement(_NaviBar2.default, { loggedIn: this.props.loggedIn, loginCB: this.loginCB.bind(this), creatAcctCB: this.createAcctCB.bind(this), logoutCB: this.logoutCB.bind(this) }),
-        _react2.default.createElement(_SampleLibrary2.default, { beatToRegister: this.state.beatToRegister, samples: this.state.samples, sampleClick: this.playSampleFromLibrary, doubleClick: this.sampleDoubleClickHandler }),
+        _react2.default.createElement(_NaviBar2.default, {
+          loggedIn: this.props.loggedIn,
+          loginCB: this.loginCB,
+          creatAcctCB: this.createAcctCB,
+          logoutCB: this.logoutCB
+        }),
+        welcomeUsername,
+        _react2.default.createElement(_SampleLibrary2.default, {
+          beatToRegister: this.state.beatToRegister,
+          samples: this.state.samples,
+          playSample: this.playSampleFromLibrary,
+          registerSample: this.addSampleToBoard
+
+        }),
         _react2.default.createElement(_ControlPanel2.default, {
           playstatus: this.state.playstatus,
           loggedIn: this.props.loggedIn,
           samples: this.state.samples,
-          togglePlay: this.updatePlay,
           playClicked: this.playClicked,
           pauseClicked: this.pauseClicked,
           stopClicked: this.stopClicked,
           loopClicked: this.loopClicked,
           saveClicked: this.saveClicked,
-          shareClicked: this.shareClicked
+          loopButton: this.state.loopButton
 
         }),
-        _react2.default.createElement(_SoundBoard2.default, { samples: this.state.samples, sequence: this.state.sequence, cellClick: this.cellClickHandler, registerClick: this.registerClickHandler, unregisterDoubleClick: this.unregisterDoubleClickHandler })
+        _react2.default.createElement(_SoundBoard2.default, {
+          samples: this.state.samples,
+          sequence: this.state.sequence,
+          toggleCell: this.toggleSoundOnBoard,
+          removeSample: this.removeSampleFromBoard
+        }),
+        _react2.default.createElement(_SavedSequences2.default, {
+          savedSequences: this.state.savedSequences,
+          loadSavedSequence: this.loadSavedSequence,
+          shareClicked: this.shareClicked,
+          loggedIn: this.props.loggedIn
+        })
       );
     }
   }]);
@@ -14928,7 +15151,7 @@ var Main = function (_React$Component) {
 *    If loggedIn===true, Main component should render extra things such as User's saved seqeunces in a list
 *    on the righthand side
 *    Also, the top navbar should change to a "logout" button
-*  Sharing /users/:username/:sequenceName; same as demo mode but with shared sequence loaded on the player
+*  Sharing /users/:username/:sequenceObjID; same as demo mode but with shared sequence loaded on the player
 * @constructor
 */
 
@@ -14946,8 +15169,8 @@ var Routes = function Routes() {
       _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/member', render: function render() {
           return _react2.default.createElement(Main, { loggedIn: true });
         } }),
-      _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/users/:username/:sequenceName', render: function render(props) {
-          return _react2.default.createElement(Main, { loggedIn: false, username: props.match.params.username, sequenceName: props.match.params.sequenceName });
+      _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/users/:username/:sequenceObjID', render: function render(props) {
+          return _react2.default.createElement(Main, { loggedIn: false, username: props.match.params.username, sequenceObjID: props.match.params.sequenceObjID });
         } })
     )
   );
@@ -16000,7 +16223,7 @@ module.exports = factory(Component, isValidElement, ReactNoopUpdateQueue);
 
 var _assign = __webpack_require__(12);
 
-var emptyObject = __webpack_require__(60);
+var emptyObject = __webpack_require__(61);
 var _invariant = __webpack_require__(2);
 
 if (process.env.NODE_ENV !== 'production') {
@@ -18840,7 +19063,7 @@ module.exports = DefaultEventPluginOrder;
 
 var EventPropagators = __webpack_require__(49);
 var ReactDOMComponentTree = __webpack_require__(13);
-var SyntheticMouseEvent = __webpack_require__(63);
+var SyntheticMouseEvent = __webpack_require__(64);
 
 var eventTypes = {
   mouseEnter: {
@@ -19641,8 +19864,8 @@ var DOMNamespaces = __webpack_require__(79);
 var DOMProperty = __webpack_require__(29);
 var DOMPropertyOperations = __webpack_require__(132);
 var EventPluginHub = __webpack_require__(50);
-var EventPluginRegistry = __webpack_require__(61);
-var ReactBrowserEventEmitter = __webpack_require__(66);
+var EventPluginRegistry = __webpack_require__(62);
+var ReactBrowserEventEmitter = __webpack_require__(67);
 var ReactDOMComponentFlags = __webpack_require__(120);
 var ReactDOMComponentTree = __webpack_require__(13);
 var ReactDOMInput = __webpack_require__(226);
@@ -19654,7 +19877,7 @@ var ReactMultiChild = __webpack_require__(229);
 var ReactServerRenderingTransaction = __webpack_require__(238);
 
 var emptyFunction = __webpack_require__(17);
-var escapeTextContentForBrowser = __webpack_require__(65);
+var escapeTextContentForBrowser = __webpack_require__(66);
 var invariant = __webpack_require__(2);
 var isEventSupported = __webpack_require__(76);
 var shallowEqual = __webpack_require__(83);
@@ -21179,7 +21402,7 @@ module.exports = memoizeStringOnly;
 
 
 
-var escapeTextContentForBrowser = __webpack_require__(65);
+var escapeTextContentForBrowser = __webpack_require__(66);
 
 /**
  * Escapes attribute value to prevent scripting attacks.
@@ -22567,7 +22790,7 @@ if (process.env.NODE_ENV !== 'production') {
   var checkReactTypeSpec = __webpack_require__(232);
 }
 
-var emptyObject = __webpack_require__(60);
+var emptyObject = __webpack_require__(61);
 var invariant = __webpack_require__(2);
 var shallowEqual = __webpack_require__(83);
 var shouldUpdateReactComponent = __webpack_require__(84);
@@ -23763,7 +23986,7 @@ module.exports = flattenChildren;
 var _assign = __webpack_require__(12);
 
 var PooledClass = __webpack_require__(34);
-var Transaction = __webpack_require__(62);
+var Transaction = __webpack_require__(63);
 var ReactInstrumentation = __webpack_require__(18);
 var ReactServerUpdateQueue = __webpack_require__(239);
 
@@ -24215,7 +24438,7 @@ var DOMChildrenOperations = __webpack_require__(78);
 var DOMLazyTree = __webpack_require__(42);
 var ReactDOMComponentTree = __webpack_require__(13);
 
-var escapeTextContentForBrowser = __webpack_require__(65);
+var escapeTextContentForBrowser = __webpack_require__(66);
 var invariant = __webpack_require__(2);
 var validateDOMNesting = __webpack_require__(87);
 
@@ -24379,7 +24602,7 @@ module.exports = ReactDOMTextComponent;
 var _assign = __webpack_require__(12);
 
 var ReactUpdates = __webpack_require__(22);
-var Transaction = __webpack_require__(62);
+var Transaction = __webpack_require__(63);
 
 var emptyFunction = __webpack_require__(17);
 
@@ -24658,7 +24881,7 @@ var EventPluginHub = __webpack_require__(50);
 var EventPluginUtils = __webpack_require__(73);
 var ReactComponentEnvironment = __webpack_require__(82);
 var ReactEmptyComponent = __webpack_require__(137);
-var ReactBrowserEventEmitter = __webpack_require__(66);
+var ReactBrowserEventEmitter = __webpack_require__(67);
 var ReactHostComponent = __webpack_require__(138);
 var ReactUpdates = __webpack_require__(22);
 
@@ -24696,10 +24919,10 @@ var _assign = __webpack_require__(12);
 
 var CallbackQueue = __webpack_require__(124);
 var PooledClass = __webpack_require__(34);
-var ReactBrowserEventEmitter = __webpack_require__(66);
+var ReactBrowserEventEmitter = __webpack_require__(67);
 var ReactInputSelection = __webpack_require__(141);
 var ReactInstrumentation = __webpack_require__(18);
-var Transaction = __webpack_require__(62);
+var Transaction = __webpack_require__(63);
 var ReactUpdateQueue = __webpack_require__(86);
 
 /**
@@ -25788,7 +26011,7 @@ var SyntheticClipboardEvent = __webpack_require__(257);
 var SyntheticEvent = __webpack_require__(26);
 var SyntheticFocusEvent = __webpack_require__(258);
 var SyntheticKeyboardEvent = __webpack_require__(259);
-var SyntheticMouseEvent = __webpack_require__(63);
+var SyntheticMouseEvent = __webpack_require__(64);
 var SyntheticDragEvent = __webpack_require__(261);
 var SyntheticTouchEvent = __webpack_require__(262);
 var SyntheticTransitionEvent = __webpack_require__(263);
@@ -26343,7 +26566,7 @@ module.exports = getEventKey;
 
 
 
-var SyntheticMouseEvent = __webpack_require__(63);
+var SyntheticMouseEvent = __webpack_require__(64);
 
 /**
  * @interface DragEvent
@@ -26478,7 +26701,7 @@ module.exports = SyntheticTransitionEvent;
 
 
 
-var SyntheticMouseEvent = __webpack_require__(63);
+var SyntheticMouseEvent = __webpack_require__(64);
 
 /**
  * @interface WheelEvent
@@ -26808,7 +27031,7 @@ module.exports = ReactMount.renderSubtreeIntoContainer;
 
 
 var DOMProperty = __webpack_require__(29);
-var EventPluginRegistry = __webpack_require__(61);
+var EventPluginRegistry = __webpack_require__(62);
 var ReactComponentTreeHook = __webpack_require__(16);
 
 var warning = __webpack_require__(3);
@@ -32877,7 +33100,7 @@ var _FormControl = __webpack_require__(364);
 
 var _FormControl2 = _interopRequireDefault(_FormControl);
 
-var _Button = __webpack_require__(69);
+var _Button = __webpack_require__(59);
 
 var _Button2 = _interopRequireDefault(_Button);
 
@@ -33073,7 +33296,7 @@ var _propTypes = __webpack_require__(4);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _all = __webpack_require__(68);
+var _all = __webpack_require__(69);
 
 var _all2 = _interopRequireDefault(_all);
 
@@ -33573,7 +33796,7 @@ var META = __webpack_require__(346).KEY;
 var $fails = __webpack_require__(55);
 var shared = __webpack_require__(100);
 var setToStringTag = __webpack_require__(106);
-var uid = __webpack_require__(67);
+var uid = __webpack_require__(68);
 var wks = __webpack_require__(25);
 var wksExt = __webpack_require__(107);
 var wksDefine = __webpack_require__(108);
@@ -33803,7 +34026,7 @@ setToStringTag(global.JSON, 'JSON', true);
 /* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var META = __webpack_require__(67)('meta');
+var META = __webpack_require__(68)('meta');
 var isObject = __webpack_require__(54);
 var has = __webpack_require__(37);
 var setDesc = __webpack_require__(36).f;
@@ -34623,7 +34846,7 @@ var _reactDom = __webpack_require__(28);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _all = __webpack_require__(68);
+var _all = __webpack_require__(69);
 
 var _all2 = _interopRequireDefault(_all);
 
@@ -37099,7 +37322,7 @@ var _reactDom = __webpack_require__(28);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _all = __webpack_require__(68);
+var _all = __webpack_require__(69);
 
 var _all2 = _interopRequireDefault(_all);
 
@@ -38229,7 +38452,7 @@ var _classnames = __webpack_require__(11);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _Button = __webpack_require__(69);
+var _Button = __webpack_require__(59);
 
 var _Button2 = _interopRequireDefault(_Button);
 
@@ -38443,27 +38666,27 @@ var _Row2 = _interopRequireDefault(_Row);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var SoundBoard = function SoundBoard(props) {
-
 	return _react2.default.createElement(
 		'div',
 		{ className: 'container' },
 		' ',
 		props.sequence.map(function (row, index) {
 			var soundId = undefined;
-			if (props.samples[row.beat]) {
-				soundId = props.samples[row.beat].sampleId;
+			if (props.samples[row.sampleIndex]) {
+				soundId = props.samples[row.sampleIndex].sampleId;
 			}
 
 			return _react2.default.createElement(_Row2.default, {
 				soundId: soundId,
-				sample: props.samples[soundId],
-				unregister: props.unregisterDoubleClick,
-				beat: row.beat,
+				sampleIndex: row.sampleIndex,
+				sample: props.samples[row.sampleIndex],
 				row: row.row,
-				registerClick: props.registerClick,
-				cellClick: props.cellClick,
+				registerSample: props.registerSample,
+				unregisterSample: props.removeSample,
+				toggleCell: props.toggleCell,
 				key: index,
-				rowIndex: index });
+				rowIndex: index
+			});
 		})
 	);
 };
@@ -38496,13 +38719,25 @@ var _Cell2 = _interopRequireDefault(_Cell);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Row = function Row(props) {
-
   return _react2.default.createElement(
     'div',
     { className: 'row' },
-    _react2.default.createElement(_CellHead2.default, { soundId: props.soundId, sample: props.sample, beat: props.beat, registerClick: props.registerClick, rowIndex: props.rowIndex, unregister: props.unregister }),
+    _react2.default.createElement(_CellHead2.default, {
+      sample: props.sample,
+      soundId: props.soundId,
+      sampleIndex: props.sampleIndex,
+      registerSample: props.registerSample,
+      rowIndex: props.rowIndex,
+      unregisterSample: props.unregisterSample
+    }),
     props.row.map(function (cell, index) {
-      return _react2.default.createElement(_Cell2.default, { cell: cell, cellClick: props.cellClick, key: index, rowIndex: props.rowIndex, colIndex: index });
+      return _react2.default.createElement(_Cell2.default, {
+        cell: cell,
+        toggleCell: props.toggleCell,
+        key: index,
+        rowIndex: props.rowIndex,
+        colIndex: index
+      });
     })
   );
 };
@@ -38524,21 +38759,28 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _Glyphicon = __webpack_require__(111);
+
+var _Glyphicon2 = _interopRequireDefault(_Glyphicon);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var CellHead = function CellHead(props) {
 	var name;
+	var remove;
 	if (props.sample) {
 		name = props.sample.name;
+		remove = _react2.default.createElement(_Glyphicon2.default, { glyph: 'remove-circle', onClick: function onClick() {
+				props.unregisterSample(props.rowIndex);
+			} });
 	}
 	return _react2.default.createElement(
 		'div',
-		{ className: 'col-lg-1 bg-success', onClick: function onClick() {
-				props.registerClick(props.rowIndex);
-			}, onDoubleClick: function onDoubleClick() {
-				props.unregister(props.rowIndex);
-			} },
-		name || 'Undefined'
+		{
+			className: 'col-xs-4 col-lg-4 bg-success'
+		},
+		props.sample ? name : 'Undefined',
+		remove
 	);
 };
 
@@ -38564,9 +38806,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Cell = function Cell(props) {
   return _react2.default.createElement(
     "div",
-    { className: "col-lg-1 bg-info", onClick: function onClick() {
-        props.cellClick(props.rowIndex, props.colIndex);
-      } },
+    {
+      className: "col-xs-4 col-md-1 bg-info",
+      onClick: function onClick() {
+        props.toggleCell(props.rowIndex, props.colIndex);
+      }
+    },
     props.cell
   );
 };
@@ -38588,7 +38833,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Button = __webpack_require__(69);
+var _Button = __webpack_require__(59);
 
 var _Button2 = _interopRequireDefault(_Button);
 
@@ -38622,6 +38867,9 @@ var ControlPanel = function ControlPanel(props) {
   var playStyle = {
     display: 'inline'
   };
+  var buttonToolBarStyle = {
+    'marginLeft': '100px'
+  };
 
   // var saveButton = <Button style={{display: 'inline'}}> Save </Button>;
   // var shareButton = <Button style={{display: 'inline'}}> Share </Button>;
@@ -38633,20 +38881,12 @@ var ControlPanel = function ControlPanel(props) {
       } },
     'save'
   );
-  var shareButton = props.loggedIn && _react2.default.createElement(
-    _Button2.default,
-    { bsStyle: 'primary', bsSize: 'large', active: true,
-      onClick: function onClick() {
-        props.shareClicked();
-      } },
-    'share'
-  );
   return _react2.default.createElement(
     'div',
     { className: 'row' },
     _react2.default.createElement(
       _ButtonToolbar2.default,
-      null,
+      { style: buttonToolBarStyle },
       _react2.default.createElement(
         _ButtonGroup2.default,
         null,
@@ -38674,8 +38914,7 @@ var ControlPanel = function ControlPanel(props) {
             } },
           _react2.default.createElement(_Glyphicon2.default, { glyph: 'repeat' })
         ),
-        saveButton,
-        shareButton
+        saveButton
       )
     )
   );
@@ -38770,30 +39009,21 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _SampleSound = __webpack_require__(416);
-
-var _SampleSound2 = _interopRequireDefault(_SampleSound);
-
-var _Glyphicon = __webpack_require__(111);
-
-var _Glyphicon2 = _interopRequireDefault(_Glyphicon);
-
 var _Grid = __webpack_require__(167);
 
 var _Grid2 = _interopRequireDefault(_Grid);
 
-var _Row = __webpack_require__(417);
+var _Row = __webpack_require__(416);
 
 var _Row2 = _interopRequireDefault(_Row);
 
-var _Col = __webpack_require__(418);
+var _Col = __webpack_require__(417);
 
 var _Col2 = _interopRequireDefault(_Col);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var SampleLibrary = function SampleLibrary(props) {
-  //console.log("PROPS", props);
 
   return _react2.default.createElement(
     'div',
@@ -38805,18 +39035,22 @@ var SampleLibrary = function SampleLibrary(props) {
         _Row2.default,
         { className: 'show-grid' },
         props.samples.map(function (sound, index) {
-          //console.log('SOUND', sound);
           return _react2.default.createElement(
             'div',
             { key: index },
             _react2.default.createElement(
               _Col2.default,
-              { xs: 3, md: 4, onClick: function onClick() {
-                  props.sampleClick(index);
-                }, onDoubleClick: function onDoubleClick() {
-                  props.doubleClick(sound.sampleId);
-                } },
-              sound.name
+              {
+                xs: 3,
+                md: 4,
+                onClick: function onClick() {
+                  props.playSample(index);
+                },
+                onDoubleClick: function onDoubleClick() {
+                  props.registerSample(index);
+                }
+              },
+              sound.name.toUpperCase()
             )
           );
         })
@@ -38829,36 +39063,6 @@ exports.default = SampleLibrary;
 
 /***/ }),
 /* 416 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var SampleSound = function SampleSound(props) {
-
-  return _react2.default.createElement(
-    "div",
-    { className: "col-lg-3 bg-primary", onClick: function onClick() {
-        props.sampleClick(props.index);
-      } },
-    props.sound.source + " " + props.sound.playing
-  );
-};
-
-exports.default = SampleSound;
-
-/***/ }),
-/* 417 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38945,7 +39149,7 @@ exports['default'] = (0, _bootstrapUtils.bsClass)('row', Row);
 module.exports = exports['default'];
 
 /***/ }),
-/* 418 */
+/* 417 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39221,6 +39425,77 @@ Col.defaultProps = defaultProps;
 
 exports['default'] = (0, _bootstrapUtils.bsClass)('col', Col);
 module.exports = exports['default'];
+
+/***/ }),
+/* 418 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Button = __webpack_require__(59);
+
+var _Button2 = _interopRequireDefault(_Button);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SavedSequences = function SavedSequences(props) {
+
+  return _react2.default.createElement(
+    'div',
+    { className: 'container' },
+    props.loggedIn ? 'Saved sequences...click ID# to load, click share button to share' : '',
+    _react2.default.createElement(
+      'ul',
+      null,
+      props.savedSequences.map(function (sequence, index) {
+        var linkOrShare = sequence.shareable ? _react2.default.createElement(
+          'a',
+          { key: index, href: '/users/' + sequence.user + '/' + sequence._id },
+          'Shareable Link'
+        ) : _react2.default.createElement(
+          _Button2.default,
+          { key: index, bsStyle: 'primary', bsSize: 'small', onClick: function onClick() {
+              props.shareClicked(index);
+            } },
+          'share'
+        );
+        return _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'span',
+            null,
+            _react2.default.createElement(
+              'li',
+              { key: index,
+                onClick: function onClick() {
+                  props.loadSavedSequence(index);
+                }
+              },
+              JSON.stringify(sequence._id)
+            )
+          ),
+          _react2.default.createElement(
+            'span',
+            null,
+            linkOrShare
+          )
+        );
+      })
+    )
+  );
+};
+
+exports.default = SavedSequences;
 
 /***/ })
 /******/ ]);

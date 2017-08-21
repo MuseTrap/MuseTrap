@@ -1,18 +1,18 @@
 var mongoose = require('mongoose');
 var Promise = require('bluebird');
 
-var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, 
-                replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };  
+// var options = { server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }, 
+//                 replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } };  
 
-var mongodbUri = 'mongodb://heroku_tkrwhxb3:ljk1iikq8pag0rcusofkbir363@ds149613.mlab.com:49613/heroku_tkrwhxb3';
-mongoose.connect(mongodbUri, options); 
+// var mongodbUri = 'mongodb://heroku_tkrwhxb3:ljk1iikq8pag0rcusofkbir363@ds149613.mlab.com:49613/heroku_tkrwhxb3';
+// mongoose.connect(mongodbUri, options);
+mongoose.connect('mongodb://localhost/musetrap');
 var db = mongoose.connection;
 db.on('error', console.error);
 
 var Schema = mongoose.Schema;
 
 var sequenceSchema = new Schema ({
-  id: {type:Schema.Types.ObjectId, unique: true},
   user: String,
   sequenceRows: [{}],
   shareable: {type: Boolean, default: false}

@@ -15,9 +15,9 @@ describe('<ControlPanel />', () => {
     expect(wrapper.find('Button').length).to.equal(3);
   });
   //should render share and save buttons if user is logged in
-  it('ControlPanel has 5 buttons if logged in', () => {
+  it('ControlPanel has 4 buttons if logged in', () => {
     const wrapper = mount(<ControlPanel loggedIn={true}/>);
-    expect(wrapper.find('Button').length).to.equal(5);
+    expect(wrapper.find('Button').length).to.equal(4);
   });
 });
 
