@@ -1,13 +1,19 @@
 import React from 'react';
+import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 var CellHead = (props) => {
 	var name;
+	var remove;
 	if (props.sample) {
 		name = props.sample.name;
+		remove = <Glyphicon glyph="remove-circle" onClick={ () => {props.unregisterSample(props.rowIndex)}}/>
 	}
 	return (
-		<div className="col-lg-1 bg-success" onClick={()=>{props.registerClick(props.rowIndex)}} onDoubleClick={()=>{props.unregister(props.rowIndex)}}>
-			{name || 'Undefined'}
+		<div
+			className="col-xs-4 col-lg-4 bg-success"
+		>
+			{props.sample ? name : 'Undefined'}
+			{remove}
 		</div>
 	)
 
