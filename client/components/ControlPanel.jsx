@@ -16,10 +16,6 @@ import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 var ControlPanel = (props) => {
   // console.log("PROPS", props);
- 
-  var playStyle = {
-    display: 'inline'
-  };
   var buttonToolBarStyle = {
     'marginLeft': '100px'
   };
@@ -32,15 +28,17 @@ var ControlPanel = (props) => {
   return (
     <div className="row">
       <ButtonToolbar style={buttonToolBarStyle}>
-        <ButtonGroup>
-          <Button style={playStyle} bsStyle='primary' bsSize="large" active
-            onClick={()=>{props.playClicked()}}><Glyphicon glyph="play"/></Button>
-          <Button bsStyle="primary" bsSize="large" active
-            onClick={()=>{props.stopClicked()}}><Glyphicon glyph="stop"/></Button>
-          <Button bsStyle={props.loopButton? "success" : "default"} bsSize="large" active
-            onClick={()=>{props.loopClicked()}}><Glyphicon glyph="repeat"/></Button>
-          {saveButton}
-        </ButtonGroup>
+
+        <Button bsStyle={props.playstatus ? "warning" : "primary" } bsSize="large" active
+          onClick={()=>{props.playClicked()}}><Glyphicon glyph="play"/></Button>
+        <Button bsStyle="primary" bsSize="large" active
+          onClick={()=>{props.stopClicked()}}><Glyphicon glyph="stop"/></Button>
+        <Button bsStyle={props.loopButton? "warning" : "success"} bsSize="large" active
+          onClick={()=>{props.loopClicked()}}><Glyphicon glyph="repeat"/></Button>
+        <div className="col-lg-1">BPM {props.bpm}</div>
+        <input id="bpm" className="col-lg-1" type="number" name="bpm" min="60" max="999" />
+        <input className="col-lg-1" type="submit" value="Change" onClick={()=>{props.changeBPM()}} /> 
+        {saveButton}
       </ButtonToolbar>
     </div>
   );
