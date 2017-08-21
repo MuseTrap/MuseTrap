@@ -5,7 +5,8 @@
   width: 80px;
   height: 80px;
   margin: 5px 0 ;
-  background-color: #58b9ff;
+  background-color: white;
+  opacity: 0.2;
   border: 0px
 }
 
@@ -25,10 +26,12 @@
 /* GREEN */
 .green {
   background-color: #749a02 !important;
+  opacity: 1;
 }
 
 .greenPulse {
   -webkit-animation-name: greenAnimation;
+  opacity: 1;
 }
 
 @-webkit-keyframes greenAnimation {
@@ -41,10 +44,12 @@
 
 .red {
   background-color: #ff0000 !important;
+  opacity: 1;
 }
 
 .redPulse {
   -webkit-animation-name: redAnimation;
+  opacity: 1;
 }
 
 @-webkit-keyframes redAnimation {
@@ -57,10 +62,12 @@
 
 .blue {
   background-color: #0000ff !important;
+  opacity: 1;
 }
 
 .bluePulse {
   -webkit-animation-name: blueAnimation;
+  opacity: 1;
 }
 
 @-webkit-keyframes blueAnimation {
@@ -73,10 +80,12 @@
 
 .yellow {
   background-color: #ffff00 !important;
+  opacity: 1;
 }
 
 .yellowPulse {
   -webkit-animation-name: yellowAnimation;
+  opacity: 1;
 }
 
 @-webkit-keyframes yellowAnimation {
