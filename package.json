@@ -36,7 +36,9 @@
     "react-router-dom": "^4.1.2",
     "request": "^2.81.0",
     "webpack": "^3.5.2",
-    "webpack-dev-middleware": "^1.12.0"
+    "webpack-dev-middleware": "^1.12.0",
+    "jsdom": "^11.1.0",
+    "jsdom-global": "^3.0.2",
   },
   "devDependencies": {
     "axios-mock-adapter": "^1.9.0",
