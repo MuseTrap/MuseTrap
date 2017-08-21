@@ -16,7 +16,7 @@ var SampleLibrary = (props) => {
               <div key={index} >
                 <Col
                   xs={3}
-                  md={4}
+                  md={3}
                   onClick={() => {props.playSample(index)}}
                   onDoubleClick={() => {props.registerSample(index)}}
                 >
