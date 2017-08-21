@@ -7,6 +7,7 @@ import NaviBar from './components/NaviBar.jsx';
 import SoundBoard from './components/SoundBoard.jsx';
 import ControlPanel from './components/ControlPanel.jsx';
 import SampleLibrary from './components/SampleLibrary.jsx';
+import SavedSequences from './components/SavedSequences.jsx';
 
 /** Main component behavior
  * States:
@@ -18,6 +19,7 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      username: '',
       intervalId: undefined, // interval id for SoundBoard loop
       playstatus: 'stopped', //'playing', 'paused', or 'stopped'
       loopButton: false,
@@ -40,7 +42,8 @@ class Main extends React.Component {
           sampleIndex: undefined,
           row: [ 0, 0, 0, 0, 0, 0, 0, 0 ]
         }
-      ]
+      ],
+      savedSequences: []
     };
     //session binds
     this.loginCB = this.loginCB.bind(this);
@@ -63,6 +66,9 @@ class Main extends React.Component {
     // SoundBoard binds
     this.removeSampleFromBoard = this.removeSampleFromBoard.bind(this);
     this.toggleSoundOnBoard = this.toggleSoundOnBoard.bind(this);
+
+    //SavedSequences binds
+    this.loadSavedSequence = this.loadSavedSequence.bind(this);
   }
 
   /** When you doubleClick on a sample in the sampleLibrary, this function updates the sequence state adding it to the SoundBoard
@@ -158,6 +164,19 @@ class Main extends React.Component {
     })
 
     this.setState({samples: sampleLibrary})
+
+    if (this.props.loggedIn) {
+      this.getUserName()
+        .then((username) => {
+          this.getSavedSequences(username);
+        });
+    }
+
+    //load shared song if this is a shareable link
+    ///users/:username/:sequenceObjID
+    if (this.props.sequenceObjID) {
+      this.loadSharedSequence();
+    }
   }
 
 
@@ -174,8 +193,8 @@ class Main extends React.Component {
       console.log('successful login');
       window.location ='/member';
     })
-    .catch((err) => {console.
-      log('error during login');
+    .catch((err) => {
+      console.log('error during login', err);
     });
   }
 
@@ -193,7 +212,7 @@ class Main extends React.Component {
       window.location ='/member';
     })
     .catch((err) => {
-      console.log('error during acct creation');
+      console.log('error during acct creation', err);
     });
   }
 
@@ -209,6 +228,144 @@ class Main extends React.Component {
     });
   }
 
+  /** Get username of person logged in, and also the usernames saved sequences
+  */
+  getUserName() {
+    return axios.get('/username')
+      .then((res) => {
+        console.log('successful get username', res.data);
+        var username = res.data;
+        this.setState({
+          username: username
+        });
+        return username;
+      })
+      .catch((err) => {
+        console.log('error during username retrieval', err);
+      });
+  }
+
+  /** Get the usernames saved sequences
+  * @params username
+  */
+  getSavedSequences(username) {
+    return axios.get('/users', {params: {username: username}})
+      .then((res) => {
+        console.log('successful saved sequences retrieval: ', res.data);
+        this.setState({
+          savedSequences: res.data
+        });
+        return true;
+      })
+      .catch((err) => {
+        console.log('error during username and saved sequences retrieval', err);
+        throw err;
+      });
+  }
+
+  /** Load retrieved sequence to the page
+  * @params index
+  */
+  loadSavedSequence(index) {
+    //clear out the existing sequence first
+    var sequence = [];
+    for (var i = 0; i < this.state.sequence.length; i++) {
+      sequence.push({sampleIndex: undefined, row: [ 0, 0, 0, 0, 0, 0, 0, 0 ]});
+    }
+    this.setState({
+      sequence: sequence
+    });
+    var loadedSequence = this.state.savedSequences[index];
+    var loadedSequenceRows = loadedSequence.sequenceRows;
+    for (var i = 0; i < loadedSequenceRows.length; i++) {
+      if (i === sequence.length) {
+        //no more room to load a sequence row
+        break;
+      }
+      var sampleIndex = undefined;
+      if (loadedSequenceRows[i]['beat'] !== undefined) {
+        //look for beat's index in this.state.samples
+        var foundSampleArray = this.state.samples.filter((eachsample) => {
+          return eachsample.name === loadedSequenceRows[i]['beat'];
+        });
+        if (foundSampleArray.length > 0) {
+          sampleIndex = foundSampleArray[0].sampleId;
+        }
+      }
+      if (sampleIndex !== undefined) {
+        sequence[i].sampleIndex = sampleIndex;
+        sequence[i].row = loadedSequenceRows[i].row;
+      }
+    }
+    this.setState({
+      sequence: sequence
+    });
+  }
+
+  /**load shared song if this is a shareable link
+  * users/:username/:sequenceObjID
+  */
+  loadSharedSequence() {
+    return axios.get('/users/sharedObjID',
+        {params: {
+          username: this.props.username,
+          sequenceObjID: this.props.sequenceObjID
+        }}
+      )
+      .then((res) => {
+        console.log('successful get shared sequence', res.data);
+        var sharedSeq = res.data;
+        this.setState({
+          savedSequences: [sharedSeq]
+        });
+        return sharedSeq;
+      })
+      .then(() => {
+        this.loadSavedSequence(0);
+        return true;
+      })
+      .catch((err) => {
+        console.log('error during load shared sequence', err);
+      });
+  }
+
+  /** Save current sequence on the page
+  * to look like this in the database
+  * {
+  *  user: 'MyUserName',
+  *  sequenceRows:
+  *    [
+  *      {beat: 'blah', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+  *      {beat: 'blah2', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+  *      {beat: 'blah3', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+  *      {beat: 'blah4', row: [0, 0, 0, 0, 0, 0, 0, 0]}
+  *    ]
+  * }
+  */
+  saveSequence() {
+    var sequenceRows = [];
+    for (var i = 0; i < this.state.sequence.length; i++) {
+      if (this.state.sequence[i].sampleIndex !== undefined) {
+        var matchedSample;
+        var matchedSampleArray = this.state.samples.filter((eachsample)=>{
+          return eachsample.sampleId === this.state.sequence[i].sampleIndex;
+        });
+        if (matchedSampleArray.length > 0) {
+          matchedSample = matchedSampleArray[0];
+          sequenceRows.push({beat: matchedSample.name, row: this.state.sequence[i].row});
+        }
+      }
+    }
+    var sequenceObj = {user: this.state.username, sequenceRows: sequenceRows};
+    return axios.post('/users', {sequenceObj: sequenceObj})
+      .then((res) => {
+        return this.getSavedSequences(this.state.username);
+      })
+      .catch((err) => {
+        console.log('error during save sequence', err);
+        throw err;
+      });
+  }
 
   /** Clicking the play button will toggle between play and pause
   change play visualizer to visible+moving if was stopped
@@ -277,13 +434,31 @@ class Main extends React.Component {
   saveClicked() {
     //this.props.save();
     console.log('Save Clicked');
+    this.saveSequence();
   }
   /**When the share button is clicked
     Run Main callback to "share"
   */
-  shareClicked() {
+  shareClicked(index) {
     //this.props.share();
     console.log('Share Clicked');
+    return axios.get('/users/share',
+        {params: {
+          username: this.state.username,
+          sequenceObjID: JSON.parse(JSON.stringify(this.state.savedSequences[index]._id))
+        }}
+      )
+      .then((res) => {
+        console.log('successful sharing of sequence');
+        return true;
+      })
+      .then(() => {
+        return this.getSavedSequences(this.state.username);
+      })
+      .catch((err) => {
+        console.log('error during sharing of sequence', err);
+        throw err;
+      });
   }
   /** Plays current sequence. If loop is true, then play with interval.
 
@@ -332,7 +507,10 @@ class Main extends React.Component {
     }
   }
 
-  render() {return(
+  render() {
+    var welcomeUsername = this.props.loggedIn &&
+      <div>Welcome {this.state.username}</div>;
+    return(
     <div id="container">
       <NaviBar
         loggedIn={this.props.loggedIn}
@@ -340,6 +518,7 @@ class Main extends React.Component {
         creatAcctCB={this.createAcctCB}
         logoutCB={this.logoutCB}
       />
+      {welcomeUsername}
       <SampleLibrary
         beatToRegister={this.state.beatToRegister}
         samples={this.state.samples}
@@ -356,7 +535,7 @@ class Main extends React.Component {
         stopClicked={this.stopClicked}
         loopClicked={this.loopClicked}
         saveClicked={this.saveClicked}
-        shareClicked={this.shareClicked}
+        loopButton={this.state.loopButton}
 
       />
 
@@ -365,6 +544,13 @@ class Main extends React.Component {
         sequence={this.state.sequence}
         toggleCell={this.toggleSoundOnBoard}
         removeSample={this.removeSampleFromBoard}
+      />
+
+      <SavedSequences
+        savedSequences={this.state.savedSequences}
+        loadSavedSequence = {this.loadSavedSequence}
+        shareClicked = {this.shareClicked}
+        loggedIn={this.props.loggedIn}
       />
     </div> )
   }
@@ -377,7 +563,7 @@ class Main extends React.Component {
 *    If loggedIn===true, Main component should render extra things such as User's saved seqeunces in a list
 *    on the righthand side
 *    Also, the top navbar should change to a "logout" button
-*  Sharing /users/:username/:sequenceName; same as demo mode but with shared sequence loaded on the player
+*  Sharing /users/:username/:sequenceObjID; same as demo mode but with shared sequence loaded on the player
 * @constructor
 */
 const
@@ -386,7 +572,7 @@ Routes = () =>(
   <Switch>
     <Route exact path="/" render={() => <Main loggedIn={false}/>}/>
     <Route exact path="/member" render={() => <Main loggedIn={true}/>}/>
-    <Route exact path="/users/:username/:sequenceName" render={(props) => <Main loggedIn={false} username={props.match.params.username} sequenceName={props.match.params.sequenceName}/>}/>
+    <Route exact path="/users/:username/:sequenceObjID" render={(props) => <Main loggedIn={false} username={props.match.params.username} sequenceObjID={props.match.params.sequenceObjID}/>}/>
   </Switch>
 </Router> )
 

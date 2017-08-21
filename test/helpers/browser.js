@@ -1,3 +1,8 @@
+//Need to install devdependency react-test-renderer to make following warnings during react component testing go away...
+//Warning: ReactTestUtils has been moved to react-dom/test-utils. Update references to remove this warning.
+//Warning: Shallow renderer has been moved to react-test-renderer/shallow. Update references to remove this warning.
+
+//This file will help Enzyme module test React components
 require('babel-register')();
 
 var jsdom = require('jsdom');

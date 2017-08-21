@@ -7,7 +7,7 @@ var expect = require('chai').expect;
 var db = mongoose.connection;
 
 
-describe('Persistant Mongo Server', function(){
+xdescribe('Persistant Mongo Server', function(){
   var dbName = 'musetrap';
   var dbUrl = 'mongodb://localhost:27017/' + dbName;
 
