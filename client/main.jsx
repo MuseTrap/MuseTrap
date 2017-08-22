@@ -1,3 +1,6 @@
+// run to compile markdown documention: ./node_modules/.bin/jsdoc2md client/main.jsx > documentation/Component-Main.md
+  // make sure bundle.js exists in the public folder before running. If it doesn't, run 'webpack' first
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';

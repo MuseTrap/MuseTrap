@@ -1,4 +1,38 @@
-/* SAMPLE BUTTONS */
+
+/* ------------COMPONENT STYLING-------------*/
+
+body {
+  background: url(imgs/bg.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-color: transparent;
+}
+
+.savedSequences {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+}
+
+#sampleLibrary {
+  margin-bottom: 50px;
+}
+
+
+/* ------------GENERAL -------------*/
+
+.center {
+  text-align: center;
+}
+
+.whiteFont {
+  color: white;
+  font-size: .9em;
+  letter-spacing: 1px;
+}
+
+/* ------------SAMPLE BUTTONS-------------*/
 
 .sampleLibraryBtn {
   padding: 20px 0;
@@ -10,12 +44,6 @@
   border: 0px
 }
 
-.whiteFont {
-  color: white;
-  font-size: .9em;
-  letter-spacing: 1px;
-}
-
 .btnPulseOnce {
   -webkit-animation-duration: 1s;
   -webkit-animation-iteration-count: 1;
@@ -23,7 +51,7 @@
 
 /* Consider refactoring to use CSS variables */
 
-/* GREEN */
+/* Green */
 .green {
   background-color: #749a02 !important;
   opacity: 1;
@@ -40,7 +68,7 @@
   to { background-color: #749a02; -webkit-box-shadow: 0 0 9px #333; }
 }
 
-/* RED */
+/* Red */
 
 .red {
   background-color: #ff0000 !important;
@@ -58,7 +86,7 @@
   to { background-color: #ff0000; -webkit-box-shadow: 0 0 9px #333; }
 }
 
-/* BLUE */
+/* Blue */
 
 .blue {
   background-color: #0000ff !important;
@@ -92,27 +120,4 @@
   from { background-color: #ffff00; -webkit-box-shadow: 0 0 9px #333; }
   50% { background-color: #e9e900; -webkit-box-shadow: 0 0 18px #e9e900; }
   to { background-color: #ffff00; -webkit-box-shadow: 0 0 9px #333; }
-}
-
-
-/* Background Image */
-
-body {
-  background: url(imgs/bg.jpg) no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  background-color: transparent;
-}
-
-/* savedSequences */
-
-.savedSequences {
-  background-color: rgba(0, 0, 0, 0.3);
-  color: white;
-}
-
-.center {
-  text-align: center;
 }

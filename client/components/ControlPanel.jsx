@@ -17,7 +17,6 @@ import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 var ControlPanel = (props) => {
   // console.log("PROPS", props);
 
-
   // var saveButton = <Button style={{display: 'inline'}}> Save </Button>;
   // var shareButton = <Button style={{display: 'inline'}}> Share </Button>;
   var saveButton = props.loggedIn &&
@@ -28,7 +27,7 @@ var ControlPanel = (props) => {
     <div className="container">
       <div className="row">
         <Button className="col-lg-2" bsStyle={props.playstatus ? "warning" : "primary" } bsSize="large" active
-          onClick={()=>{props.playClicked()}}><Glyphicon glyph="play"/></Button>    
+          onClick={()=>{props.playClicked()}}><Glyphicon glyph="play"/></Button>
         <Button className="col-lg-2" bsStyle="primary" bsSize="large" active
           onClick={()=>{props.stopClicked()}}><Glyphicon glyph="stop"/></Button>
         <Button className="col-lg-2" bsStyle={props.loopButton? "warning" : "success"} bsSize="large" active
