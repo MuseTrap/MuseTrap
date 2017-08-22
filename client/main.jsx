@@ -484,9 +484,14 @@ class Main extends React.Component {
     if ( 60 <=bpm && bpm<=999 ) {
       this.setState({
         bpm: bpm,
-        playstatus: !this.state.playstatus,
-        loopButton: !this.state.loopButton
+        playstatus: !this.state.playstatus
+        
       });
+      if (this.state.loopButton) {
+        this.setState({
+          loopButton: !this.state.loopButton
+        });
+      }
       clearInterval(this.state.intervalId);
       this.stopClicked();
     } else {
