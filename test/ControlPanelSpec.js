@@ -10,14 +10,14 @@ import ControlPanel from '../client/components/ControlPanel';
 
 describe('<ControlPanel />', () => {
   //should not render share or save buttons if user is not logged in
-  it('ControlPanel has 3 buttons if not logged in', () => {
+  it('ControlPanel has 4 buttons if not logged in', () => {
     const wrapper = mount(<ControlPanel loggedIn={false}/>);
-    expect(wrapper.find('Button').length).to.equal(3);
+    expect(wrapper.find('Button').length).to.equal(4);
   });
   //should render share and save buttons if user is logged in
-  it('ControlPanel has 4 buttons if logged in', () => {
+  it('ControlPanel has 5 buttons if logged in', () => {
     const wrapper = mount(<ControlPanel loggedIn={true}/>);
-    expect(wrapper.find('Button').length).to.equal(4);
+    expect(wrapper.find('Button').length).to.equal(5);
   });
 });
 

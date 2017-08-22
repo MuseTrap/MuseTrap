@@ -12,16 +12,15 @@ var SampleLibrary = (props) => {
   var yellow = props.samplesOnTheBoard[3];
 
   return (
-    <Grid style={{marginBottom: '60px'}}>
+    <Grid id="sampleLibrary">
+      <div className="center whiteFont" style={{paddingBottom: '20px'}}> Double click on a sound to register it in on the sound board.</div>
       <Row className="show-grid">
         <Col xs={12} sm={8} smOffset={2} sm={6} smOffset={3} className={'center'}>
         {
           props.samples.map( (sound, index) => {
             return (
               <div key={index} >
-                <Col
-                  xs={3}
-                >
+                <Col xs={3}>
                   <Button
                     bsStyle="default"
                     className={
@@ -31,14 +30,10 @@ var SampleLibrary = (props) => {
                       yellow === index ? "yellow yellowPulse btnPulseOnce btnPulseOnce sampleLibraryBtn" :
                       "sampleLibraryBtn"
                     }
-                    onClick={() => {
-                      props.playSample(index)
-
-                    }}
+                    onClick={() => { props.playSample(index)}}
                     onDoubleClick={() => {props.registerSample(index)}}>
                   </Button>
                   <div className={'center, whiteFont'}>{sound.name.toUpperCase()}</div>
-
                 </Col>
               </div>
             )

@@ -14,6 +14,7 @@ const app = express();
 //uncomment this when ready to hook up the database
 const db = require('../database/schema.js');
 const compiler = webpack(webpackConfig);
+const dbUrl = process.env.MONGODB_URI || 'mongodb://localhost/session';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,7 +25,7 @@ app.use(
   session({
     secret: 'i like to code and eat food',
     store: new MongoStore({
-      url: process.env.MONGODB_URI || 'mongodb://localhost/session'
+      url: dbUrl
     }),
     saveUninitialized: false,
     resave: false
