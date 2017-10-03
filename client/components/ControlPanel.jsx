@@ -15,28 +15,61 @@ import Glyphicon from 'react-bootstrap/lib/Glyphicon';
  */
 
 var ControlPanel = (props) => {
-  // console.log("PROPS", props);
 
-  // var saveButton = <Button style={{display: 'inline'}}> Save </Button>;
-  // var shareButton = <Button style={{display: 'inline'}}> Share </Button>;
+  var textBtn = {padding: '3px'};
   var saveButton = props.loggedIn &&
-    <Button className="col-lg-12" bsStyle="primary" bsSize="large" active
-      onClick={()=>{props.saveClicked()}}>save</Button>;
-  var inLineStyle={"textAlign":'center', "height":40, "margin" : 'auto', "fontSize" : 20, "padding" : 5};
+    <Button className="col-xs-4 col-md-1" bsStyle="info" style={textBtn} active
+      onClick={()=>{props.saveClicked()}}>Save
+    </Button>;
+
   return (
     <div className="container">
       <div className="row">
-        <Button className="col-lg-2" bsStyle={props.playstatus ? "warning" : "primary" } bsSize="large" active
-          onClick={()=>{props.playClicked()}}><Glyphicon glyph="play"/></Button>
-        <Button className="col-lg-2" bsStyle="primary" bsSize="large" active
-          onClick={()=>{props.stopClicked()}}><Glyphicon glyph="stop"/></Button>
-        <Button className="col-lg-2" bsStyle={props.loopButton? "warning" : "success"} bsSize="large" active
-          onClick={()=>{props.loopClicked()}}><Glyphicon glyph="repeat"/></Button>
-        <div className="col-lg-2 bg-warning" style={inLineStyle} >BPM {props.bpm}</div>
-        <input className="col-lg-2" style={{height:40}}  id="bpm"  type="number" name="bpm" min="60" max="999" />
-        <Button className="col-lg-2" style={{height:40}} bsStyle={"default"} bsSize="large" active
-          onClick={()=>{props.changeBPM()}}>Update BPM</Button>
+        <Button
+          className="col-xs-4 col-md-offset-3 col-md-1"
+          bsStyle={props.playstatus ? "success" : "primary"}
+          active
+          onClick={()=>{props.playClicked()}}>
+          <Glyphicon glyph="play"/>
+        </Button>
+        <Button
+          className="col-xs-4 col-md-1"
+          bsStyle="primary"
+          active
+          onClick={()=>{props.stopClicked()}}>
+          <Glyphicon glyph="stop"/>
+        </Button>
+        <Button
+          className="col-xs-4 col-md-1"
+          bsStyle={props.loopButton? "success" : "primary"}
+          active
+          onClick={()=>{props.loopClicked()}}>
+          <Glyphicon glyph="repeat"/>
+        </Button>
+        <div
+          className="col-xs-6 col-sm-2"
+          style={{'position': 'absolute', 'top': '60px', 'right': '0px', 'color': 'white', 'fontSize': '1.6em', 'textAlign': 'right'}} >
+          {props.bpm} BPM
+        </div>
         {saveButton}
+        <input
+          className="col-xs-4 col-md-2"
+          style={{'backgroundColor': 'rgba(255, 255, 255, .6)', 'border': '0', height: '28px' }}
+          id="bpm"
+          type="number"
+          name="bpm"
+          min="60"
+          max="999"
+          placeholder="Adjust BPM..."/>
+        <Button
+          className="col-xs-4 col-md-1"
+          style={textBtn}
+          bsStyle={"primary"}
+          active
+          onClick={()=>{props.changeBPM()}}>
+          Update
+        </Button>
+
       </div>
     </div>
   );
