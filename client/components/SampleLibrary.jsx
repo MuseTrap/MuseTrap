@@ -6,14 +6,14 @@ import Button from 'react-bootstrap/lib/Button';
 
 
 var SampleLibrary = (props) => {
-  var green = props.samplesOnTheBoard[0];
-  var red = props.samplesOnTheBoard[1];
-  var blue = props.samplesOnTheBoard[2];
-  var yellow = props.samplesOnTheBoard[3];
+  var color1 = props.samplesOnTheBoard[0];
+  var color2 = props.samplesOnTheBoard[1];
+  var color3 = props.samplesOnTheBoard[2];
+  var color4 = props.samplesOnTheBoard[3];
 
   return (
     <Grid id="sampleLibrary">
-      <div className="center whiteFont" style={{paddingBottom: '20px'}}> Double click on a sound to register it in on the sound board.</div>
+      <div className="center whiteFont" style={{paddingBottom: '20px'}}> Double click on a sound to add it to the sound board.</div>
       <Row className="show-grid">
         <Col xs={12} sm={8} smOffset={2} sm={6} smOffset={3} className={'center'}>
         {
@@ -24,10 +24,10 @@ var SampleLibrary = (props) => {
                   <Button
                     bsStyle="default"
                     className={
-                      green === index ? "green greenPulse btnPulseOnce sampleLibraryBtn" :
-                      blue === index ? "blue bluePulse btnPulseOnce sampleLibraryBtn" :
-                      red === index ? "red redPulse btnPulseOnce sampleLibraryBtn" :
-                      yellow === index ? "yellow yellowPulse btnPulseOnce btnPulseOnce sampleLibraryBtn" :
+                      color1 === index ? "color1 color1-pulse btnPulseOnce sampleLibraryBtn" :
+                      color2 === index ? "color2 color2-pulse btnPulseOnce sampleLibraryBtn" :
+                      color3 === index ? "color3 color3-pulse btnPulseOnce sampleLibraryBtn" :
+                      color4 === index ? "color4 color4-pulse btnPulseOnce btnPulseOnce sampleLibraryBtn" :
                       "sampleLibraryBtn"
                     }
                     onClick={() => { props.playSample(index)}}

@@ -12,6 +12,7 @@ import ControlPanel from './components/ControlPanel.jsx';
 import SampleLibrary from './components/SampleLibrary.jsx';
 import SavedSequences from './components/SavedSequences.jsx';
 
+
 /** Main component behavior
  * States:
  * Sequence object to describe the song
@@ -26,6 +27,7 @@ class Main extends React.Component {
       intervalId: undefined, // interval id for SoundBoard loop
       playstatus: false, //'playing', 'paused', or 'stopped'
       loopButton: false,
+      playingIndex: null,
       samples: [],
       bpm: 120, // moved bpm outside of sequence to make it modular
       sequence: [
@@ -102,15 +104,15 @@ class Main extends React.Component {
     @param {number} indexOfSampleClicked
   */
   playSampleFromLibrary(sampleClicked) {
-    console.log(`Sample sound ${sampleClicked} clicked`);
+    // console.log(`Sample sound ${sampleClicked} clicked`);
     this.state.samples[sampleClicked].play();
   }
 
 
   /** Click Handler for soundboard. Toggles sound for each 1/8th duration.
   */
-  toggleSoundOnBoard( row, col) {
-    console.log(`clicked at ${row}, ${col}`);
+  toggleSoundOnBoard(row, col) {
+    // console.log(`clicked at ${row}, ${col}`);
     if (this.state.sequence[row].sampleIndex!==undefined) { // this fixes bug not toggling when 2 drums selected
       var newRow = this.state.sequence[row].row;
       if (newRow[col] === 0) {
@@ -189,6 +191,7 @@ class Main extends React.Component {
   * @param {string} password
   */
   loginCB(username,password) {
+    console.log('logging in')
     axios.post('/login', {
       username: username,
       password: password
@@ -472,6 +475,7 @@ class Main extends React.Component {
           if (item === 1) {
             setTimeout( () => {
               this.state.samples[this.state.sequence[sequenceIndex].sampleIndex].play();
+              this.setState({playingIndex: rowIndex});
             }, (60 / this.state.bpm * 1000) * rowIndex);
           }
         });
@@ -482,13 +486,13 @@ class Main extends React.Component {
 
   */
   changeBPM () {
-    console.log("Change BPM Clicked ", document.getElementById('bpm').value);
+    // console.log("Change BPM Clicked ", document.getElementById('bpm').value);
     var bpm = document.getElementById('bpm').value;
     if ( 60 <=bpm && bpm<=999 ) {
       this.setState({
         bpm: bpm,
         playstatus: !this.state.playstatus
-        
+
       });
       if (this.state.loopButton) {
         this.setState({
@@ -542,6 +546,7 @@ class Main extends React.Component {
         sequence={this.state.sequence}
         toggleCell={this.toggleSoundOnBoard}
         removeSample={this.removeSampleFromBoard}
+        playingIndex={this.state.playingIndex}
       />
 
       <SavedSequences
