@@ -191,7 +191,6 @@ class Main extends React.Component {
   * @param {string} password
   */
   loginCB(username,password) {
-    debugger;
     console.log('logging in')
     axios.post('/login', {
       username: username,
