@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/lib/Button';
 var SavedSequences = (props) => {
 
   return (
-    <div className="container savedSequences">{props.loggedIn ? 'Saved sequences...click ID# to load, click share button to share' : ''}
+    <div className="savedSequences" style={{'paddingLeft': '30px', 'paddingRight': '30px','paddingTop': '20px', 'paddingRight': '30px'}}>{props.loggedIn ? 'Your Saved Sequences' : ''}
     <div>
       {
         props.savedSequences.map( (sequence, index) => {
