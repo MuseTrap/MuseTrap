@@ -27,6 +27,7 @@ var Row = (props) => {
               key={index}
               rowIndex={props.rowIndex}
               colIndex={index}
+              playingIndex={props.playingIndex}
             />
           )
       })

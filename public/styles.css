@@ -45,79 +45,137 @@ body {
 }
 
 .btnPulseOnce {
-  -webkit-animation-duration: 1s;
+  -webkit-animation-duration: .75s;
   -webkit-animation-iteration-count: 1;
 }
 
 /* Consider refactoring to use CSS variables */
 
 /* Green */
-.green {
-  background-color: #749a02 !important;
+.color1 {
+  background-color: #00FF00 !important;
   opacity: 1;
 }
 
-.greenPulse {
-  -webkit-animation-name: greenAnimation;
+.color1-font {
+  color: #00FF00;
+}
+
+.color1-pulse {
+  -webkit-animation-name: color1Animation;
   opacity: 1;
 }
 
-@-webkit-keyframes greenAnimation {
-  from { background-color: #749a02; -webkit-box-shadow: 0 0 9px #333; }
-  50% { background-color: #91bd09; -webkit-box-shadow: 0 0 18px #91bd09; }
-  to { background-color: #749a02; -webkit-box-shadow: 0 0 9px #333; }
+@-webkit-keyframes color1Animation {
+  from { background-color: #00FF00; -webkit-box-shadow: 0 0 9px #333; }
+  50% { background-color: #a1fa3d; -webkit-box-shadow: 0 0 18px #a1fa3d; }
+  to { background-color: #00FF00; -webkit-box-shadow: 0 0 9px #333; }
 }
 
-/* Red */
-
-.red {
-  background-color: #ff0000 !important;
+.color1Font-pulse {
+  -webkit-animation-name: color1FontAnimation;
   opacity: 1;
 }
 
-.redPulse {
+@-webkit-keyframes color1FontAnimation {
+  from { color: #00FF00; }
+  50% { color: #a1fa3d; -webkit-box-shadow: 0 0 15px #a1fa3d; }
+  to { color: #00FF00;}
+}
+
+/* Pink */
+.color2 {
+  background-color: #ff00ff !important;
+  opacity: 1;
+}
+
+.color2-font {
+  color:  #ff00ff;
+}
+
+.color2-pulse {
   -webkit-animation-name: redAnimation;
   opacity: 1;
 }
 
 @-webkit-keyframes redAnimation {
-  from { background-color: #ff0000; -webkit-box-shadow: 0 0 9px #333; }
-  50% { background-color: #bc2320; -webkit-box-shadow: 0 0 18px #bc2320; }
-  to { background-color: #ff0000; -webkit-box-shadow: 0 0 9px #333; }
+  from { background-color: #ff00ff; -webkit-box-shadow: 0 0 9px #333; }
+  50% { background-color: #ff58fd; -webkit-box-shadow: 0 0 18px #ff58fd; }
+  to { background-color: #ff00ff; -webkit-box-shadow: 0 0 9px #333; }
 }
 
-/* Blue */
-
-.blue {
-  background-color: #0000ff !important;
+.color2Font-pulse {
+  -webkit-animation-name: color2FontAnimation;
   opacity: 1;
 }
 
-.bluePulse {
-  -webkit-animation-name: blueAnimation;
+@-webkit-keyframes color2FontAnimation {
+  from { color: #ff00ff; }
+  50% { color: #ff58fd; -webkit-box-shadow: 0 0 15px #ff58fd; }
+  to { color: #ff00ff;}
+}
+
+/* Cyan */
+.color3 {
+  background-color: #00ffff !important;
   opacity: 1;
 }
 
-@-webkit-keyframes blueAnimation {
-  from { background-color: #0000ff; -webkit-box-shadow: 0 0 9px #333; }
-  50% { background-color: #0000c1; -webkit-box-shadow: 0 0 18px #0000c1; }
-  to { background-color: #0000ff; -webkit-box-shadow: 0 0 9px #333; }
+.color3-font {
+  color: #00ffff;
 }
 
-/* Yellow */
-
-.yellow {
-  background-color: #ffff00 !important;
+.color3-pulse {
+  -webkit-animation-name: color3Animation;
   opacity: 1;
 }
 
-.yellowPulse {
-  -webkit-animation-name: yellowAnimation;
+@-webkit-keyframes color3Animation {
+  from { background-color: #00ffff; -webkit-box-shadow: 0 0 9px #333; }
+  50% { background-color: #67d8f6; -webkit-box-shadow: 0 0 18px #67d8f6; }
+  to { background-color: #00ffff; -webkit-box-shadow: 0 0 9px #333; }
+}
+
+.color3Font-pulse {
+  -webkit-animation-name: color3FontAnimation;
   opacity: 1;
 }
 
-@-webkit-keyframes yellowAnimation {
-  from { background-color: #ffff00; -webkit-box-shadow: 0 0 9px #333; }
-  50% { background-color: #e9e900; -webkit-box-shadow: 0 0 18px #e9e900; }
-  to { background-color: #ffff00; -webkit-box-shadow: 0 0 9px #333; }
+@-webkit-keyframes color3FontAnimation {
+  from { color: #00ffff; }
+  50% { color: #67d8f6; -webkit-box-shadow: 0 0 15px #67d8f6; }
+  to { color: #00ffff; }
+}
+
+/* Orange */
+
+.color4 {
+  background-color: #FFA500 !important;
+  opacity: 1;
+}
+
+.color4-font {
+  color: #FFA500;
+}
+
+.color4-pulse {
+  -webkit-animation-name: color4Animation;
+  opacity: 1;
+}
+
+@-webkit-keyframes color4Animation {
+  from { background-color: #FFA500; -webkit-box-shadow: 0 0 9px #333; }
+  50% { background-color: #ffcc5b; -webkit-box-shadow: 0 0 18px #ffcc5b; }
+  to { background-color: #FFA500; -webkit-box-shadow: 0 0 9px #333; }
+}
+
+.color4Font-pulse {
+  -webkit-animation-name: color4FontAnimation;
+  opacity: 1;
+}
+
+@-webkit-keyframes color4FontAnimation {
+  from { color: #FFA500;}
+  50% { color: #ffcc5b; -webkit-box-shadow: 0 0 15px #ffcc5b; }
+  to { color: #FFA500;}
 }

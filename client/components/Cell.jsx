@@ -3,10 +3,13 @@ import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 var Cell = (props) => {
   var icon;
-  if (props.cell === 0) {
-    icon = (<Glyphicon glyph="unchecked" />);
-  } else {
+  if (props.cell === 1) {
     icon = (<Glyphicon glyph="stop" className={`color${props.rowIndex + 1}Font-pulse btnPulseOnce `}/>);
+  } else{
+    icon = (<Glyphicon glyph="unchecked" />);
+  }
+  if(props.playingIndex === props.colIndex && props.cell === 1) {
+    icon = (<Glyphicon glyph="stop" className={`color${props.rowIndex + 1}-pulse btnPulseOnce `}/>);
   }
   return (
   	<div

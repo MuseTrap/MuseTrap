@@ -21,7 +21,8 @@ var SoundBoard = (props) => {
 							unregisterSample={props.removeSample}
 							toggleCell={props.toggleCell}
 							key={index}
-							rowIndex={index}
+							rowIndex={index} //index
+							playingIndex={props.playingIndex}
 						/>
 					)
 				})
