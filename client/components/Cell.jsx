@@ -4,7 +4,7 @@ import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 var Cell = (props) => {
   var icon;
   if (props.cell === 1) {
-    icon = (<Glyphicon glyph="stop" className={`color${props.rowIndex + 1}Font-pulse btnPulseOnce `}/>);
+    icon = (<Glyphicon glyph="stop" className={`color${props.rowIndex + 1}Font-pulse`}/>);
   } else{
     icon = (<Glyphicon glyph="unchecked" />);
   }
