@@ -129,7 +129,7 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    console.log('props including react router props are,', this.props);
+    // console.log('props including react router props are,', this.props);
 
     var sampleLibrary = [
       { sampleId: 0, name: 'bass', url: './audio_files/sound-bass.wav'},
