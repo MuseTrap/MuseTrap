@@ -11,7 +11,7 @@ var SavedSequences = (props) => {
             (<a key={index} href={`/users/${sequence.user}/${sequence._id}`}>Shareable Link</a>) :
             (<Button key={index} bsStyle="primary" bsSize="small" onClick={()=>{props.shareClicked(index)}}>Share</Button>);
           return (
-            <div>
+            <div key={index}>
               <span>
                 {JSON.stringify(sequence._id)}
                 <Button

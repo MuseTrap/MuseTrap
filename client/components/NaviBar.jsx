@@ -40,9 +40,9 @@ import NavDropdown from 'react-bootstrap/lib/NavDropdown';
     var accountStuff;
     if (!this.props.loggedIn) {
       accountStuff =
-        <NavDropdown open={this.state.open} onToggle={event => this.dropdownToggle(event)}
-          className="dropdown-toggle" eventKey={3} title="Account" id="basic-nav-dropdown">
-          <MenuItem eventKey={3.1}>
+        <NavDropdown open={this.state.open} onClick={event => this.dropdownToggle(event) } onToggle={() => {}}
+          className="dropdown-toggle" title="Account" id="basic-nav-dropdown">
+          <MenuItem >
             <Navbar.Form>
               <FormGroup>
                 <FormControl onChange={(e) => this.userType(e)} type="text" placeholder="Username" />
@@ -52,7 +52,7 @@ import NavDropdown from 'react-bootstrap/lib/NavDropdown';
             </Navbar.Form>
           </MenuItem>
           <MenuItem divider />
-          <MenuItem eventKey={3.2}>
+          <MenuItem>
             <Navbar.Form>
               <Button type="submit" onClick={(e) => this.props.loginCB(this.state.userField, this.state.passField)} >Login</Button>
               <Button type="submit" onClick={(e) => this.props.creatAcctCB(this.state.userField, this.state.passField)} >Create Acct</Button>

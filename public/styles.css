@@ -14,14 +14,17 @@ body {
   background-color: rgba(0, 0, 0, 0.3);
   color: white;
   padding: 20px 20px;
-  height: 60px;
+  min-height: 60px;
 }
 
 #sampleLibrary {
   margin-bottom: 50px;
 }
 
-
+.dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover {
+  background-color: transparent !important;
+  focus: none;
+}
 /* ------------GENERAL -------------*/
 
 .center {
