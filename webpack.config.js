@@ -1,5 +1,5 @@
 const path = require('path');
- 
+
 module.exports = {
   context: path.join(__dirname, 'client'),
   entry: [
@@ -14,9 +14,10 @@ module.exports = {
       {
         test: /\.js[x]?$/,
         exclude: /node_modules/,
-        use: [
-          'babel-loader',
-        ],
+        loader: 'babel-loader',
+        query: {
+          presets: ['react', 'es2015']
+        }
       },
     ],
   },
