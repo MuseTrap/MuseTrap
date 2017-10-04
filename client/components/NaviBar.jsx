@@ -46,7 +46,7 @@ import NavDropdown from 'react-bootstrap/lib/NavDropdown';
             <Navbar.Form>
               <FormGroup>
                 <FormControl onChange={(e) => this.userType(e)} type="text" placeholder="Username" />
-                <FormControl onChange={(e) => this.passType(e)} type="text" placeholder="Password" />
+                <FormControl onChange={(e) => this.passType(e)} type="password" placeholder="Password" />
               </FormGroup>
               {' '}
             </Navbar.Form>
