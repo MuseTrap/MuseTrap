@@ -14,17 +14,17 @@ import NavDropdown from 'react-bootstrap/lib/NavDropdown';
   constructor(props){
   	super(props);
     this.state = {
-      open: false,
+      defaultOpen: false,
       userField: '',
       passField: ''
     };
   }
-  
+
   componentDidMount() {
   }
 
   dropdownToggle(event) {
-    this.setState({open: !this.state.open});
+    this.setState({defaultOpen: !this.state.defaultOpen});
   }
 
   userType(event) {
@@ -40,7 +40,7 @@ import NavDropdown from 'react-bootstrap/lib/NavDropdown';
     var accountStuff;
     if (!this.props.loggedIn) {
       accountStuff =
-        <NavDropdown open={this.state.open} onClick={event => this.dropdownToggle(event)} 
+        <NavDropdown open={this.state.defaultOpen} onClick={event => this.dropdownToggle(event)} 
           className="dropdown-toggle" eventKey={3} title="Account" id="basic-nav-dropdown">
           <MenuItem eventKey={3.1}>
             <Navbar.Form>
