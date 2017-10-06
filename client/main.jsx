@@ -129,7 +129,7 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    console.log('props including react router props are,', this.props);
+    // console.log('props including react router props are,', this.props);
 
     var sampleLibrary = [
       { sampleId: 0, name: 'bass', url: './audio_files/sound-bass.wav'},
@@ -240,7 +240,7 @@ class Main extends React.Component {
   getUserName() {
     return axios.get('/username')
       .then((res) => {
-        console.log('successful get username', res.data);
+        // console.log('successful get username', res.data);
         var username = res.data;
         this.setState({
           username: username
@@ -258,7 +258,7 @@ class Main extends React.Component {
   getSavedSequences(username) {
     return axios.get('/users', {params: {username: username}})
       .then((res) => {
-        console.log('successful saved sequences retrieval: ', res.data);
+        // console.log('successful saved sequences retrieval: ', res.data);
         this.setState({
           savedSequences: res.data
         });

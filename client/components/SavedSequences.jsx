@@ -4,15 +4,14 @@ import Button from 'react-bootstrap/lib/Button';
 var SavedSequences = (props) => {
 
   return (
-    <div className="savedSequences" style={{'paddingLeft': '30px', 'paddingRight': '30px','paddingTop': '20px', 'paddingRight': '30px'}}>{props.loggedIn ? 'Your Saved Sequences' : ''}
-    <div>
+    <div id="savedSequences" >{props.loggedIn ? 'Your Saved Sequences' : ''}
       {
         props.savedSequences.map( (sequence, index) => {
           var linkOrShare = sequence.shareable ?
             (<a key={index} href={`/users/${sequence.user}/${sequence._id}`}>Shareable Link</a>) :
             (<Button key={index} bsStyle="primary" bsSize="small" onClick={()=>{props.shareClicked(index)}}>Share</Button>);
           return (
-            <div>
+            <div key={index}>
               <span>
                 {JSON.stringify(sequence._id)}
                 <Button
@@ -31,7 +30,6 @@ var SavedSequences = (props) => {
           )
         })
       }
-    </div>
     </div>
   );
 };
