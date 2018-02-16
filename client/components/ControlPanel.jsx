@@ -1,8 +1,5 @@
 import React from 'react';
-import Button from 'react-bootstrap/lib/Button';
-import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import { FaPlay, FaStop, FaRepeat } from 'react-icons/lib/fa/';
 
 /** Control panel behavior
  * States:
@@ -14,66 +11,96 @@ import Glyphicon from 'react-bootstrap/lib/Glyphicon';
  * @constructor
  */
 
-var ControlPanel = (props) => {
+var ControlPanel = props => {
+  var saveButton = props.loggedIn && (
+    <button
+      style={textBtn}
+      onClick={() => {
+        props.saveClicked();
+      }}>
+      Save
+    </button>
+  );
 
-  var textBtn = {padding: '3px'};
-  var saveButton = props.loggedIn &&
-    <Button className="col-xs-4 col-md-1" bsStyle="info" style={textBtn} active
-      onClick={()=>{props.saveClicked()}}>Save
-    </Button>;
+  let primary = {
+    backgroundColor: '#0062cc',
+    borderRadius: '3px',
+    color: 'white',
+    minWidth: '80px',
+    border: ' solid 1px #0056b2',
+    marginRight: '3px'
+  };
+
+  let success = {
+    backgroundColor: '#2fc12f',
+    borderRadius: '3px',
+    minWidth: '80px',
+    color: 'white',
+    border: 'solid 1px #28a628',
+    marginRight: '3px'
+  };
 
   return (
     <div className="container">
-      <div className="row">
-        <Button
-          className="col-xs-4 col-md-offset-3 col-md-1"
-          bsStyle={props.playstatus ? "success" : "primary"}
-          active
-          onClick={()=>{props.playClicked()}}>
-          <Glyphicon glyph="play"/>
-        </Button>
-        <Button
-          className="col-xs-4 col-md-1"
-          bsStyle="primary"
-          active
-          onClick={()=>{props.stopClicked()}}>
-          <Glyphicon glyph="stop"/>
-        </Button>
-        <Button
-          className="col-xs-4 col-md-1"
-          bsStyle={props.loopButton? "success" : "primary"}
-          active
-          onClick={()=>{props.loopClicked()}}>
-          <Glyphicon glyph="repeat"/>
-        </Button>
+      <div className="row" style={{ justifyContent: 'center' }}>
+        <button
+          style={props.playstatus ? success : primary}
+          onClick={() => {
+            props.playClicked();
+          }}>
+          <FaPlay />
+        </button>
+        <button
+          style={primary}
+          onClick={() => {
+            props.stopClicked();
+          }}>
+          <FaStop />
+        </button>
+        <button
+          style={props.loopButton ? success : primary}
+          onClick={() => {
+            props.loopClicked();
+          }}>
+          <FaRepeat />
+        </button>
         <div
-          className="col-xs-6 col-sm-2"
-          style={{'position': 'absolute', 'top': '60px', 'right': '0px', 'color': 'white', 'fontSize': '1.6em', 'textAlign': 'right'}} >
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: '0px',
+            color: 'white',
+            fontSize: '1.6em',
+            textAlign: 'right'
+          }}>
           {props.bpm} BPM
         </div>
         {saveButton}
         <input
-          className="col-xs-4 col-md-2"
-          style={{'backgroundColor': 'rgba(255, 255, 255, .6)', 'border': '0', height: '28px' }}
+          style={{
+            backgroundColor: 'rgba(255, 255, 255, .6)',
+            border: '0',
+            height: '31px',
+            minWidth: '120px',
+            paddingLeft: '10px'
+          }}
           id="bpm"
           type="number"
           name="bpm"
           min="60"
           max="999"
-          placeholder="Adjust BPM..."/>
-        <Button
-          className="col-xs-4 col-md-1"
-          style={textBtn}
-          bsStyle={"primary"}
-          active
-          onClick={()=>{props.changeBPM()}}>
+          placeholder="Adjust BPM..."
+        />
+        <button
+          style={primary}
+          onClick={() => {
+            props.changeBPM();
+          }}>
           Update
-        </Button>
-
+        </button>
       </div>
     </div>
   );
-
 };
 
 export default ControlPanel;

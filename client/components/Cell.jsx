@@ -1,22 +1,24 @@
 import React from 'react';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import { FaSquareO, FaSquare } from 'react-icons/lib/fa/';
 
-var Cell = (props) => {
+var Cell = props => {
   var icon;
   if (props.cell === 1) {
-    icon = (<Glyphicon glyph="stop" className={`color${props.rowIndex + 1}Font-pulse`}/>);
-  } else{
-    icon = (<Glyphicon glyph="unchecked" />);
+    icon = <FaSquare className={`color${props.rowIndex + 1}Font-pulse`} />;
+  } else {
+    icon = <FaSquareO />;
   }
-  if(props.playingIndex === props.colIndex && props.cell === 1) {
-    icon = (<Glyphicon glyph="stop" className={`color${props.rowIndex + 1}-pulse btnPulseOnce `}/>);
+  if (props.playingIndex === props.colIndex && props.cell === 1) {
+    icon = (
+      <FaSquare className={`color${props.rowIndex + 1}-pulse btnPulseOnce `} />
+    );
   }
   return (
-  	<div
-  		style={{'textAlign':'center'}}
-      className={`col-xs-1` }
-      onClick={ () => { props.toggleCell(props.rowIndex, props.colIndex) }}
-    >
+    <div
+      style={{ textAlign: 'center', marginTop: '7px' }}
+      onClick={() => {
+        props.toggleCell(props.rowIndex, props.colIndex);
+      }}>
       {icon}
     </div>
   );

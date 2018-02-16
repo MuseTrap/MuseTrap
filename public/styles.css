@@ -1,4 +1,3 @@
-
 /* ------------COMPONENT STYLING-------------*/
 
 body {
@@ -21,7 +20,8 @@ body {
   margin-bottom: 50px;
 }
 
-.dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover {
+.dropdown-menu > li > a:focus,
+.dropdown-menu > li > a:hover {
   background-color: transparent !important;
   focus: none;
 }
@@ -33,24 +33,54 @@ body {
 
 .whiteFont {
   color: white;
-  font-size: .9em;
+  font-size: 0.9em;
   letter-spacing: 1px;
 }
 
 /* ------------SAMPLE BUTTONS-------------*/
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px 25px;
+  grid-auto-rows: minmax(100px, auto);
+}
+
+@media (min-width: 500px) {
+  .sampleLibraryBtn {
+    padding: 20px 0;
+    width: 100px;
+    height: 100px;
+    margin: 5px 0;
+  }
+  .wrapper {
+    grid-gap: 10px 25px;
+  }
+}
+
+@media (max-width: 500px) {
+  .sampleLibraryBtn {
+    padding: 0px;
+    width: 50px;
+    height: 50px;
+    margin: 5px 0;
+  }
+  .wrapper {
+    grid-gap: 7px 10px;
+  }
+  .whiteFont {
+    font-size: 0.65rem;
+  }
+}
 
 .sampleLibraryBtn {
-  padding: 20px 0;
-  width: 80px;
-  height: 80px;
-  margin: 5px 0 ;
   background-color: white;
   opacity: 0.2;
-  border: 0px
+  border: 0px;
+  border-radius: 5px;
 }
 
 .btnPulseOnce {
-  -webkit-animation-duration: .75s;
+  -webkit-animation-duration: 0.75s;
   -webkit-animation-iteration-count: 1;
 }
 
@@ -58,12 +88,12 @@ body {
 
 /* Green */
 .color1 {
-  background-color: #00FF00 !important;
+  background-color: #00ff00 !important;
   opacity: 1;
 }
 
 .color1-font {
-  color: #00FF00;
+  color: #00ff00;
 }
 
 .color1-pulse {
@@ -72,9 +102,18 @@ body {
 }
 
 @-webkit-keyframes color1Animation {
-  from { background-color: #00FF00; -webkit-box-shadow: 0 0 9px #333; }
-  50% { background-color: #a1fa3d; -webkit-box-shadow: 0 0 18px #a1fa3d; }
-  to { background-color: #00FF00; -webkit-box-shadow: 0 0 9px #333; }
+  from {
+    background-color: #00ff00;
+    -webkit-box-shadow: 0 0 9px #333;
+  }
+  50% {
+    background-color: #a1fa3d;
+    -webkit-box-shadow: 0 0 18px #a1fa3d;
+  }
+  to {
+    background-color: #00ff00;
+    -webkit-box-shadow: 0 0 9px #333;
+  }
 }
 
 .color1Font-pulse {
@@ -83,9 +122,16 @@ body {
 }
 
 @-webkit-keyframes color1FontAnimation {
-  from { color: #00FF00; }
-  50% { color: #a1fa3d; -webkit-box-shadow: 0 0 15px #a1fa3d; }
-  to { color: #00FF00;}
+  from {
+    color: #00ff00;
+  }
+  50% {
+    color: #a1fa3d;
+    -webkit-box-shadow: 0 0 15px #a1fa3d;
+  }
+  to {
+    color: #00ff00;
+  }
 }
 
 /* Pink */
@@ -95,7 +141,7 @@ body {
 }
 
 .color2-font {
-  color:  #ff00ff;
+  color: #ff00ff;
 }
 
 .color2-pulse {
@@ -104,9 +150,18 @@ body {
 }
 
 @-webkit-keyframes redAnimation {
-  from { background-color: #ff00ff; -webkit-box-shadow: 0 0 9px #333; }
-  50% { background-color: #ff58fd; -webkit-box-shadow: 0 0 18px #ff58fd; }
-  to { background-color: #ff00ff; -webkit-box-shadow: 0 0 9px #333; }
+  from {
+    background-color: #ff00ff;
+    -webkit-box-shadow: 0 0 9px #333;
+  }
+  50% {
+    background-color: #ff58fd;
+    -webkit-box-shadow: 0 0 18px #ff58fd;
+  }
+  to {
+    background-color: #ff00ff;
+    -webkit-box-shadow: 0 0 9px #333;
+  }
 }
 
 .color2Font-pulse {
@@ -115,9 +170,16 @@ body {
 }
 
 @-webkit-keyframes color2FontAnimation {
-  from { color: #ff00ff; }
-  50% { color: #ff58fd; -webkit-box-shadow: 0 0 15px #ff58fd; }
-  to { color: #ff00ff;}
+  from {
+    color: #ff00ff;
+  }
+  50% {
+    color: #ff58fd;
+    -webkit-box-shadow: 0 0 15px #ff58fd;
+  }
+  to {
+    color: #ff00ff;
+  }
 }
 
 /* Cyan */
@@ -136,9 +198,18 @@ body {
 }
 
 @-webkit-keyframes color3Animation {
-  from { background-color: #00ffff; -webkit-box-shadow: 0 0 9px #333; }
-  50% { background-color: #67d8f6; -webkit-box-shadow: 0 0 18px #67d8f6; }
-  to { background-color: #00ffff; -webkit-box-shadow: 0 0 9px #333; }
+  from {
+    background-color: #00ffff;
+    -webkit-box-shadow: 0 0 9px #333;
+  }
+  50% {
+    background-color: #67d8f6;
+    -webkit-box-shadow: 0 0 18px #67d8f6;
+  }
+  to {
+    background-color: #00ffff;
+    -webkit-box-shadow: 0 0 9px #333;
+  }
 }
 
 .color3Font-pulse {
@@ -147,20 +218,27 @@ body {
 }
 
 @-webkit-keyframes color3FontAnimation {
-  from { color: #00ffff; }
-  50% { color: #67d8f6; -webkit-box-shadow: 0 0 15px #67d8f6; }
-  to { color: #00ffff; }
+  from {
+    color: #00ffff;
+  }
+  50% {
+    color: #67d8f6;
+    -webkit-box-shadow: 0 0 15px #67d8f6;
+  }
+  to {
+    color: #00ffff;
+  }
 }
 
 /* Orange */
 
 .color4 {
-  background-color: #FFA500 !important;
+  background-color: #ffa500 !important;
   opacity: 1;
 }
 
 .color4-font {
-  color: #FFA500;
+  color: #ffa500;
 }
 
 .color4-pulse {
@@ -169,9 +247,18 @@ body {
 }
 
 @-webkit-keyframes color4Animation {
-  from { background-color: #FFA500; -webkit-box-shadow: 0 0 9px #333; }
-  50% { background-color: #ffcc5b; -webkit-box-shadow: 0 0 18px #ffcc5b; }
-  to { background-color: #FFA500; -webkit-box-shadow: 0 0 9px #333; }
+  from {
+    background-color: #ffa500;
+    -webkit-box-shadow: 0 0 9px #333;
+  }
+  50% {
+    background-color: #ffcc5b;
+    -webkit-box-shadow: 0 0 18px #ffcc5b;
+  }
+  to {
+    background-color: #ffa500;
+    -webkit-box-shadow: 0 0 9px #333;
+  }
 }
 
 .color4Font-pulse {
@@ -180,7 +267,14 @@ body {
 }
 
 @-webkit-keyframes color4FontAnimation {
-  from { color: #FFA500;}
-  50% { color: #ffcc5b; -webkit-box-shadow: 0 0 15px #ffcc5b; }
-  to { color: #FFA500;}
+  from {
+    color: #ffa500;
+  }
+  50% {
+    color: #ffcc5b;
+    -webkit-box-shadow: 0 0 15px #ffcc5b;
+  }
+  to {
+    color: #ffa500;
+  }
 }

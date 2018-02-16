@@ -1,17 +1,16 @@
 // run to compile markdown documention: ./node_modules/.bin/jsdoc2md client/main.jsx > documentation/Component-Main.md
-  // make sure bundle.js exists in the public folder before running. If it doesn't, run 'webpack' first
+// make sure bundle.js exists in the public folder before running. If it doesn't, run 'webpack' first
 
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import Howler from 'howler';
-import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
-import NaviBar from './components/NaviBar.jsx';
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+// import NaviBar from './components/NaviBar.jsx';
 import SoundBoard from './components/SoundBoard.jsx';
 import ControlPanel from './components/ControlPanel.jsx';
 import SampleLibrary from './components/SampleLibrary.jsx';
 import SavedSequences from './components/SavedSequences.jsx';
-
 
 /** Main component behavior
  * States:
@@ -19,7 +18,6 @@ import SavedSequences from './components/SavedSequences.jsx';
  * @constructor
  */
 class Main extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -33,19 +31,19 @@ class Main extends React.Component {
       sequence: [
         {
           sampleIndex: undefined, // index from the SampleLibrary setup during ComponentDidMount
-          row: [ 0, 0, 0, 0, 0, 0, 0, 0 ]
+          row: [0, 0, 0, 0, 0, 0, 0, 0]
         },
         {
           sampleIndex: undefined,
-          row: [ 0, 0, 0, 0, 0, 0, 0, 0 ]
+          row: [0, 0, 0, 0, 0, 0, 0, 0]
         },
         {
           sampleIndex: undefined,
-          row: [ 0, 0, 0, 0, 0, 0, 0, 0 ]
+          row: [0, 0, 0, 0, 0, 0, 0, 0]
         },
         {
           sampleIndex: undefined,
-          row: [ 0, 0, 0, 0, 0, 0, 0, 0 ]
+          row: [0, 0, 0, 0, 0, 0, 0, 0]
         }
       ],
       savedSequences: []
@@ -84,7 +82,7 @@ class Main extends React.Component {
       if (this.state.sequence[i].sampleIndex === undefined) {
         var newSequence = Object.assign([], this.state.sequence);
         newSequence[i].sampleIndex = sampleClicked;
-        this.setState({sequence: newSequence});
+        this.setState({ sequence: newSequence });
         break;
       }
     }
@@ -96,8 +94,8 @@ class Main extends React.Component {
   removeSampleFromBoard(sampleClicked) {
     var newSequence = Object.assign([], this.state.sequence);
     newSequence[sampleClicked].sampleIndex = undefined;
-    newSequence[sampleClicked].row = [0,0,0,0,0,0,0,0]; // sets undefined row to all 0.
-    this.setState({sequence: newSequence});
+    newSequence[sampleClicked].row = [0, 0, 0, 0, 0, 0, 0, 0]; // sets undefined row to all 0.
+    this.setState({ sequence: newSequence });
   }
 
   /** Triggers when you click on a sample in the sampleLibrary.
@@ -108,56 +106,63 @@ class Main extends React.Component {
     this.state.samples[sampleClicked].play();
   }
 
-
   /** Click Handler for soundboard. Toggles sound for each 1/8th duration.
-  */
+   */
   toggleSoundOnBoard(row, col) {
     // console.log(`clicked at ${row}, ${col}`);
-    if (this.state.sequence[row].sampleIndex!==undefined) { // this fixes bug not toggling when 2 drums selected
+    if (this.state.sequence[row].sampleIndex !== undefined) {
+      // this fixes bug not toggling when 2 drums selected
       var newRow = this.state.sequence[row].row;
       if (newRow[col] === 0) {
         newRow[col] = 1;
       } else {
-      newRow[col] = 0;
+        newRow[col] = 0;
       }
       this.setState(() => {
         this.state.sequence[row].row = newRow;
-        return {sequence:this.state.sequence};
+        return { sequence: this.state.sequence };
       });
     }
-
   }
 
   componentDidMount() {
     // console.log('props including react router props are,', this.props);
 
     var sampleLibrary = [
-      { sampleId: 0, name: 'bass', url: './audio_files/sound-bass.wav'},
-      { sampleId: 1, name: 'clap', url: './audio_files/sound-electronicClap.wav'},
-      { sampleId: 2, name: 'hat1', url: './audio_files/sound-hat.wav'},
-      { sampleId: 3, name: 'hat2', url: './audio_files/sound-hat2.wav'},
-      { sampleId: 4, name: 'kick1', url: './audio_files/sound-kick.wav'},
-      { sampleId: 5, name: 'kick2', url: './audio_files/sound-kick2.wav'},
-      { sampleId: 6, name: 'kick3', url: './audio_files/sound-kick3.wav'},
-      { sampleId: 7, name: 'percussion', url: './audio_files/sound-percussion.wav'},
-      { sampleId: 8, name: 'pluck', url: './audio_files/sound-pluck.wav'},
-      { sampleId: 9, name: 'snap', url: './audio_files/sound-snap.wav'},
-      { sampleId: 10, name: 'snare', url: './audio_files/sound-snare.wav'},
-      { sampleId: 11, name: 'speedy', url: './audio_files/sound-speedy.wav'},
-      { sampleId: 12, name: 'synth', url: './audio_files/sound-synth.wav'},
-      { sampleId: 13, name: 'trumpet', url: './audio_files/sound-trumpet.wav'},
-      { sampleId: 14, name: 'vocal', url: './audio_files/sound-vocal.wav'},
-      { sampleId: 15, name: 'yea', url: './audio_files/sound-vocoder.wav'}
+      { sampleId: 0, name: 'bass', url: './audio_files/sound-bass.wav' },
+      {
+        sampleId: 1,
+        name: 'clap',
+        url: './audio_files/sound-electronicClap.wav'
+      },
+      { sampleId: 2, name: 'hat1', url: './audio_files/sound-hat.wav' },
+      { sampleId: 3, name: 'hat2', url: './audio_files/sound-hat2.wav' },
+      { sampleId: 4, name: 'kick1', url: './audio_files/sound-kick.wav' },
+      { sampleId: 5, name: 'kick2', url: './audio_files/sound-kick2.wav' },
+      { sampleId: 6, name: 'kick3', url: './audio_files/sound-kick3.wav' },
+      {
+        sampleId: 7,
+        name: 'percussion',
+        url: './audio_files/sound-percussion.wav'
+      },
+      { sampleId: 8, name: 'pluck', url: './audio_files/sound-pluck.wav' },
+      { sampleId: 9, name: 'snap', url: './audio_files/sound-snap.wav' },
+      { sampleId: 10, name: 'snare', url: './audio_files/sound-snare.wav' },
+      { sampleId: 11, name: 'speedy', url: './audio_files/sound-speedy.wav' },
+      { sampleId: 12, name: 'synth', url: './audio_files/sound-synth.wav' },
+      { sampleId: 13, name: 'trumpet', url: './audio_files/sound-trumpet.wav' },
+      { sampleId: 14, name: 'vocal', url: './audio_files/sound-vocal.wav' },
+      { sampleId: 15, name: 'yea', url: './audio_files/sound-vocoder.wav' }
     ];
 
     /** Loops over the sampleLibrary and returns each as a Howl object with methods
-    */
-    sampleLibrary = sampleLibrary.map( (sample, index) => {
-      var newObj =  new Howl({
+     */
+    sampleLibrary = sampleLibrary.map((sample, index) => {
+      var newObj = new Howl({
         src: [sample.url],
         autoplay: false,
         loop: false,
-        onload:function(){
+        onload: function() {
           // console.log(sample, "LOADED");
         },
         onend: function() {
@@ -167,15 +172,14 @@ class Main extends React.Component {
       newObj.name = sample.name;
       newObj.sampleId = index;
       return newObj;
-    })
+    });
 
-    this.setState({samples: sampleLibrary})
+    this.setState({ samples: sampleLibrary });
 
     if (this.props.loggedIn) {
-      this.getUserName()
-        .then((username) => {
-          this.getSavedSequences(username);
-        });
+      this.getUserName().then(username => {
+        this.getSavedSequences(username);
+      });
     }
 
     //load shared song if this is a shareable link
@@ -185,61 +189,65 @@ class Main extends React.Component {
     }
   }
 
-
   /** Login to the app
-  * @param {string} username
-  * @param {string} password
-  */
-  loginCB(username,password) {
-    console.log('logging in')
-    axios.post('/login', {
-      username: username,
-      password: password
-    })
-    .then((res) => {
-      console.log('successful login');
-      window.location ='/member';
-    })
-    .catch((err) => {
-      console.log('error during login', err);
-    });
+   * @param {string} username
+   * @param {string} password
+   */
+  loginCB(username, password) {
+    console.log('logging in');
+    axios
+      .post('/login', {
+        username: username,
+        password: password
+      })
+      .then(res => {
+        console.log('successful login');
+        window.location = '/member';
+      })
+      .catch(err => {
+        console.log('error during login', err);
+      });
   }
 
   /** Create new account for the app
-  * @param {string} username
-  * @param {string} password
-  */
-  createAcctCB(username,password) {
-    axios.post('/createuser', {
-      username: username,
-      password: password
-    })
-    .then((res) => {
-      console.log('successful acct creation');
-      window.location ='/member';
-    })
-    .catch((err) => {
-      console.log('error during acct creation', err);
-    });
+   * @param {string} username
+   * @param {string} password
+   */
+  createAcctCB(username, password) {
+    axios
+      .post('/createuser', {
+        username: username,
+        password: password
+      })
+      .then(res => {
+        console.log('successful acct creation');
+        window.location = '/member';
+      })
+      .catch(err => {
+        console.log('error during acct creation', err);
+      });
   }
 
   /** Logout of the app
-  */
+   */
   logoutCB() {
-    axios.post('/logout', {}).then((res) => {
-      console.log('successful logout');
-      window.location ='/';
-    })
-    .catch((err) => {
-      console.log('error during logout');
-    });
+    axios
+      .post('/logout', {})
+      .then(res => {
+        console.log('successful logout');
+        window.location = '/';
+      })
+      .catch(err => {
+        console.log('error during logout');
+      });
   }
 
   /** Get username of person logged in, and also the usernames saved sequences
-  */
+   */
   getUserName() {
-    return axios.get('/username')
-      .then((res) => {
+    return axios
+      .get('/username')
+      .then(res => {
         // console.log('successful get username', res.data);
         var username = res.data;
         this.setState({
@@ -247,37 +255,38 @@ class Main extends React.Component {
         });
         return username;
       })
-      .catch((err) => {
+      .catch(err => {
         console.log('error during username retrieval', err);
       });
   }
 
   /** Get the usernames saved sequences
-  * @params username
-  */
+   * @params username
+   */
   getSavedSequences(username) {
-    return axios.get('/users', {params: {username: username}})
-      .then((res) => {
+    return axios
+      .get('/users', { params: { username: username } })
+      .then(res => {
         // console.log('successful saved sequences retrieval: ', res.data);
         this.setState({
           savedSequences: res.data
         });
         return true;
       })
-      .catch((err) => {
+      .catch(err => {
         console.log('error during username and saved sequences retrieval', err);
         throw err;
       });
   }
 
   /** Load retrieved sequence to the page
-  * @params index
-  */
+   * @params index
+   */
   loadSavedSequence(index) {
     //clear out the existing sequence first
     var sequence = [];
     for (var i = 0; i < this.state.sequence.length; i++) {
-      sequence.push({sampleIndex: undefined, row: [ 0, 0, 0, 0, 0, 0, 0, 0 ]});
+      sequence.push({ sampleIndex: undefined, row: [0, 0, 0, 0, 0, 0, 0, 0] });
     }
     this.setState({
       sequence: sequence
@@ -292,7 +301,7 @@ class Main extends React.Component {
       var sampleIndex = undefined;
       if (loadedSequenceRows[i]['beat'] !== undefined) {
         //look for beat's index in this.state.samples
-        var foundSampleArray = this.state.samples.filter((eachsample) => {
+        var foundSampleArray = this.state.samples.filter(eachsample => {
           return eachsample.name === loadedSequenceRows[i]['beat'];
         });
         if (foundSampleArray.length > 0) {
@@ -310,16 +319,17 @@ class Main extends React.Component {
   }
 
   /**load shared song if this is a shareable link
-  * users/:username/:sequenceObjID
-  */
+   * users/:username/:sequenceObjID
+   */
   loadSharedSequence() {
-    return axios.get('/users/sharedObjID',
-        {params: {
+    return axios
+      .get('/users/sharedObjID', {
+        params: {
           username: this.props.username,
           sequenceObjID: this.props.sequenceObjID
-        }}
-      )
-      .then((res) => {
+        }
+      })
+      .then(res => {
         console.log('successful get shared sequence', res.data);
         var sharedSeq = res.data;
         this.setState({
@@ -331,44 +341,48 @@ class Main extends React.Component {
         this.loadSavedSequence(0);
         return true;
       })
-      .catch((err) => {
+      .catch(err => {
         console.log('error during load shared sequence', err);
       });
   }
 
   /** Save current sequence on the page
-  * to look like this in the database
-  * {
-  *  user: 'MyUserName',
-  *  sequenceRows:
-  *    [
-  *      {beat: 'blah', row: [0, 0, 0, 0, 0, 0, 0, 0]},
-  *      {beat: 'blah2', row: [0, 0, 0, 0, 0, 0, 0, 0]},
-  *      {beat: 'blah3', row: [0, 0, 0, 0, 0, 0, 0, 0]},
-  *      {beat: 'blah4', row: [0, 0, 0, 0, 0, 0, 0, 0]}
-  *    ]
-  * }
-  */
+   * to look like this in the database
+   * {
+   *  user: 'MyUserName',
+   *  sequenceRows:
+   *    [
+   *      {beat: 'blah', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+   *      {beat: 'blah2', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+   *      {beat: 'blah3', row: [0, 0, 0, 0, 0, 0, 0, 0]},
+   *      {beat: 'blah4', row: [0, 0, 0, 0, 0, 0, 0, 0]}
+   *    ]
+   * }
+   */
   saveSequence() {
     var sequenceRows = [];
     for (var i = 0; i < this.state.sequence.length; i++) {
       if (this.state.sequence[i].sampleIndex !== undefined) {
         var matchedSample;
-        var matchedSampleArray = this.state.samples.filter((eachsample)=>{
+        var matchedSampleArray = this.state.samples.filter(eachsample => {
           return eachsample.sampleId === this.state.sequence[i].sampleIndex;
         });
         if (matchedSampleArray.length > 0) {
           matchedSample = matchedSampleArray[0];
-          sequenceRows.push({beat: matchedSample.name, row: this.state.sequence[i].row});
+          sequenceRows.push({
+            beat: matchedSample.name,
+            row: this.state.sequence[i].row
+          });
         }
       }
     }
-    var sequenceObj = {user: this.state.username, sequenceRows: sequenceRows};
-    return axios.post('/users', {sequenceObj: sequenceObj})
-      .then((res) => {
+    var sequenceObj = { user: this.state.username, sequenceRows: sequenceRows };
+    return axios
+      .post('/users', { sequenceObj: sequenceObj })
+      .then(res => {
         return this.getSavedSequences(this.state.username);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log('error during save sequence', err);
         throw err;
       });
@@ -388,13 +402,11 @@ class Main extends React.Component {
       });
     }
 
-
     this.playSequence();
     if (this.state.loopButton) {
-      this.state.intervalId = setInterval(()=>{
+      this.state.intervalId = setInterval(() => {
         this.playSequence();
-      }, (60/this.state.bpm*1000)*8);
-
+      }, 60 / this.state.bpm * 1000 * 8);
     }
     //this.props.playCB();
   }
@@ -417,7 +429,6 @@ class Main extends React.Component {
     clearInterval(this.state.intervalId);
     //this.props.stopCB();
   }
-
 
   /** Clicking the loop button will toggle between on or off (CURRENTLY NOT WORKING)
     Run Main callback to toggle looping
@@ -447,20 +458,23 @@ class Main extends React.Component {
   shareClicked(index) {
     //this.props.share();
     console.log('Share Clicked');
-    return axios.get('/users/share',
-        {params: {
+    return axios
+      .get('/users/share', {
+        params: {
           username: this.state.username,
-          sequenceObjID: JSON.parse(JSON.stringify(this.state.savedSequences[index]._id))
-        }}
-      )
-      .then((res) => {
+          sequenceObjID: JSON.parse(
+            JSON.stringify(this.state.savedSequences[index]._id)
+          )
+        }
+      })
+      .then(res => {
         console.log('successful sharing of sequence');
         return true;
       })
       .then(() => {
         return this.getSavedSequences(this.state.username);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log('error during sharing of sequence', err);
         throw err;
       });
@@ -473,10 +487,12 @@ class Main extends React.Component {
       if (sequence.sampleIndex !== undefined) {
         sequence.row.forEach((item, rowIndex) => {
           if (item === 1) {
-            setTimeout( () => {
-              this.state.samples[this.state.sequence[sequenceIndex].sampleIndex].play();
-              this.setState({playingIndex: rowIndex});
-            }, (60 / this.state.bpm * 1000) * rowIndex);
+            setTimeout(() => {
+              this.state.samples[
+                this.state.sequence[sequenceIndex].sampleIndex
+              ].play();
+              this.setState({ playingIndex: rowIndex });
+            }, 60 / this.state.bpm * 1000 * rowIndex);
           }
         });
       }
@@ -485,14 +501,13 @@ class Main extends React.Component {
   /** changes bpm of the sequence. takes number between 60-999
 
   */
-  changeBPM () {
+  changeBPM() {
     // console.log("Change BPM Clicked ", document.getElementById('bpm').value);
     var bpm = document.getElementById('bpm').value;
-    if ( 60 <=bpm && bpm<=999 ) {
+    if (60 <= bpm && bpm <= 999) {
       this.setState({
         bpm: bpm,
         playstatus: !this.state.playstatus
-
       });
       if (this.state.loopButton) {
         this.setState({
@@ -506,82 +521,96 @@ class Main extends React.Component {
     }
   }
 
-
   render() {
-    var welcomeUsername = this.props.loggedIn &&
-      <div style={{color: 'white', margin: '20px 30px'}}>Welcome {this.state.username}</div>;
-    return(
-    <div id="container">
-      <NaviBar
-        loggedIn={this.props.loggedIn}
-        loginCB={this.loginCB}
-        creatAcctCB={this.createAcctCB}
-        logoutCB={this.logoutCB}
-      />
-      {welcomeUsername}
-      <SampleLibrary
-        beatToRegister={this.state.beatToRegister}
-        samples={this.state.samples}
-        playSample={this.playSampleFromLibrary}
-        registerSample={this.addSampleToBoard}
-        samplesOnTheBoard={this.state.sequence.map(sample => sample.sampleIndex)}
+    var welcomeUsername = this.props.loggedIn && (
+      <div style={{ color: 'white', margin: '20px 30px' }}>
+        Welcome {this.state.username}
+      </div>
+    );
+    return (
+      <div id="container">
+        {/* <NaviBar
+            loggedIn={this.props.loggedIn}
+            loginCB={this.loginCB}
+            creatAcctCB={this.createAcctCB}
+            logoutCB={this.logoutCB}
+          /> */}
+        {welcomeUsername}
+        <SampleLibrary
+          beatToRegister={this.state.beatToRegister}
+          samples={this.state.samples}
+          playSample={this.playSampleFromLibrary}
+          registerSample={this.addSampleToBoard}
+          samplesOnTheBoard={this.state.sequence.map(
+            sample => sample.sampleIndex
+          )}
+        />
+        <ControlPanel
+          bpm={this.state.bpm}
+          loopButton={this.state.loopButton}
+          playstatus={this.state.playstatus}
+          loggedIn={this.props.loggedIn}
+          samples={this.state.samples}
+          playClicked={this.playClicked}
+          stopClicked={this.stopClicked}
+          loopClicked={this.loopClicked}
+          saveClicked={this.saveClicked}
+          shareClicked={this.shareClicked}
+          changeBPM={this.changeBPM}
+        />
 
-      />
-      <ControlPanel
-        bpm={this.state.bpm}
-        loopButton={this.state.loopButton}
-        playstatus={this.state.playstatus}
-        loggedIn={this.props.loggedIn}
-        samples={this.state.samples}
-        playClicked={this.playClicked}
-        stopClicked={this.stopClicked}
-        loopClicked={this.loopClicked}
-        saveClicked={this.saveClicked}
-        shareClicked={this.shareClicked}
-        changeBPM={this.changeBPM}
-      />
+        <SoundBoard
+          samples={this.state.samples}
+          sequence={this.state.sequence}
+          toggleCell={this.toggleSoundOnBoard}
+          removeSample={this.removeSampleFromBoard}
+          playingIndex={this.state.playingIndex}
+        />
 
-      <SoundBoard
-        samples={this.state.samples}
-        sequence={this.state.sequence}
-        toggleCell={this.toggleSoundOnBoard}
-        removeSample={this.removeSampleFromBoard}
-        playingIndex={this.state.playingIndex}
-      />
-
-      <SavedSequences
-        savedSequences={this.state.savedSequences}
-        loadSavedSequence = {this.loadSavedSequence}
-        shareClicked = {this.shareClicked}
-        loggedIn={this.props.loggedIn}
-      />
-    </div> )
+        <SavedSequences
+          savedSequences={this.state.savedSequences}
+          loadSavedSequence={this.loadSavedSequence}
+          shareClicked={this.shareClicked}
+          loggedIn={this.props.loggedIn}
+        />
+      </div>
+    );
   }
 }
 
 /**
-* Routes is setup so that Main component is able to render slightly differently for these 3 situations
-*  Not logged in at root /; demo mode only
-*  Logged in to /member; can save and share sequences
-*    If loggedIn===true, Main component should render extra things such as User's saved seqeunces in a list
-*    on the righthand side
-*    Also, the top navbar should change to a "logout" button
-*  Sharing /users/:username/:sequenceObjID; same as demo mode but with shared sequence loaded on the player
-* @constructor
-*/
-const
-Routes = () =>(
+ * Routes is setup so that Main component is able to render slightly differently for these 3 situations
+ *  Not logged in at root /; demo mode only
+ *  Logged in to /member; can save and share sequences
+ *    If loggedIn===true, Main component should render extra things such as User's saved seqeunces in a list
+ *    on the righthand side
+ *    Also, the top navbar should change to a "logout" button
+ *  Sharing /users/:username/:sequenceObjID; same as demo mode but with shared sequence loaded on the player
+ * @constructor
+ */
+const Routes = () => (
   <Router>
-  <Switch>
-    <Route exact path="/" render={() => <Main loggedIn={false}/>}/>
-    <Route exact path="/member" render={() => <Main loggedIn={true}/>}/>
-    <Route exact path="/users/:username/:sequenceObjID" render={(props) => <Main loggedIn={false} username={props.match.params.username} sequenceObjID={props.match.params.sequenceObjID}/>}/>
-  </Switch>
-</Router> )
+    <Switch>
+      <Route exact path="/" render={() => <Main loggedIn={false} />} />
+      <Route exact path="/member" render={() => <Main loggedIn={true} />} />
+      <Route
+        exact
+        path="/users/:username/:sequenceObjID"
+        render={props => (
+          <Main
+            loggedIn={false}
+            username={props.match.params.username}
+            sequenceObjID={props.match.params.sequenceObjID}
+          />
+        )}
+      />
+    </Switch>
+  </Router>
+);
 
 //This event listener is needed or else the reactdom render will cause mocha test to fail
 document.addEventListener('DOMContentLoaded', function() {
-  ReactDOM.render(<Routes></Routes>, document.getElementById('main'));
+  ReactDOM.render(<Routes />, document.getElementById('main'));
 });
 
 export default Main;
